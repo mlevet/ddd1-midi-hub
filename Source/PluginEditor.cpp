@@ -569,14 +569,19 @@ DDD1HubEditor::DDD1HubEditor (DDD1HubProcessor& p)
 
     styleBtn (setsFillBtn);
     styleBtn (setsGrooveBtn);
-    styleBtn (showHiddenBtn);
+    styleBtn (setsFavBtn);
+    styleBtn (setsUnratedBtn);
+    styleBtn (setsSkipBtn);
     addAndMakeVisible (setsFillBtn);
     addAndMakeVisible (setsGrooveBtn);
-    addAndMakeVisible (showHiddenBtn);
+    addAndMakeVisible (setsFavBtn);
+    addAndMakeVisible (setsUnratedBtn);
+    addAndMakeVisible (setsSkipBtn);
+
     setsFillBtn.onClick = [this] {
         setsTypeFilter = (setsTypeFilter == 2) ? 0 : 2;
         if (setsTypeFilter == 2) setsGrooveBtn.setToggleState (false, juce::dontSendNotification);
-        setsFillBtn.setToggleState   (setsTypeFilter == 2, juce::dontSendNotification);
+        setsFillBtn.setToggleState (setsTypeFilter == 2, juce::dontSendNotification);
         rebuildSetsList();
     };
     setsGrooveBtn.onClick = [this] {
@@ -585,11 +590,17 @@ DDD1HubEditor::DDD1HubEditor (DDD1HubProcessor& p)
         setsGrooveBtn.setToggleState (setsTypeFilter == 1, juce::dontSendNotification);
         rebuildSetsList();
     };
-    showHiddenBtn.setClickingTogglesState (true);
-    showHiddenBtn.onClick = [this] {
-        showHidden = showHiddenBtn.getToggleState();
+
+    auto setStateFilter = [this](int s) {
+        setsStateFilter = s;
+        setsFavBtn    .setToggleState (s == 1, juce::dontSendNotification);
+        setsUnratedBtn.setToggleState (s == 2, juce::dontSendNotification);
+        setsSkipBtn   .setToggleState (s == 3, juce::dontSendNotification);
         rebuildSetsList();
     };
+    setsFavBtn    .onClick = [this, setStateFilter] { setStateFilter (setsStateFilter == 1 ? 0 : 1); };
+    setsUnratedBtn.onClick = [this, setStateFilter] { setStateFilter (setsStateFilter == 2 ? 0 : 2); };
+    setsSkipBtn   .onClick = [this, setStateFilter] { setStateFilter (setsStateFilter == 3 ? 0 : 3); };
 
     styleBtn (setsSaveSceneBtn);
     setsSaveSceneBtn.onClick = [this]
@@ -1433,10 +1444,10 @@ void DDD1HubEditor::SetsListModel::paintListBoxItem (int row, juce::Graphics& g,
     else if (row % 2) g.fillAll (col::bg);
     else              g.fillAll (col::panel);
 
-    // Zones (right → left): skip 20px | stars 57px (5×11+2) | name fills rest
-    const int skipW  = 20;
-    const int starW  = 57;
-    const int rightW = skipW + starW;   // 77
+    // Zones (right → left): skip 22px | fav 22px | name fills rest
+    const int skipW  = 22;
+    const int favW   = 22;
+    const int rightW = skipW + favW;    // 44
 
     int nameX = 8;
     int nameW = w - rightW - nameX - 4;
@@ -1452,11 +1463,14 @@ void DDD1HubEditor::SetsListModel::paintListBoxItem (int row, juce::Graphics& g,
         nameW = w - rightW - nameX - 4;
     }
 
-    auto textCol = rating.hidden ? col::muted : col::text;
-    g.setColour (textCol);
+    auto cstate = owner.proc.ratingBank.getState (e.groupId);
+    bool isFav  = (cstate == CurationState::Favorite);
+    bool isSkip = (cstate == CurationState::Skip);
+
+    g.setColour (isSkip ? col::muted.withAlpha (0.5f) : col::text);
     g.drawText (e.name, nameX, 0, nameW, h, juce::Justification::centredLeft, true);
 
-    // Stars: 5 drawn star shapes, 12px pitch, vertically centred
+    // ★ Favourite button (centre of favW zone)
     auto drawStar = [&](float cx, float cy, float outerR, float innerR, bool filled)
     {
         juce::Path p;
@@ -1477,31 +1491,17 @@ void DDD1HubEditor::SetsListModel::paintListBoxItem (int row, juce::Graphics& g,
         else        g.strokePath (p, juce::PathStrokeType (0.8f));
     };
 
-    float starCy = (float)h * 0.5f;
-    float starR  = 4.5f;
-    int   starsX = w - rightW + 2;
-    for (int i = 0; i < 5; ++i)
-    {
-        float cx = (float)(starsX + i * 11) + starR;
-        if (i < rating.stars)
-        {
-            g.setColour (juce::Colour (0xFFD4A017));
-            drawStar (cx, starCy, starR, starR * 0.45f, true);
-        }
-        else
-        {
-            g.setColour (col::muted.withAlpha (0.45f));
-            drawStar (cx, starCy, starR, starR * 0.45f, false);
-        }
-    }
+    float cy  = (float)h * 0.5f;
+    float favCx = (float)(w - skipW - favW / 2);
+    g.setColour (isFav ? juce::Colour (0xFFD4A017) : col::muted.withAlpha (0.4f));
+    drawStar (favCx, cy, 5.0f, 5.0f * 0.45f, isFav);
 
-    // Skip button: small "x" drawn as two diagonal lines
-    const int xCx = w - skipW / 2;
-    const int xCy = h / 2;
-    const int xR  = 4;
-    g.setColour (rating.hidden ? col::accent : col::muted.withAlpha (0.6f));
-    g.drawLine ((float)(xCx - xR), (float)(xCy - xR), (float)(xCx + xR), (float)(xCy + xR), 1.5f);
-    g.drawLine ((float)(xCx + xR), (float)(xCy - xR), (float)(xCx - xR), (float)(xCy + xR), 1.5f);
+    // × Skip button
+    float xCx = (float)(w - skipW / 2);
+    float xR  = 4.0f;
+    g.setColour (isSkip ? col::accent : col::muted.withAlpha (0.4f));
+    g.drawLine (xCx - xR, cy - xR, xCx + xR, cy + xR, 1.5f);
+    g.drawLine (xCx + xR, cy - xR, xCx - xR, cy + xR, 1.5f);
 }
 
 void DDD1HubEditor::SetsListModel::listBoxItemDoubleClicked (int, const juce::MouseEvent&) {}
@@ -1512,30 +1512,26 @@ void DDD1HubEditor::SetsListModel::listBoxItemClicked (int row, const juce::Mous
     const auto& e = owner.setsEntries[(size_t)row];
     const int w = owner.setsListBox.getWidth();
 
-    const int skipW = 20;
-    const int starW = 57;
+    const int skipW = 22;
+    const int favW  = 22;
 
-    // Skip "×" zone
+    // × Skip zone
     if (me.x >= w - skipW)
     {
-        bool curHidden = owner.proc.ratingBank.isHidden (e.groupId);
-        owner.proc.ratingBank.setHidden (e.groupId, !curHidden);
+        auto cur = owner.proc.ratingBank.getState (e.groupId);
+        auto next = (cur == CurationState::Skip) ? CurationState::Unrated : CurationState::Skip;
+        owner.proc.ratingBank.setState (e.groupId, next);
         owner.proc.saveRatings();
-        if (!owner.showHidden)
-            owner.rebuildSetsList();   // entry disappears when hidden
-        else
-            owner.setsListBox.repaint();
+        owner.rebuildSetsList();
         return;
     }
 
-    // Stars zone: 5 × 10px starting at w - skipW - starW
-    if (me.x >= w - skipW - starW)
+    // ★ Favourite zone
+    if (me.x >= w - skipW - favW)
     {
-        int starIdx = juce::jlimit (0, 4, (me.x - (w - skipW - starW)) / 11);
-        int newStar = starIdx + 1;
-        if (owner.proc.ratingBank.get (e.groupId).stars == newStar)
-            newStar = 0;   // click same star → unrate
-        owner.proc.ratingBank.setStars (e.groupId, newStar);
+        auto cur = owner.proc.ratingBank.getState (e.groupId);
+        auto next = (cur == CurationState::Favorite) ? CurationState::Unrated : CurationState::Favorite;
+        owner.proc.ratingBank.setState (e.groupId, next);
         owner.proc.saveRatings();
         owner.setsListBox.repaint();
         return;
@@ -1574,7 +1570,11 @@ void DDD1HubEditor::rebuildSetsList()
         if (!source.isEmpty() && s.source != source)  continue;
         if (setsTypeFilter == 1 &&  s.isFill) continue; // groove only
         if (setsTypeFilter == 2 && !s.isFill) continue; // fill only
-        if (!showHidden && proc.ratingBank.isHidden (s.id)) continue;
+        auto cstate = proc.ratingBank.getState (s.id);
+        if (setsStateFilter == 0 && cstate == CurationState::Skip)     continue; // hide skipped by default
+        if (setsStateFilter == 1 && cstate != CurationState::Favorite) continue;
+        if (setsStateFilter == 2 && cstate != CurationState::Unrated)  continue;
+        if (setsStateFilter == 3 && cstate != CurationState::Skip)     continue;
         setsEntries.push_back ({ true, autoBase + i, s.name, s.style, s.source, s.id });
     }
 
@@ -2144,7 +2144,6 @@ void DDD1HubEditor::resized()
     setsSaveSceneBtn.setBounds(M + 94,   398, 84, 20);
     setsResetBtn.setBounds    (M + 184,  398, 72, 20);
     patternBankLoadBtn.setBounds (M + 268, 398, 90,  20);
-    showHiddenBtn.setBounds      (M + 368, 398, 100, 20);
     // Row 1: header + save/reset/load
     // Row 2 (y=420): genre + source + fill/groove toggles
     setsGenreLbl.setBounds    (M,        420, 36,  20);
@@ -2153,6 +2152,9 @@ void DDD1HubEditor::resized()
     setsSourceBox.setBounds   (M + 214,  420, 90,  20);
     setsFillBtn.setBounds     (M + 314,  420, 44,  20);
     setsGrooveBtn.setBounds   (M + 362,  420, 58,  20);
+    setsFavBtn.setBounds      (M + 428,  420, 38,  20);
+    setsUnratedBtn.setBounds  (M + 470,  420, 58,  20);
+    setsSkipBtn.setBounds     (M + 532,  420, 58,  20);
     setsListBox.setBounds     (M,        444, W - 2 * M, bz - 6 - 444);
 
     // ── Bottom zone ───────────────────────────────────────────────────────────

@@ -168,10 +168,13 @@ private:
     juce::ComboBox   setsSourceBox;
     juce::TextButton setsFillBtn      {"Fill"};
     juce::TextButton setsGrooveBtn    {"Groove"};
-    juce::TextButton showHiddenBtn    {"Show Hidden"};
-    // 0 = all, 1 = groove only, 2 = fill only
-    int              setsTypeFilter = 0;
-    bool             showHidden     = false;
+    juce::TextButton setsFavBtn       {"Fav"};
+    juce::TextButton setsUnratedBtn   {"Unrated"};
+    juce::TextButton setsSkipBtn      {"Skipped"};
+    // 0 = all (non-skipped), 1 = groove only, 2 = fill only
+    int              setsTypeFilter  = 0;
+    // 0 = all, 1 = favorites, 2 = unrated, 3 = skipped
+    int              setsStateFilter = 0;
     void rebuildGenreBoxes();
     void rebuildSourceBox();
 
