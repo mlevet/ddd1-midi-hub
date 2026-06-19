@@ -62,6 +62,28 @@ DDD1HubProcessor::DDD1HubProcessor()
     patternSetBank.load (juce::File (patternSetBankFilePath));
 
     loadRatings();
+    loadIdeas();
+
+#if JUCE_DEBUG
+    // Roundtrip test: capture → serialize → deserialize → verify
+    {
+        auto testIdea = captureCurrentIdea ("__debug_roundtrip__");
+        IdeaBank tempBank;
+        tempBank.add (testIdea);
+        juce::TemporaryFile tmp (".json");
+        tempBank.save (tmp.getFile());
+        IdeaBank verifyBank;
+        verifyBank.load (tmp.getFile());
+        const auto* reloaded = verifyBank.findById (testIdea.id);
+        bool pass = reloaded
+                 && reloaded->name       == testIdea.name
+                 && reloaded->padConfigs.size() == testIdea.padConfigs.size()
+                 && reloaded->patterns.size()   == testIdea.patterns.size();
+        DBG ("IdeaBank roundtrip: " << (pass ? "PASS" : "FAIL")
+             << "  pads=" << (int)testIdea.padConfigs.size()
+             << "  patterns=" << (int)testIdea.patterns.size());
+    }
+#endif
 }
 
 DDD1HubProcessor::~DDD1HubProcessor()
@@ -1172,6 +1194,92 @@ static juce::File ratingsFile()
 
 void DDD1HubProcessor::loadRatings()  { ratingBank.load (ratingsFile()); }
 void DDD1HubProcessor::saveRatings()  { ratingBank.save (ratingsFile()); }
+
+// ── Idea Bank ─────────────────────────────────────────────────────────────────
+
+static juce::File ideasFile()
+{
+    return juce::File::getSpecialLocation (juce::File::userApplicationDataDirectory)
+               .getChildFile ("DDD1MidiHub/ideas.json");
+}
+
+void DDD1HubProcessor::loadIdeas() { ideaBank.load (ideasFile()); }
+void DDD1HubProcessor::saveIdeas() { ideaBank.save (ideasFile()); }
+
+Idea DDD1HubProcessor::captureCurrentIdea (const juce::String& name, const IdeaOrigin& origin)
+{
+    Idea idea;
+
+    auto now   = juce::Time::getCurrentTime();
+    idea.id    = "idea_" + now.formatted ("%Y%m%d") + "_"
+               + juce::String (juce::Random::getSystemRandom().nextInt (99999)).paddedLeft ('0', 5);
+    idea.name      = name;
+    idea.createdAt = now.toISO8601 (true);
+    idea.updatedAt = idea.createdAt;
+    idea.origin    = origin;
+    if (idea.origin.type.isEmpty())
+        idea.origin.type = "scratch";
+
+    // Capture current pattern set (pad assignments, no patterns yet)
+    idea.patternSet        = captureCurrentPatternSet();
+    idea.patternSet.source = "user";
+
+    // Snapshot each assigned pattern; rewrite assignment IDs to idea-scoped copies
+    {
+        juce::ScopedLock lk (patternBankLock);
+        for (auto& a : idea.patternSet.assignments)
+        {
+            if (const auto* p = patternBank.findById (a.patternId))
+            {
+                RhythmPattern snap = *p;
+                snap.id     = "idea_" + idea.id + "_pad" + juce::String (a.padIndex);
+                snap.source = "idea";
+                a.patternId = snap.id;
+                idea.patterns.push_back (std::move (snap));
+            }
+        }
+    }
+
+    // Snapshot all 14 pad configs (position = pad index)
+    for (int i = 0; i < numPads; ++i)
+        idea.padConfigs.push_back (pads[i]);
+
+    // Align selectedPatternId in each pad config to its snapshot ID
+    for (const auto& a : idea.patternSet.assignments)
+        if (a.padIndex >= 0 && a.padIndex < numPads)
+            idea.padConfigs[(size_t)a.padIndex].selectedPatternId = a.patternId;
+
+    DBG ("captureCurrentIdea: \"" << name << "\"  patterns=" << (int)idea.patterns.size()
+         << "  pads=" << (int)idea.padConfigs.size());
+    return idea;
+}
+
+void DDD1HubProcessor::loadIdea (const juce::String& id)
+{
+    const Idea* idea = ideaBank.findById (id);
+    if (!idea) return;
+
+    // Inject pattern snapshots — idea version is authoritative over library
+    {
+        juce::ScopedLock lk (patternBankLock);
+        for (const auto& p : idea->patterns)
+            patternBank.insert (p);
+    }
+
+    // Restore all 14 pad configs; reset any pads not covered by saved config
+    for (int i = 0; i < numPads; ++i)
+        pads[i] = (i < (int)idea->padConfigs.size()) ? idea->padConfigs[(size_t)i] : PadConfig{};
+
+    DBG ("loadIdea: \"" << idea->name << "\"  patterns=" << (int)idea->patterns.size());
+}
+
+void DDD1HubProcessor::saveIdea (Idea& idea)
+{
+    idea.updatedAt = juce::Time::getCurrentTime().toISO8601 (true);
+    if (!ideaBank.overwrite (idea.id, idea))
+        ideaBank.add (idea);
+    saveIdeas();
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 

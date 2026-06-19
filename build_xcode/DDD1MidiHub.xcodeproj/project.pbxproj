@@ -1,0 +1,1658 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		0CE014161444F119BE86F34A /* DDD1MidiHub_All */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 07B5E4BE62474F76BF20D47C /* Build configuration list for PBXAggregateTarget "DDD1MidiHub_All" */;
+			buildPhases = (
+			);
+			dependencies = (
+				82A6838238FC4EEAA7719E60 /* PBXTargetDependency */,
+				3899D6DA4EDB482087A45A84 /* PBXTargetDependency */,
+			);
+			name = DDD1MidiHub_All;
+			productName = DDD1MidiHub_All;
+		};
+		3F892DE4157D4B498F49B5DA /* ZERO_CHECK */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 438C1BF4440649299C38653C /* Build configuration list for PBXAggregateTarget "ZERO_CHECK" */;
+			buildPhases = (
+				0348AD2C08DC49D18EC7B62B /* Generate CMakeFiles/ZERO_CHECK */,
+			);
+			dependencies = (
+			);
+			name = ZERO_CHECK;
+			productName = ZERO_CHECK;
+		};
+		61D79C4CCE64E9132D0192C7 /* install */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = B8C0440C655C44F18DB72C89 /* Build configuration list for PBXAggregateTarget "install" */;
+			buildPhases = (
+				93426DA6A4AC2C2AC9CE883C /* CMake PostBuild Rules */,
+			);
+			dependencies = (
+				0BB9D59D3C3040D89AA4EBA0 /* PBXTargetDependency */,
+			);
+			name = install;
+			productName = install;
+		};
+		B74EF1FFD2FF84AF17EC8FD7 /* ALL_BUILD */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 47F7EFE88DAD406BAC46326A /* Build configuration list for PBXAggregateTarget "ALL_BUILD" */;
+			buildPhases = (
+				D792493BB382AB5AE79EE722 /* Generate CMakeFiles/ALL_BUILD */,
+			);
+			dependencies = (
+				258C7C556116408C80836230 /* PBXTargetDependency */,
+				7F84CBBCD2B04FF48712D2F2 /* PBXTargetDependency */,
+				52E9DAA0CA9F48FA8FF24254 /* PBXTargetDependency */,
+			);
+			name = ALL_BUILD;
+			productName = ALL_BUILD;
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXBuildFile section */
+		09E5A98F17CC4D0F9FFE68C9 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_gui_basics/juce_gui_basics_5.cpp */ = {isa = PBXBuildFile; fileRef = 06FCE4203BA74A8F8738C33F /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_gui_basics/juce_gui_basics_5.cpp */; };
+		130D281420BF43F3A7B37420 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_gui_basics/juce_gui_basics_2.cpp */ = {isa = PBXBuildFile; fileRef = B2CE7FC1190A4EC882C839C0 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_gui_basics/juce_gui_basics_2.cpp */; };
+		1433D933261540AFB454C336 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_data_structures/juce_data_structures.mm */ = {isa = PBXBuildFile; fileRef = C096E758774A4C66B6ECB48B /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_data_structures/juce_data_structures.mm */; };
+		160CDB3023E8480F9894BA3F /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_events/juce_events.mm */ = {isa = PBXBuildFile; fileRef = 8B551CA261194619B20E8F1F /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_events/juce_events.mm */; };
+		285A1C80B0534F4E91D558C8 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/juce_audio_processors_headless_lv2_libs.cpp */ = {isa = PBXBuildFile; fileRef = 7992B34D465A4419A5750F13 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/juce_audio_processors_headless_lv2_libs.cpp */; };
+		28DD99E8095148658F9BBACB /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/extras/Build/CMake/RecentFilesMenuTemplate.nib */ = {isa = PBXBuildFile; fileRef = CD74CF89A8074DC1BC47CD18 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/extras/Build/CMake/RecentFilesMenuTemplate.nib */; };
+		36235CC832514D7DA2C835BE /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_utils/juce_audio_utils.mm */ = {isa = PBXBuildFile; fileRef = C97E183AAEB64548B553580F /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_utils/juce_audio_utils.mm */; };
+		3695C302DFB842B9B4EDBE7F /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_AAX.mm */ = {isa = PBXBuildFile; fileRef = CC7681D34C024A13AB9F2DD8 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_AAX.mm */; };
+		379EBB6330F4417BBB1BF71A /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/JuceLibraryCode/JuceHeader.h.rule */ = {isa = PBXBuildFile; fileRef = 9F972F7150F44EC6A760AFDA /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/JuceLibraryCode/JuceHeader.h.rule */; };
+		3BACBE28424D4A03815AB4CE /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_core/juce_core.mm */ = {isa = PBXBuildFile; fileRef = 5F0B3A4379DE4D559CB7D933 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_core/juce_core.mm */; };
+		439C33F0D4DB4277B63B1B76 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_graphics/juce_graphics.mm */ = {isa = PBXBuildFile; fileRef = 5DBDEC03536149618D80A46B /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_graphics/juce_graphics.mm */; };
+		4AB0734C5665481AA5CD72B5 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_VST2.mm */ = {isa = PBXBuildFile; fileRef = D8850AE1D7444F92A8642C03 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_VST2.mm */; };
+		53C2390F3DD94A69A1E56AF3 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_LV2.mm */ = {isa = PBXBuildFile; fileRef = 22B394E306304020AA75B6B9 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_LV2.mm */; };
+		5517404F514E4B0691FF1CBE /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/CMakeLists.txt */ = {isa = PBXBuildFile; fileRef = FFEF457833AC435BAE7B0D72 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/CMakeLists.txt */; };
+		56B4339D32F84132BD21B88D /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_ARA.cpp */ = {isa = PBXBuildFile; fileRef = 306AAB9AD92C48B19ED159A1 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_ARA.cpp */; };
+		5DE6CBDC56EC441D8FDD13DC /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_VST3.mm */ = {isa = PBXBuildFile; fileRef = 3AA42518B941480F8E0D8235 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_VST3.mm */; };
+		62DED6DA5EBB4B50984BD3C2 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_AU_1.mm */ = {isa = PBXBuildFile; fileRef = CC426C15D5274264A782042A /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_AU_1.mm */; };
+		6EE5DD761D5F4F46913802C1 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/JuceLibraryCode/JuceHeader.h */ = {isa = PBXBuildFile; fileRef = A2A1EFE60FC249E28607DA09 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/JuceLibraryCode/JuceHeader.h */; };
+		722D1C9B88FD43AA9989CD3A /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/JuceLibraryCode/DDD1MidiHub_Standalone/PkgInfo */ = {isa = PBXBuildFile; fileRef = 7D7F7F8310444C9FA1F290F3 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/JuceLibraryCode/DDD1MidiHub_Standalone/PkgInfo */; };
+		749781A7B4154D2793F4FB2B /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_graphics/juce_graphics_Harfbuzz.cpp */ = {isa = PBXBuildFile; fileRef = A4BA72AFAB42494790C963F7 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_graphics/juce_graphics_Harfbuzz.cpp */; };
+		1122AABB3344CC5566EE7788 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/RatingBank.cpp */ = {isa = PBXBuildFile; fileRef = AABB1122CC3344556677DD88 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/RatingBank.cpp */; };
+		FF11AA22BB33CC44DD55EE66 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/IdeaBank.cpp */ = {isa = PBXBuildFile; fileRef = DD44EE55FF66778899001122 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/IdeaBank.cpp */; };
+		754CAA447B7B4CED8A3D358D /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/PatternBank.cpp */ = {isa = PBXBuildFile; fileRef = AE3089C0EFC94A24817E3670 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/PatternBank.cpp */; };
+		780566F5EFF74D03B90B61E6 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_core/juce_core_CompilationTime.cpp */ = {isa = PBXBuildFile; fileRef = 5716FD36C3C348268C5C6B22 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_core/juce_core_CompilationTime.cpp */; };
+		7968DAA7A8DE4C6BA57D3669 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/PatternSetBank.cpp */ = {isa = PBXBuildFile; fileRef = A6F6006B224942F0B578C8D0 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/PatternSetBank.cpp */; };
+		7B48DE70440C45C39FE65160 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/juce_audio_processors_headless.mm */ = {isa = PBXBuildFile; fileRef = 541695B4369445409CF0E3BA /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/juce_audio_processors_headless.mm */; };
+		872D408A53634F8591A549C8 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_gui_basics/juce_gui_basics.mm */ = {isa = PBXBuildFile; fileRef = BD4C2045C50D4A37A0E6B9D8 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_gui_basics/juce_gui_basics.mm */; };
+		8C06ADE16B474BF28A0530BE /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_Standalone.cpp */ = {isa = PBXBuildFile; fileRef = 5A9C4C698DEB4EDD88442012 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_Standalone.cpp */; };
+		925A43408B584BEDB2AEE686 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/PluginProcessor.cpp */ = {isa = PBXBuildFile; fileRef = 0226F0F886FE4AE2AAF7035B /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/PluginProcessor.cpp */; };
+		9C789F01C42544BE935EEC12 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_AAX_utils.cpp */ = {isa = PBXBuildFile; fileRef = 648ECDCCF4524572BCBA7DDC /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_AAX_utils.cpp */; };
+		B1CCF4B7AE474DBF9340CFA5 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_devices/juce_audio_devices.mm */ = {isa = PBXBuildFile; fileRef = 691E54D73D154655ABBCF3A7 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_devices/juce_audio_devices.mm */; };
+		BD7392E043104CC3B16E76F2 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/juce_audio_processors_headless_ara.cpp */ = {isa = PBXBuildFile; fileRef = A240E83664A34E608F601A49 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/juce_audio_processors_headless_ara.cpp */; };
+		BEAC36EFA49E4B94A585CC56 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_gui_basics/juce_gui_basics_3.cpp */ = {isa = PBXBuildFile; fileRef = EC9504627351474A894DAF5C /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_gui_basics/juce_gui_basics_3.cpp */; };
+		C4734367FF774C558C6814EF /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_Unity.cpp */ = {isa = PBXBuildFile; fileRef = 873A066FA0B34AA0A01F578A /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_Unity.cpp */; };
+		C4A66632D533472C9FA6475D /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors/juce_audio_processors.mm */ = {isa = PBXBuildFile; fileRef = 7E1EFA3D9BBD402FAF39AA7A /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors/juce_audio_processors.mm */; };
+		C7C271A0503049C2B2167183 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_gui_basics/juce_gui_basics_4.cpp */ = {isa = PBXBuildFile; fileRef = D76FB826FDCA4ACA938CDD1B /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_gui_basics/juce_gui_basics_4.cpp */; };
+		D0C5DDDF0F714DE2A256146B /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_AU_2.mm */ = {isa = PBXBuildFile; fileRef = 7B5251A29B214A89AD04EED2 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_AU_2.mm */; };
+		D28B46E531C74138BBFEA7D0 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/CMakeLists.txt */ = {isa = PBXBuildFile; fileRef = 4CE7D0EA2DC44E80A3CD295F /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/CMakeLists.txt */; };
+		D4A682C16A2047D4BF3C64A8 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_formats/juce_audio_formats.mm */ = {isa = PBXBuildFile; fileRef = A621FE78785B429F8A66699B /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_formats/juce_audio_formats.mm */; };
+		D6327A8A76E9485FA585F65D /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_AUv3.mm */ = {isa = PBXBuildFile; fileRef = 08641C03B3EB4FB18A6B2B58 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_AUv3.mm */; };
+		E17DFA086F844C0789B94A89 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/CMakeFiles/DDD1MidiHub_Standalone.dir/Info.plist */ = {isa = PBXBuildFile; fileRef = A10F5B94EA354DDAA73FD3F1 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/CMakeFiles/DDD1MidiHub_Standalone.dir/Info.plist */; };
+		E28BE14F08B5428390CBDAC0 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_gui_extra/juce_gui_extra.mm */ = {isa = PBXBuildFile; fileRef = 0EF0C0D7C19C4D379B37BFB8 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_gui_extra/juce_gui_extra.mm */; };
+		EF4710EB57354CA4897DDAC8 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_graphics/juce_graphics_Sheenbidi.c */ = {isa = PBXBuildFile; fileRef = 5764887F6B674AE187503441 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_graphics/juce_graphics_Sheenbidi.c */; };
+		F3114AD6C5A340B297E7A0C2 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/PluginEditor.cpp */ = {isa = PBXBuildFile; fileRef = C395B542EC9D4E73A6A18A24 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/PluginEditor.cpp */; };
+		F64F0E6515AD4BE1AA288286 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/JuceLibraryCode/DDD1MidiHub_Standalone/PkgInfo.rule */ = {isa = PBXBuildFile; fileRef = BB94427507A24C099F1A69ED /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/JuceLibraryCode/DDD1MidiHub_Standalone/PkgInfo.rule */; };
+		FC86A6C7602B4B03B0FB5800 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_basics/juce_audio_basics.mm */ = {isa = PBXBuildFile; fileRef = C9E4CF6BB0F44C498B9B8D99 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_basics/juce_audio_basics.mm */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXBuildStyle section */
+		5A884B7C91384631AE5FA26C /* Debug */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = Debug;
+		};
+		D1A771B9E8D742CE915B31F2 /* RelWithDebInfo */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = RelWithDebInfo;
+		};
+		D926498420E34D68B7556700 /* MinSizeRel */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = MinSizeRel;
+		};
+		F1F5065AAB8244119DCB31E0 /* Release */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = Release;
+		};
+/* End PBXBuildStyle section */
+
+/* Begin PBXContainerItemProxy section */
+		44D676479F86498C9B9EA6F4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9C74921325C540329EC8E89F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3F892DE4157D4B498F49B5DA;
+			remoteInfo = ZERO_CHECK;
+		};
+		56C8FBE03C924D26A6D4FBF1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9C74921325C540329EC8E89F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CF06BD59F301AE0E3589B6CA;
+			remoteInfo = DDD1MidiHub;
+		};
+		606DBBBB3FF64E3880B924AB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9C74921325C540329EC8E89F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B0DE1B13968C5224C779631B;
+			remoteInfo = DDD1MidiHub_Standalone;
+		};
+		639B81EE23B642CA8988C113 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9C74921325C540329EC8E89F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CF06BD59F301AE0E3589B6CA;
+			remoteInfo = DDD1MidiHub;
+		};
+		650EB2D425CE47E4B7280D5D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9C74921325C540329EC8E89F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B74EF1FFD2FF84AF17EC8FD7;
+			remoteInfo = ALL_BUILD;
+		};
+		682C8D08B5144B32B47D1802 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9C74921325C540329EC8E89F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3F892DE4157D4B498F49B5DA;
+			remoteInfo = ZERO_CHECK;
+		};
+		85FDC05D838B4AB08C3887D2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9C74921325C540329EC8E89F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3F892DE4157D4B498F49B5DA;
+			remoteInfo = ZERO_CHECK;
+		};
+		95D90682F0524F5AB280D49B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9C74921325C540329EC8E89F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B0DE1B13968C5224C779631B;
+			remoteInfo = DDD1MidiHub_Standalone;
+		};
+		EF3DD933E9594E399F29F5DF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9C74921325C540329EC8E89F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3F892DE4157D4B498F49B5DA;
+			remoteInfo = ZERO_CHECK;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0226F0F886FE4AE2AAF7035B /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/PluginProcessor.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = PluginProcessor.cpp; path = Source/PluginProcessor.cpp; sourceTree = SOURCE_ROOT; };
+		06FCE4203BA74A8F8738C33F /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_gui_basics/juce_gui_basics_5.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = juce_gui_basics_5.cpp; path = /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_gui_basics/juce_gui_basics_5.cpp; sourceTree = "<absolute>"; };
+		08641C03B3EB4FB18A6B2B58 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_AUv3.mm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = juce_audio_plugin_client_AUv3.mm; path = /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_AUv3.mm; sourceTree = "<absolute>"; };
+		0EF0C0D7C19C4D379B37BFB8 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_gui_extra/juce_gui_extra.mm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = juce_gui_extra.mm; path = /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_gui_extra/juce_gui_extra.mm; sourceTree = "<absolute>"; };
+		22B394E306304020AA75B6B9 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_LV2.mm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = juce_audio_plugin_client_LV2.mm; path = /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_LV2.mm; sourceTree = "<absolute>"; };
+		306AAB9AD92C48B19ED159A1 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_ARA.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = juce_audio_plugin_client_ARA.cpp; path = /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_ARA.cpp; sourceTree = "<absolute>"; };
+		3AA42518B941480F8E0D8235 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_VST3.mm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = juce_audio_plugin_client_VST3.mm; path = /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_VST3.mm; sourceTree = "<absolute>"; };
+		3D6DA69F18C045F591015B42 /* DDD1MidiHub_Standalone */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; path = "DDD-1 MIDI Hub"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4CE7D0EA2DC44E80A3CD295F /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/CMakeLists.txt */ = {isa = PBXFileReference; explicitFileType = sourcecode.text; fileEncoding = 4; name = CMakeLists.txt; path = CMakeLists.txt; sourceTree = SOURCE_ROOT; };
+		541695B4369445409CF0E3BA /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/juce_audio_processors_headless.mm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = juce_audio_processors_headless.mm; path = /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/juce_audio_processors_headless.mm; sourceTree = "<absolute>"; };
+		5716FD36C3C348268C5C6B22 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_core/juce_core_CompilationTime.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = juce_core_CompilationTime.cpp; path = /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_core/juce_core_CompilationTime.cpp; sourceTree = "<absolute>"; };
+		5764887F6B674AE187503441 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_graphics/juce_graphics_Sheenbidi.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = juce_graphics_Sheenbidi.c; path = /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_graphics/juce_graphics_Sheenbidi.c; sourceTree = "<absolute>"; };
+		5A9C4C698DEB4EDD88442012 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_Standalone.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = juce_audio_plugin_client_Standalone.cpp; path = /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_Standalone.cpp; sourceTree = "<absolute>"; };
+		5DBDEC03536149618D80A46B /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_graphics/juce_graphics.mm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = juce_graphics.mm; path = /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_graphics/juce_graphics.mm; sourceTree = "<absolute>"; };
+		5F0B3A4379DE4D559CB7D933 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_core/juce_core.mm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = juce_core.mm; path = /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_core/juce_core.mm; sourceTree = "<absolute>"; };
+		648ECDCCF4524572BCBA7DDC /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_AAX_utils.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = juce_audio_plugin_client_AAX_utils.cpp; path = /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_AAX_utils.cpp; sourceTree = "<absolute>"; };
+		691E54D73D154655ABBCF3A7 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_devices/juce_audio_devices.mm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = juce_audio_devices.mm; path = /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_devices/juce_audio_devices.mm; sourceTree = "<absolute>"; };
+		7992B34D465A4419A5750F13 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/juce_audio_processors_headless_lv2_libs.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = juce_audio_processors_headless_lv2_libs.cpp; path = /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/juce_audio_processors_headless_lv2_libs.cpp; sourceTree = "<absolute>"; };
+		7B5251A29B214A89AD04EED2 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_AU_2.mm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = juce_audio_plugin_client_AU_2.mm; path = /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_AU_2.mm; sourceTree = "<absolute>"; };
+		7D7F7F8310444C9FA1F290F3 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/JuceLibraryCode/DDD1MidiHub_Standalone/PkgInfo */ = {isa = PBXFileReference; explicitFileType = default; fileEncoding = 4; name = PkgInfo; path = build_xcode/DDD1MidiHub_artefacts/JuceLibraryCode/DDD1MidiHub_Standalone/PkgInfo; sourceTree = SOURCE_ROOT; };
+		7E1EFA3D9BBD402FAF39AA7A /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors/juce_audio_processors.mm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = juce_audio_processors.mm; path = /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors/juce_audio_processors.mm; sourceTree = "<absolute>"; };
+		873A066FA0B34AA0A01F578A /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_Unity.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = juce_audio_plugin_client_Unity.cpp; path = /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_Unity.cpp; sourceTree = "<absolute>"; };
+		8B551CA261194619B20E8F1F /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_events/juce_events.mm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = juce_events.mm; path = /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_events/juce_events.mm; sourceTree = "<absolute>"; };
+		9F972F7150F44EC6A760AFDA /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/JuceLibraryCode/JuceHeader.h.rule */ = {isa = PBXFileReference; explicitFileType = default; fileEncoding = 4; name = JuceHeader.h.rule; path = build_xcode/DDD1MidiHub_artefacts/JuceLibraryCode/JuceHeader.h.rule; sourceTree = SOURCE_ROOT; };
+		A10F5B94EA354DDAA73FD3F1 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/CMakeFiles/DDD1MidiHub_Standalone.dir/Info.plist */ = {isa = PBXFileReference; explicitFileType = sourcecode.text.plist; fileEncoding = 4; name = Info.plist; path = build_xcode/CMakeFiles/DDD1MidiHub_Standalone.dir/Info.plist; sourceTree = SOURCE_ROOT; };
+		A240E83664A34E608F601A49 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/juce_audio_processors_headless_ara.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = juce_audio_processors_headless_ara.cpp; path = /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/juce_audio_processors_headless_ara.cpp; sourceTree = "<absolute>"; };
+		A2A1EFE60FC249E28607DA09 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/JuceLibraryCode/JuceHeader.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = JuceHeader.h; path = build_xcode/DDD1MidiHub_artefacts/JuceLibraryCode/JuceHeader.h; sourceTree = SOURCE_ROOT; };
+		A4BA72AFAB42494790C963F7 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_graphics/juce_graphics_Harfbuzz.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = juce_graphics_Harfbuzz.cpp; path = /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_graphics/juce_graphics_Harfbuzz.cpp; sourceTree = "<absolute>"; };
+		A621FE78785B429F8A66699B /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_formats/juce_audio_formats.mm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = juce_audio_formats.mm; path = /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_formats/juce_audio_formats.mm; sourceTree = "<absolute>"; };
+		A6F6006B224942F0B578C8D0 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/PatternSetBank.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = PatternSetBank.cpp; path = Source/PatternSetBank.cpp; sourceTree = SOURCE_ROOT; };
+		AABB1122CC3344556677DD88 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/RatingBank.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = RatingBank.cpp; path = Source/RatingBank.cpp; sourceTree = SOURCE_ROOT; };
+		EEFF1122CC3344556677AA99 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/RatingBank.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = RatingBank.h; path = Source/RatingBank.h; sourceTree = SOURCE_ROOT; };
+		AA11BB22CC33DD44EE55FF66 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/PadConfig.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = PadConfig.h; path = Source/PadConfig.h; sourceTree = SOURCE_ROOT; };
+		BB22CC33DD44EE55FF667788 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/Idea.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Idea.h; path = Source/Idea.h; sourceTree = SOURCE_ROOT; };
+		CC33DD44EE55FF6677889900 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/IdeaBank.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = IdeaBank.h; path = Source/IdeaBank.h; sourceTree = SOURCE_ROOT; };
+		DD44EE55FF66778899001122 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/IdeaBank.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = IdeaBank.cpp; path = Source/IdeaBank.cpp; sourceTree = SOURCE_ROOT; };
+		AE3089C0EFC94A24817E3670 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/PatternBank.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = PatternBank.cpp; path = Source/PatternBank.cpp; sourceTree = SOURCE_ROOT; };
+		B2CE7FC1190A4EC882C839C0 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_gui_basics/juce_gui_basics_2.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = juce_gui_basics_2.cpp; path = /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_gui_basics/juce_gui_basics_2.cpp; sourceTree = "<absolute>"; };
+		BB94427507A24C099F1A69ED /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/JuceLibraryCode/DDD1MidiHub_Standalone/PkgInfo.rule */ = {isa = PBXFileReference; explicitFileType = default; fileEncoding = 4; name = PkgInfo.rule; path = build_xcode/DDD1MidiHub_artefacts/JuceLibraryCode/DDD1MidiHub_Standalone/PkgInfo.rule; sourceTree = SOURCE_ROOT; };
+		BD4C2045C50D4A37A0E6B9D8 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_gui_basics/juce_gui_basics.mm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = juce_gui_basics.mm; path = /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_gui_basics/juce_gui_basics.mm; sourceTree = "<absolute>"; };
+		BE5BA0DDC22D44AB9724A7DA /* DDD1MidiHub */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libDDD-1 MIDI Hub_SharedCode.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C096E758774A4C66B6ECB48B /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_data_structures/juce_data_structures.mm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = juce_data_structures.mm; path = /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_data_structures/juce_data_structures.mm; sourceTree = "<absolute>"; };
+		C395B542EC9D4E73A6A18A24 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/PluginEditor.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = PluginEditor.cpp; path = Source/PluginEditor.cpp; sourceTree = SOURCE_ROOT; };
+		C97E183AAEB64548B553580F /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_utils/juce_audio_utils.mm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = juce_audio_utils.mm; path = /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_utils/juce_audio_utils.mm; sourceTree = "<absolute>"; };
+		C9E4CF6BB0F44C498B9B8D99 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_basics/juce_audio_basics.mm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = juce_audio_basics.mm; path = /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_basics/juce_audio_basics.mm; sourceTree = "<absolute>"; };
+		CC426C15D5274264A782042A /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_AU_1.mm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = juce_audio_plugin_client_AU_1.mm; path = /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_AU_1.mm; sourceTree = "<absolute>"; };
+		CC7681D34C024A13AB9F2DD8 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_AAX.mm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = juce_audio_plugin_client_AAX.mm; path = /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_AAX.mm; sourceTree = "<absolute>"; };
+		CD74CF89A8074DC1BC47CD18 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/extras/Build/CMake/RecentFilesMenuTemplate.nib */ = {isa = PBXFileReference; explicitFileType = default; fileEncoding = 4; name = RecentFilesMenuTemplate.nib; path = /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/extras/Build/CMake/RecentFilesMenuTemplate.nib; sourceTree = "<absolute>"; };
+		D76FB826FDCA4ACA938CDD1B /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_gui_basics/juce_gui_basics_4.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = juce_gui_basics_4.cpp; path = /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_gui_basics/juce_gui_basics_4.cpp; sourceTree = "<absolute>"; };
+		D8850AE1D7444F92A8642C03 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_VST2.mm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = juce_audio_plugin_client_VST2.mm; path = /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_VST2.mm; sourceTree = "<absolute>"; };
+		EC9504627351474A894DAF5C /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_gui_basics/juce_gui_basics_3.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = juce_gui_basics_3.cpp; path = /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_gui_basics/juce_gui_basics_3.cpp; sourceTree = "<absolute>"; };
+		FA7EE0D0536845868005AEA8 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/CMakeLists.txt */ = {isa = PBXFileReference; explicitFileType = sourcecode.text; fileEncoding = 4; name = CMakeLists.txt; path = CMakeLists.txt; sourceTree = SOURCE_ROOT; };
+		FD41E812B4774A1D82F326F9 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/CMakeLists.txt */ = {isa = PBXFileReference; explicitFileType = sourcecode.text; fileEncoding = 4; name = CMakeLists.txt; path = CMakeLists.txt; sourceTree = SOURCE_ROOT; };
+		FFEF457833AC435BAE7B0D72 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/CMakeLists.txt */ = {isa = PBXFileReference; explicitFileType = sourcecode.text; fileEncoding = 4; name = CMakeLists.txt; path = CMakeLists.txt; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		EB131D887C494B0BBC923B19 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FF9FEF2EAE29497BB559196B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		132ED45E0A744444825E941E /* Header Files */ = {
+			isa = PBXGroup;
+			children = (
+				A2A1EFE60FC249E28607DA09 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/JuceLibraryCode/JuceHeader.h */,
+			);
+			name = "Header Files";
+			sourceTree = "<group>";
+		};
+		144EFB9F9BDA487CA8CAC22D /* DDD1MidiHub_All */ = {
+			isa = PBXGroup;
+			children = (
+				FD41E812B4774A1D82F326F9 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/CMakeLists.txt */,
+			);
+			name = DDD1MidiHub_All;
+			sourceTree = "<group>";
+		};
+		1F4404B4B1A04D61BA89F22D /* CMake Rules */ = {
+			isa = PBXGroup;
+			children = (
+				BB94427507A24C099F1A69ED /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/JuceLibraryCode/DDD1MidiHub_Standalone/PkgInfo.rule */,
+			);
+			name = "CMake Rules";
+			sourceTree = "<group>";
+		};
+		240A24583E63419BAE6112A6 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A10F5B94EA354DDAA73FD3F1 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/CMakeFiles/DDD1MidiHub_Standalone.dir/Info.plist */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		2B00EF1C46874DEEBF3121DE /* CMake Rules */ = {
+			isa = PBXGroup;
+			children = (
+				9F972F7150F44EC6A760AFDA /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/JuceLibraryCode/JuceHeader.h.rule */,
+			);
+			name = "CMake Rules";
+			sourceTree = "<group>";
+		};
+		34CCA5C3BAFE49CBBD004582 /* DDD1MidiHub */ = {
+			isa = PBXGroup;
+			children = (
+				2B00EF1C46874DEEBF3121DE /* CMake Rules */,
+				132ED45E0A744444825E941E /* Header Files */,
+				F052DF243F804C56A0B00310 /* Source Files */,
+				FFEF457833AC435BAE7B0D72 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/CMakeLists.txt */,
+			);
+			name = DDD1MidiHub;
+			sourceTree = "<group>";
+		};
+		36DB10C5D711472DAADC72B7 /* CMake Rules */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "CMake Rules";
+			sourceTree = "<group>";
+		};
+		3B194974381241B5817CC1AF /* ALL_BUILD */ = {
+			isa = PBXGroup;
+			children = (
+				36DB10C5D711472DAADC72B7 /* CMake Rules */,
+				FA7EE0D0536845868005AEA8 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/CMakeLists.txt */,
+			);
+			name = ALL_BUILD;
+			sourceTree = "<group>";
+		};
+		412CB50FF9A44C3A8D11FD73 /* DDD1MidiHub_Standalone */ = {
+			isa = PBXGroup;
+			children = (
+				1F4404B4B1A04D61BA89F22D /* CMake Rules */,
+				240A24583E63419BAE6112A6 /* Resources */,
+				C5078EB1FD794964947A71AD /* Source Files */,
+				CD74CF89A8074DC1BC47CD18 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/extras/Build/CMake/RecentFilesMenuTemplate.nib */,
+				4CE7D0EA2DC44E80A3CD295F /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/CMakeLists.txt */,
+				7D7F7F8310444C9FA1F290F3 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/JuceLibraryCode/DDD1MidiHub_Standalone/PkgInfo */,
+			);
+			name = DDD1MidiHub_Standalone;
+			sourceTree = "<group>";
+		};
+		53F080A14AD3431AA4052951 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		5A3D89E0B4064DA18CAD2043 = {
+			isa = PBXGroup;
+			children = (
+				3B194974381241B5817CC1AF /* ALL_BUILD */,
+				F334BDE1528449279C538357 /* DDD1MidiHub */,
+				752AEDADF66F428D93E2706C /* Products */,
+				F1B22A15CFB54BAA9DBFE7C8 /* Frameworks */,
+				53F080A14AD3431AA4052951 /* Resources */,
+			);
+			sourceTree = "<group>";
+		};
+		752AEDADF66F428D93E2706C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BE5BA0DDC22D44AB9724A7DA /* DDD1MidiHub */,
+				3D6DA69F18C045F591015B42 /* DDD1MidiHub_Standalone */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C5078EB1FD794964947A71AD /* Source Files */ = {
+			isa = PBXGroup;
+			children = (
+				CC7681D34C024A13AB9F2DD8 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_AAX.mm */,
+				648ECDCCF4524572BCBA7DDC /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_AAX_utils.cpp */,
+				306AAB9AD92C48B19ED159A1 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_ARA.cpp */,
+				CC426C15D5274264A782042A /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_AU_1.mm */,
+				7B5251A29B214A89AD04EED2 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_AU_2.mm */,
+				08641C03B3EB4FB18A6B2B58 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_AUv3.mm */,
+				22B394E306304020AA75B6B9 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_LV2.mm */,
+				5A9C4C698DEB4EDD88442012 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_Standalone.cpp */,
+				873A066FA0B34AA0A01F578A /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_Unity.cpp */,
+				D8850AE1D7444F92A8642C03 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_VST2.mm */,
+				3AA42518B941480F8E0D8235 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_VST3.mm */,
+			);
+			name = "Source Files";
+			sourceTree = "<group>";
+		};
+		F052DF243F804C56A0B00310 /* Source Files */ = {
+			isa = PBXGroup;
+			children = (
+				C9E4CF6BB0F44C498B9B8D99 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_basics/juce_audio_basics.mm */,
+				691E54D73D154655ABBCF3A7 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_devices/juce_audio_devices.mm */,
+				A621FE78785B429F8A66699B /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_formats/juce_audio_formats.mm */,
+				7E1EFA3D9BBD402FAF39AA7A /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors/juce_audio_processors.mm */,
+				541695B4369445409CF0E3BA /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/juce_audio_processors_headless.mm */,
+				A240E83664A34E608F601A49 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/juce_audio_processors_headless_ara.cpp */,
+				7992B34D465A4419A5750F13 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/juce_audio_processors_headless_lv2_libs.cpp */,
+				C97E183AAEB64548B553580F /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_utils/juce_audio_utils.mm */,
+				5F0B3A4379DE4D559CB7D933 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_core/juce_core.mm */,
+				5716FD36C3C348268C5C6B22 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_core/juce_core_CompilationTime.cpp */,
+				C096E758774A4C66B6ECB48B /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_data_structures/juce_data_structures.mm */,
+				8B551CA261194619B20E8F1F /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_events/juce_events.mm */,
+				5DBDEC03536149618D80A46B /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_graphics/juce_graphics.mm */,
+				A4BA72AFAB42494790C963F7 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_graphics/juce_graphics_Harfbuzz.cpp */,
+				5764887F6B674AE187503441 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_graphics/juce_graphics_Sheenbidi.c */,
+				BD4C2045C50D4A37A0E6B9D8 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_gui_basics/juce_gui_basics.mm */,
+				B2CE7FC1190A4EC882C839C0 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_gui_basics/juce_gui_basics_2.cpp */,
+				EC9504627351474A894DAF5C /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_gui_basics/juce_gui_basics_3.cpp */,
+				D76FB826FDCA4ACA938CDD1B /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_gui_basics/juce_gui_basics_4.cpp */,
+				06FCE4203BA74A8F8738C33F /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_gui_basics/juce_gui_basics_5.cpp */,
+				0EF0C0D7C19C4D379B37BFB8 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_gui_extra/juce_gui_extra.mm */,
+				AE3089C0EFC94A24817E3670 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/PatternBank.cpp */,
+				A6F6006B224942F0B578C8D0 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/PatternSetBank.cpp */,
+				AABB1122CC3344556677DD88 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/RatingBank.cpp */,
+				EEFF1122CC3344556677AA99 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/RatingBank.h */,
+				AA11BB22CC33DD44EE55FF66 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/PadConfig.h */,
+				BB22CC33DD44EE55FF667788 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/Idea.h */,
+				CC33DD44EE55FF6677889900 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/IdeaBank.h */,
+				DD44EE55FF66778899001122 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/IdeaBank.cpp */,
+				C395B542EC9D4E73A6A18A24 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/PluginEditor.cpp */,
+				0226F0F886FE4AE2AAF7035B /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/PluginProcessor.cpp */,
+			);
+			name = "Source Files";
+			sourceTree = "<group>";
+		};
+		F1B22A15CFB54BAA9DBFE7C8 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F334BDE1528449279C538357 /* DDD1MidiHub */ = {
+			isa = PBXGroup;
+			children = (
+				34CCA5C3BAFE49CBBD004582 /* DDD1MidiHub */,
+				144EFB9F9BDA487CA8CAC22D /* DDD1MidiHub_All */,
+				412CB50FF9A44C3A8D11FD73 /* DDD1MidiHub_Standalone */,
+			);
+			name = DDD1MidiHub;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		B0DE1B13968C5224C779631B /* DDD1MidiHub_Standalone */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DC4238AC494F404883F97C64 /* Build configuration list for PBXNativeTarget "DDD1MidiHub_Standalone" */;
+			buildPhases = (
+				315FE331F8EF58229690CA41 /* Generate DDD1MidiHub_artefacts/JuceLibraryCode/DDD1MidiHub_Standalone/PkgInfo */,
+				3F09D97A3AD94494A1742A72 /* Resources */,
+				0B7431FC780243D78AED08A6 /* Sources */,
+				EB131D887C494B0BBC923B19 /* Frameworks */,
+				E362AEDF3CBD124011B3AAD2 /* CMake PostBuild Rules */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				AA68B4A4B2804EDBBFAF433B /* PBXTargetDependency */,
+				1F01E6714B6F4065BB2E476A /* PBXTargetDependency */,
+			);
+			name = DDD1MidiHub_Standalone;
+			productName = DDD1MidiHub_Standalone;
+			productReference = 3D6DA69F18C045F591015B42 /* DDD1MidiHub_Standalone */;
+			productType = "com.apple.product-type.application";
+		};
+		CF06BD59F301AE0E3589B6CA /* DDD1MidiHub */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 730747C29729483DBF28B924 /* Build configuration list for PBXNativeTarget "DDD1MidiHub" */;
+			buildPhases = (
+				399625D3B148C15657322C30 /* Generate DDD1MidiHub_artefacts/JuceLibraryCode/JuceHeader.h */,
+				8DC2AB9B97554B369476C7C9 /* Sources */,
+				FF9FEF2EAE29497BB559196B /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7353F7EFC69B46D6B5354DBA /* PBXTargetDependency */,
+			);
+			name = DDD1MidiHub;
+			productName = DDD1MidiHub;
+			productReference = BE5BA0DDC22D44AB9724A7DA /* DDD1MidiHub */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		9C74921325C540329EC8E89F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 2650;
+			};
+			buildConfigurationList = 038A80CCF22A412ABC88F34E /* Build configuration list for PBXProject "DDD1MidiHub" */;
+			buildSettings = {
+			};
+			buildStyles = (
+				5A884B7C91384631AE5FA26C /* Debug */,
+				F1F5065AAB8244119DCB31E0 /* Release */,
+				D926498420E34D68B7556700 /* MinSizeRel */,
+				D1A771B9E8D742CE915B31F2 /* RelWithDebInfo */,
+			);
+			compatibilityVersion = "Xcode 3.2";
+			hasScannedForEncodings = 0;
+			mainGroup = 5A3D89E0B4064DA18CAD2043;
+			projectDirPath = /Users/matthieulevet/PycharmProjects/DDD1MidiHub;
+			projectRoot = "";
+			targets = (
+				B74EF1FFD2FF84AF17EC8FD7 /* ALL_BUILD */,
+				CF06BD59F301AE0E3589B6CA /* DDD1MidiHub */,
+				0CE014161444F119BE86F34A /* DDD1MidiHub_All */,
+				B0DE1B13968C5224C779631B /* DDD1MidiHub_Standalone */,
+				61D79C4CCE64E9132D0192C7 /* install */,
+				3F892DE4157D4B498F49B5DA /* ZERO_CHECK */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		0348AD2C08DC49D18EC7B62B /* Generate CMakeFiles/ZERO_CHECK */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Generate CMakeFiles/ZERO_CHECK";
+			outputPaths = (
+/Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/CMakeFiles/ZERO_CHECK			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e
+if test \"$CONFIGURATION\" = \"Debug\"; then :
+  cd /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode
+  make -f /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/CMakeScripts/ReRunCMake.make
+fi
+if test \"$CONFIGURATION\" = \"Release\"; then :
+  cd /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode
+  make -f /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/CMakeScripts/ReRunCMake.make
+fi
+if test \"$CONFIGURATION\" = \"MinSizeRel\"; then :
+  cd /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode
+  make -f /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/CMakeScripts/ReRunCMake.make
+fi
+if test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :
+  cd /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode
+  make -f /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/CMakeScripts/ReRunCMake.make
+fi
+";
+			showEnvVarsInLog = 0;
+		};
+		18B8183BE80C668D84513ECE = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# shell script goes here
+exit 0";
+			showEnvVarsInLog = 0;
+		};
+		315FE331F8EF58229690CA41 /* Generate DDD1MidiHub_artefacts/JuceLibraryCode/DDD1MidiHub_Standalone/PkgInfo */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Generate DDD1MidiHub_artefacts/JuceLibraryCode/DDD1MidiHub_Standalone/PkgInfo";
+			outputPaths = (
+/Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/JuceLibraryCode/DDD1MidiHub_Standalone/PkgInfo			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e
+if test \"$CONFIGURATION\" = \"Debug\"; then :
+  cd /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode
+  /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/JUCE/tools/extras/Build/juceaide/juceaide_artefacts/Custom/juceaide pkginfo \"Standalone Plugin\" /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/JuceLibraryCode/DDD1MidiHub_Standalone/PkgInfo
+fi
+if test \"$CONFIGURATION\" = \"Release\"; then :
+  cd /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode
+  /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/JUCE/tools/extras/Build/juceaide/juceaide_artefacts/Custom/juceaide pkginfo \"Standalone Plugin\" /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/JuceLibraryCode/DDD1MidiHub_Standalone/PkgInfo
+fi
+if test \"$CONFIGURATION\" = \"MinSizeRel\"; then :
+  cd /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode
+  /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/JUCE/tools/extras/Build/juceaide/juceaide_artefacts/Custom/juceaide pkginfo \"Standalone Plugin\" /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/JuceLibraryCode/DDD1MidiHub_Standalone/PkgInfo
+fi
+if test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :
+  cd /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode
+  /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/JUCE/tools/extras/Build/juceaide/juceaide_artefacts/Custom/juceaide pkginfo \"Standalone Plugin\" /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/JuceLibraryCode/DDD1MidiHub_Standalone/PkgInfo
+fi
+";
+			showEnvVarsInLog = 0;
+		};
+		399625D3B148C15657322C30 /* Generate DDD1MidiHub_artefacts/JuceLibraryCode/JuceHeader.h */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+/Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/JuceLibraryCode/Debug/Defs.txt,/Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/JuceLibraryCode/MinSizeRel/Defs.txt,/Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/JuceLibraryCode/RelWithDebInfo/Defs.txt,/Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/JuceLibraryCode/Release/Defs.txt			);
+			name = "Generate DDD1MidiHub_artefacts/JuceLibraryCode/JuceHeader.h";
+			outputPaths = (
+/Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/JuceLibraryCode/JuceHeader.h			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e
+if test \"$CONFIGURATION\" = \"Debug\"; then :
+  cd /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode
+  /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/JUCE/tools/extras/Build/juceaide/juceaide_artefacts/Custom/juceaide header /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/JuceLibraryCode/Debug/Defs.txt /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/JuceLibraryCode/JuceHeader.h
+fi
+if test \"$CONFIGURATION\" = \"Release\"; then :
+  cd /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode
+  /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/JUCE/tools/extras/Build/juceaide/juceaide_artefacts/Custom/juceaide header /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/JuceLibraryCode/Release/Defs.txt /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/JuceLibraryCode/JuceHeader.h
+fi
+if test \"$CONFIGURATION\" = \"MinSizeRel\"; then :
+  cd /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode
+  /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/JUCE/tools/extras/Build/juceaide/juceaide_artefacts/Custom/juceaide header /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/JuceLibraryCode/MinSizeRel/Defs.txt /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/JuceLibraryCode/JuceHeader.h
+fi
+if test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :
+  cd /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode
+  /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/JUCE/tools/extras/Build/juceaide/juceaide_artefacts/Custom/juceaide header /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/JuceLibraryCode/RelWithDebInfo/Defs.txt /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/JuceLibraryCode/JuceHeader.h
+fi
+";
+			showEnvVarsInLog = 0;
+		};
+		3C0110FC8322DE7E50886E21 = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# shell script goes here
+exit 0";
+			showEnvVarsInLog = 0;
+		};
+		87AF4882E018677E2624B544 = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# shell script goes here
+exit 0";
+			showEnvVarsInLog = 0;
+		};
+		93426DA6A4AC2C2AC9CE883C /* CMake PostBuild Rules */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "CMake PostBuild Rules";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e
+if test \"$CONFIGURATION\" = \"Debug\"; then :
+  cd /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode
+  /opt/homebrew/bin/cmake -DBUILD_TYPE=$CONFIGURATION$EFFECTIVE_PLATFORM_NAME -P cmake_install.cmake
+fi
+if test \"$CONFIGURATION\" = \"Release\"; then :
+  cd /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode
+  /opt/homebrew/bin/cmake -DBUILD_TYPE=$CONFIGURATION$EFFECTIVE_PLATFORM_NAME -P cmake_install.cmake
+fi
+if test \"$CONFIGURATION\" = \"MinSizeRel\"; then :
+  cd /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode
+  /opt/homebrew/bin/cmake -DBUILD_TYPE=$CONFIGURATION$EFFECTIVE_PLATFORM_NAME -P cmake_install.cmake
+fi
+if test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :
+  cd /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode
+  /opt/homebrew/bin/cmake -DBUILD_TYPE=$CONFIGURATION$EFFECTIVE_PLATFORM_NAME -P cmake_install.cmake
+fi
+";
+			showEnvVarsInLog = 0;
+		};
+		9B50530E35CC49C82C2FACCF = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# shell script goes here
+exit 0";
+			showEnvVarsInLog = 0;
+		};
+		D792493BB382AB5AE79EE722 /* Generate CMakeFiles/ALL_BUILD */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Generate CMakeFiles/ALL_BUILD";
+			outputPaths = (
+/Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/CMakeFiles/ALL_BUILD			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e
+if test \"$CONFIGURATION\" = \"Debug\"; then :
+  cd /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode
+  echo Build\\ all\\ projects
+fi
+if test \"$CONFIGURATION\" = \"Release\"; then :
+  cd /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode
+  echo Build\\ all\\ projects
+fi
+if test \"$CONFIGURATION\" = \"MinSizeRel\"; then :
+  cd /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode
+  echo Build\\ all\\ projects
+fi
+if test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :
+  cd /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode
+  echo Build\\ all\\ projects
+fi
+";
+			showEnvVarsInLog = 0;
+		};
+		E362AEDF3CBD124011B3AAD2 /* CMake PostBuild Rules */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${PRODUCT_NAME}","${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Info.plist","$(TARGET_BUILD_DIR)/$(EXECUTABLE_PATH)","$(TARGET_BUILD_DIR)/$(INFOPLIST_PATH)"			);
+			name = "CMake PostBuild Rules";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e
+if test \"$CONFIGURATION\" = \"Debug\"; then :
+  cd /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode
+  /opt/homebrew/bin/cmake -E copy /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/JuceLibraryCode/DDD1MidiHub_Standalone/PkgInfo \"/Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/Debug/Standalone/DDD-1 MIDI Hub.app/Contents\"
+fi
+if test \"$CONFIGURATION\" = \"Release\"; then :
+  cd /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode
+  /opt/homebrew/bin/cmake -E copy /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/JuceLibraryCode/DDD1MidiHub_Standalone/PkgInfo \"/Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/Release/Standalone/DDD-1 MIDI Hub.app/Contents\"
+fi
+if test \"$CONFIGURATION\" = \"MinSizeRel\"; then :
+  cd /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode
+  /opt/homebrew/bin/cmake -E copy /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/JuceLibraryCode/DDD1MidiHub_Standalone/PkgInfo \"/Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/MinSizeRel/Standalone/DDD-1 MIDI Hub.app/Contents\"
+fi
+if test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :
+  cd /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode
+  /opt/homebrew/bin/cmake -E copy /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/JuceLibraryCode/DDD1MidiHub_Standalone/PkgInfo \"/Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/RelWithDebInfo/Standalone/DDD-1 MIDI Hub.app/Contents\"
+fi
+";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXResourcesBuildPhase section */
+		3F09D97A3AD94494A1742A72 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				28DD99E8095148658F9BBACB /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/extras/Build/CMake/RecentFilesMenuTemplate.nib */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0B7431FC780243D78AED08A6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3695C302DFB842B9B4EDBE7F /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_AAX.mm */,
+				9C789F01C42544BE935EEC12 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_AAX_utils.cpp */,
+				56B4339D32F84132BD21B88D /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_ARA.cpp */,
+				62DED6DA5EBB4B50984BD3C2 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_AU_1.mm */,
+				D0C5DDDF0F714DE2A256146B /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_AU_2.mm */,
+				D6327A8A76E9485FA585F65D /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_AUv3.mm */,
+				53C2390F3DD94A69A1E56AF3 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_LV2.mm */,
+				8C06ADE16B474BF28A0530BE /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_Standalone.cpp */,
+				C4734367FF774C558C6814EF /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_Unity.cpp */,
+				4AB0734C5665481AA5CD72B5 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_VST2.mm */,
+				5DE6CBDC56EC441D8FDD13DC /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_plugin_client/juce_audio_plugin_client_VST3.mm */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8DC2AB9B97554B369476C7C9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FC86A6C7602B4B03B0FB5800 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_basics/juce_audio_basics.mm */,
+				B1CCF4B7AE474DBF9340CFA5 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_devices/juce_audio_devices.mm */,
+				D4A682C16A2047D4BF3C64A8 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_formats/juce_audio_formats.mm */,
+				C4A66632D533472C9FA6475D /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors/juce_audio_processors.mm */,
+				7B48DE70440C45C39FE65160 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/juce_audio_processors_headless.mm */,
+				BD7392E043104CC3B16E76F2 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/juce_audio_processors_headless_ara.cpp */,
+				285A1C80B0534F4E91D558C8 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/juce_audio_processors_headless_lv2_libs.cpp */,
+				36235CC832514D7DA2C835BE /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_utils/juce_audio_utils.mm */,
+				3BACBE28424D4A03815AB4CE /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_core/juce_core.mm */,
+				780566F5EFF74D03B90B61E6 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_core/juce_core_CompilationTime.cpp */,
+				1433D933261540AFB454C336 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_data_structures/juce_data_structures.mm */,
+				160CDB3023E8480F9894BA3F /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_events/juce_events.mm */,
+				439C33F0D4DB4277B63B1B76 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_graphics/juce_graphics.mm */,
+				749781A7B4154D2793F4FB2B /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_graphics/juce_graphics_Harfbuzz.cpp */,
+				EF4710EB57354CA4897DDAC8 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_graphics/juce_graphics_Sheenbidi.c */,
+				872D408A53634F8591A549C8 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_gui_basics/juce_gui_basics.mm */,
+				130D281420BF43F3A7B37420 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_gui_basics/juce_gui_basics_2.cpp */,
+				BEAC36EFA49E4B94A585CC56 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_gui_basics/juce_gui_basics_3.cpp */,
+				C7C271A0503049C2B2167183 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_gui_basics/juce_gui_basics_4.cpp */,
+				09E5A98F17CC4D0F9FFE68C9 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_gui_basics/juce_gui_basics_5.cpp */,
+				E28BE14F08B5428390CBDAC0 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_gui_extra/juce_gui_extra.mm */,
+				754CAA447B7B4CED8A3D358D /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/PatternBank.cpp */,
+				7968DAA7A8DE4C6BA57D3669 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/PatternSetBank.cpp */,
+				1122AABB3344CC5566EE7788 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/RatingBank.cpp */,
+				FF11AA22BB33CC44DD55EE66 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/IdeaBank.cpp */,
+				F3114AD6C5A340B297E7A0C2 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/PluginEditor.cpp */,
+				925A43408B584BEDB2AEE686 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/PluginProcessor.cpp */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		0BB9D59D3C3040D89AA4EBA0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B74EF1FFD2FF84AF17EC8FD7 /* ALL_BUILD */;
+			targetProxy = 650EB2D425CE47E4B7280D5D /* PBXContainerItemProxy */;
+		};
+		1F01E6714B6F4065BB2E476A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3F892DE4157D4B498F49B5DA /* ZERO_CHECK */;
+			targetProxy = 682C8D08B5144B32B47D1802 /* PBXContainerItemProxy */;
+		};
+		258C7C556116408C80836230 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CF06BD59F301AE0E3589B6CA /* DDD1MidiHub */;
+			targetProxy = 56C8FBE03C924D26A6D4FBF1 /* PBXContainerItemProxy */;
+		};
+		3899D6DA4EDB482087A45A84 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3F892DE4157D4B498F49B5DA /* ZERO_CHECK */;
+			targetProxy = 85FDC05D838B4AB08C3887D2 /* PBXContainerItemProxy */;
+		};
+		52E9DAA0CA9F48FA8FF24254 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3F892DE4157D4B498F49B5DA /* ZERO_CHECK */;
+			targetProxy = EF3DD933E9594E399F29F5DF /* PBXContainerItemProxy */;
+		};
+		7353F7EFC69B46D6B5354DBA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3F892DE4157D4B498F49B5DA /* ZERO_CHECK */;
+			targetProxy = 44D676479F86498C9B9EA6F4 /* PBXContainerItemProxy */;
+		};
+		7F84CBBCD2B04FF48712D2F2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B0DE1B13968C5224C779631B /* DDD1MidiHub_Standalone */;
+			targetProxy = 95D90682F0524F5AB280D49B /* PBXContainerItemProxy */;
+		};
+		82A6838238FC4EEAA7719E60 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B0DE1B13968C5224C779631B /* DDD1MidiHub_Standalone */;
+			targetProxy = 606DBBBB3FF64E3880B924AB /* PBXContainerItemProxy */;
+		};
+		AA68B4A4B2804EDBBFAF433B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CF06BD59F301AE0E3589B6CA /* DDD1MidiHub */;
+			targetProxy = 639B81EE23B642CA8988C113 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		025E82BE0B8A482485BD0CB0 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				CLANG_LINK_OBJC_RUNTIME = NO;
+				CODE_SIGN_ENTITLEMENTS = /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/JuceLibraryCode/DDD1MidiHub_Standalone.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/RelWithDebInfo/Standalone;
+				ENABLE_HARDENED_RUNTIME = FALSE;
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 2;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","'JUCE_GLOBAL_MODULE_SETTINGS_INCLUDED=1'","'NDEBUG=1'","'_NDEBUG=1'","'JucePlugin_IsSynth=0'","'JucePlugin_ManufacturerCode=0x486d4d64'","'JucePlugin_Manufacturer=\"HomeMade\"'","'JucePlugin_ManufacturerWebsite=\"\"'","'JucePlugin_ManufacturerEmail=\"\"'","'JucePlugin_PluginCode=0x446d6831'","'JucePlugin_ProducesMidiOutput=0'","'JucePlugin_IsMidiEffect=0'","'JucePlugin_WantsMidiInput=1'","'JucePlugin_EditorRequiresKeyboardFocus=0'","'JucePlugin_Name=\"DDD-1 MIDI Hub\"'","'JucePlugin_Desc=\"DDD-1 MIDI Hub\"'","'JucePlugin_Version=1.0.0'","'JucePlugin_VersionString=\"1.0.0\"'","'JucePlugin_VersionCode=0x10000'","'JucePlugin_VSTUniqueID=JucePlugin_PluginCode'","'JucePlugin_VSTCategory=kPlugCategEffect'","'JucePlugin_Vst3Category=\"Fx\"'","'JucePlugin_AUMainType='\\''aumf'\\'''","'JucePlugin_AUSubType=JucePlugin_PluginCode'","'JucePlugin_AUExportPrefix=DDD_1_MIDI_HubAU'","'JucePlugin_AUExportPrefixQuoted=\"DDD_1_MIDI_HubAU\"'","'JucePlugin_AUManufacturerCode=JucePlugin_ManufacturerCode'","'JucePlugin_CFBundleIdentifier=com.HomeMade.DDD1MidiHub'","'JucePlugin_AAXIdentifier=com.HomeMade.DDD1MidiHub'","'JucePlugin_AAXManufacturerCode=JucePlugin_ManufacturerCode'","'JucePlugin_AAXProductId=JucePlugin_PluginCode'","'JucePlugin_AAXCategory=0'","'JucePlugin_AAXDisableBypass=0'","'JucePlugin_AAXDisableMultiMono=0'","'JucePlugin_VSTNumMidiInputs=16'","'JucePlugin_VSTNumMidiOutputs=16'","'JucePlugin_Enable_ARA=0'","'JucePlugin_ARAFactoryID=\"com.HomeMade.DDD1MidiHub.arafactory.1.0.0\"'","'JucePlugin_ARADocumentArchiveID=\"com.HomeMade.DDD1MidiHub.aradocumentarchive.1\"'","'JucePlugin_ARACompatibleArchiveIDs=\"\"'","'JucePlugin_ARAContentTypes=0'","'JucePlugin_ARATransformationFlags=0'","'JUCE_WEB_BROWSER=0'","'JUCE_USE_CURL=0'","'JUCE_VST3_CAN_REPLACE_VST2=0'","'JUCE_MODULE_AVAILABLE_juce_audio_plugin_client=1'","'JUCE_MODULE_AVAILABLE_juce_audio_processors=1'","'JUCE_MODULE_AVAILABLE_juce_gui_extra=1'","'JUCE_MODULE_AVAILABLE_juce_gui_basics=1'","'JUCE_MODULE_AVAILABLE_juce_graphics=1'","'JUCE_MODULE_AVAILABLE_juce_events=1'","'JUCE_MODULE_AVAILABLE_juce_core=1'","'JUCE_MODULE_AVAILABLE_juce_data_structures=1'","'JUCE_MODULE_AVAILABLE_juce_audio_processors_headless=1'","'JUCE_MODULE_AVAILABLE_juce_audio_basics=1'","'JUCE_MODULE_AVAILABLE_juce_audio_utils=1'","'JUCE_MODULE_AVAILABLE_juce_audio_formats=1'","'JUCE_MODULE_AVAILABLE_juce_audio_devices=1'","'JUCE_STANDALONE_APPLICATION=JucePlugin_Build_Standalone'","'JucePlugin_Build_AU=0'","'JucePlugin_Build_AUv3=0'","'JucePlugin_Build_AAX=0'","'JucePlugin_Build_LV2=0'","'JucePlugin_Build_Standalone=1'","'JucePlugin_Build_Unity=0'","'JucePlugin_Build_VST=0'","'JucePlugin_Build_VST3=0'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/JuceLibraryCode,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/VST3_SDK,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK/lv2,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK/serd,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK/sord,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK/sord/src,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK/sratom,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK/lilv,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK/lilv/src,"$(inherited)");
+				INFOPLIST_FILE = /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/CMakeFiles/DDD1MidiHub_Standalone.dir/Info.plist;
+				INSTALL_PATH = "$(LOCAL_APPS_DIR)";
+				LD_NO_PIE = NO;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CODE_SIGN_FLAGS = "--timestamp";
+				OTHER_CPLUSPLUSFLAGS = "       -DNDEBUG '-std=gnu++17' -fPIE -fvisibility=hidden -fvisibility-inlines-hidden ";
+				OTHER_LDFLAGS = ("-Xlinker -adhoc_codesign -Wl,-search_paths_first -Wl,-headerpad_max_install_names","\"/Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/RelWithDebInfo/libDDD-1 MIDI Hub_SharedCode.a\"","-framework WebKit","-weak_framework Metal","-weak_framework MetalKit","-framework CoreAudioKit","-framework DiscRecording","-framework QuartzCore","-framework CoreAudio","-framework CoreMIDI","-framework AudioToolbox","-framework Accelerate","-framework Cocoa","-framework Foundation","-framework IOKit","-framework Security","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.HomeMade.DDD1MidiHub;
+				PRODUCT_NAME = "DDD-1 MIDI Hub";
+				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = NO;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGET_TEMP_DIR = "/Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/build/DDD1MidiHub_Standalone.build/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = RelWithDebInfo;
+		};
+		0BC84106C2694A6E92D44F39 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/RelWithDebInfo;
+				EXECUTABLE_PREFIX = lib;
+				EXECUTABLE_SUFFIX = .a;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 2;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","'JucePlugin_Build_AU=0'","'JucePlugin_Build_AUv3=0'","'JucePlugin_Build_AAX=0'","'JucePlugin_Build_LV2=0'","'JucePlugin_Build_Standalone=1'","'JucePlugin_Build_Unity=0'","'JucePlugin_Build_VST=0'","'JucePlugin_Build_VST3=0'","'JUCE_SHARED_CODE=1'","'JUCE_STANDALONE_APPLICATION=JucePlugin_Build_Standalone'","'JucePlugin_IsSynth=0'","'JucePlugin_ManufacturerCode=0x486d4d64'","'JucePlugin_Manufacturer=\"HomeMade\"'","'JucePlugin_ManufacturerWebsite=\"\"'","'JucePlugin_ManufacturerEmail=\"\"'","'JucePlugin_PluginCode=0x446d6831'","'JucePlugin_ProducesMidiOutput=0'","'JucePlugin_IsMidiEffect=0'","'JucePlugin_WantsMidiInput=1'","'JucePlugin_EditorRequiresKeyboardFocus=0'","'JucePlugin_Name=\"DDD-1 MIDI Hub\"'","'JucePlugin_Desc=\"DDD-1 MIDI Hub\"'","'JucePlugin_Version=1.0.0'","'JucePlugin_VersionString=\"1.0.0\"'","'JucePlugin_VersionCode=0x10000'","'JucePlugin_VSTUniqueID=JucePlugin_PluginCode'","'JucePlugin_VSTCategory=kPlugCategEffect'","'JucePlugin_Vst3Category=\"Fx\"'","'JucePlugin_AUMainType='\\''aumf'\\'''","'JucePlugin_AUSubType=JucePlugin_PluginCode'","'JucePlugin_AUExportPrefix=DDD_1_MIDI_HubAU'","'JucePlugin_AUExportPrefixQuoted=\"DDD_1_MIDI_HubAU\"'","'JucePlugin_AUManufacturerCode=JucePlugin_ManufacturerCode'","'JucePlugin_CFBundleIdentifier=com.HomeMade.DDD1MidiHub'","'JucePlugin_AAXIdentifier=com.HomeMade.DDD1MidiHub'","'JucePlugin_AAXManufacturerCode=JucePlugin_ManufacturerCode'","'JucePlugin_AAXProductId=JucePlugin_PluginCode'","'JucePlugin_AAXCategory=0'","'JucePlugin_AAXDisableBypass=0'","'JucePlugin_AAXDisableMultiMono=0'","'JucePlugin_VSTNumMidiInputs=16'","'JucePlugin_VSTNumMidiOutputs=16'","'JucePlugin_Enable_ARA=0'","'JucePlugin_ARAFactoryID=\"com.HomeMade.DDD1MidiHub.arafactory.1.0.0\"'","'JucePlugin_ARADocumentArchiveID=\"com.HomeMade.DDD1MidiHub.aradocumentarchive.1\"'","'JucePlugin_ARACompatibleArchiveIDs=\"\"'","'JucePlugin_ARAContentTypes=0'","'JucePlugin_ARATransformationFlags=0'","'JUCE_WEB_BROWSER=0'","'JUCE_USE_CURL=0'","'JUCE_VST3_CAN_REPLACE_VST2=0'","'JUCE_MODULE_AVAILABLE_juce_audio_plugin_client=1'","'JUCE_MODULE_AVAILABLE_juce_audio_processors=1'","'JUCE_MODULE_AVAILABLE_juce_gui_extra=1'","'JUCE_MODULE_AVAILABLE_juce_gui_basics=1'","'JUCE_MODULE_AVAILABLE_juce_graphics=1'","'JUCE_MODULE_AVAILABLE_juce_events=1'","'JUCE_GLOBAL_MODULE_SETTINGS_INCLUDED=1'","'NDEBUG=1'","'_NDEBUG=1'","'JUCE_MODULE_AVAILABLE_juce_core=1'","'JUCE_MODULE_AVAILABLE_juce_data_structures=1'","'JUCE_MODULE_AVAILABLE_juce_audio_processors_headless=1'","'JUCE_MODULE_AVAILABLE_juce_audio_basics=1'","'JUCE_MODULE_AVAILABLE_juce_audio_utils=1'","'JUCE_MODULE_AVAILABLE_juce_audio_formats=1'","'JUCE_MODULE_AVAILABLE_juce_audio_devices=1'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/JuceLibraryCode,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/VST3_SDK,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK/lv2,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK/serd,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK/sord,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK/sord/src,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK/sratom,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK/lilv,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK/lilv/src,"$(inherited)");
+				INSTALL_PATH = "";
+				LIBRARY_STYLE = STATIC;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CFLAGS = ("       -DNDEBUG -fPIC -fvisibility=hidden ","$(inherited)");
+				OTHER_CPLUSPLUSFLAGS = "       -DNDEBUG '-std=gnu++17' -fPIC -fvisibility=hidden -fvisibility-inlines-hidden ";
+				OTHER_LIBTOOLFLAGS = ("");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = "DDD-1 MIDI Hub_SharedCode";
+				SECTORDER_FLAGS = "";
+				TARGET_TEMP_DIR = "/Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/build/DDD1MidiHub.build/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = RelWithDebInfo;
+		};
+		18D06E311F7545FCA1E0069E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ZERO_CHECK;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Release;
+		};
+		1AC9A1C322B8490EB08D6C6D /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = install;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = RelWithDebInfo;
+		};
+		1CEF949638164D5893041232 /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ALL_BUILD;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = MinSizeRel;
+		};
+		248A868C9D8144888998F89F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/Debug;
+				EXECUTABLE_PREFIX = lib;
+				EXECUTABLE_SUFFIX = .a;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","'JucePlugin_Build_AU=0'","'JucePlugin_Build_AUv3=0'","'JucePlugin_Build_AAX=0'","'JucePlugin_Build_LV2=0'","'JucePlugin_Build_Standalone=1'","'JucePlugin_Build_Unity=0'","'JucePlugin_Build_VST=0'","'JucePlugin_Build_VST3=0'","'JUCE_SHARED_CODE=1'","'JUCE_STANDALONE_APPLICATION=JucePlugin_Build_Standalone'","'JucePlugin_IsSynth=0'","'JucePlugin_ManufacturerCode=0x486d4d64'","'JucePlugin_Manufacturer=\"HomeMade\"'","'JucePlugin_ManufacturerWebsite=\"\"'","'JucePlugin_ManufacturerEmail=\"\"'","'JucePlugin_PluginCode=0x446d6831'","'JucePlugin_ProducesMidiOutput=0'","'JucePlugin_IsMidiEffect=0'","'JucePlugin_WantsMidiInput=1'","'JucePlugin_EditorRequiresKeyboardFocus=0'","'JucePlugin_Name=\"DDD-1 MIDI Hub\"'","'JucePlugin_Desc=\"DDD-1 MIDI Hub\"'","'JucePlugin_Version=1.0.0'","'JucePlugin_VersionString=\"1.0.0\"'","'JucePlugin_VersionCode=0x10000'","'JucePlugin_VSTUniqueID=JucePlugin_PluginCode'","'JucePlugin_VSTCategory=kPlugCategEffect'","'JucePlugin_Vst3Category=\"Fx\"'","'JucePlugin_AUMainType='\\''aumf'\\'''","'JucePlugin_AUSubType=JucePlugin_PluginCode'","'JucePlugin_AUExportPrefix=DDD_1_MIDI_HubAU'","'JucePlugin_AUExportPrefixQuoted=\"DDD_1_MIDI_HubAU\"'","'JucePlugin_AUManufacturerCode=JucePlugin_ManufacturerCode'","'JucePlugin_CFBundleIdentifier=com.HomeMade.DDD1MidiHub'","'JucePlugin_AAXIdentifier=com.HomeMade.DDD1MidiHub'","'JucePlugin_AAXManufacturerCode=JucePlugin_ManufacturerCode'","'JucePlugin_AAXProductId=JucePlugin_PluginCode'","'JucePlugin_AAXCategory=0'","'JucePlugin_AAXDisableBypass=0'","'JucePlugin_AAXDisableMultiMono=0'","'JucePlugin_VSTNumMidiInputs=16'","'JucePlugin_VSTNumMidiOutputs=16'","'JucePlugin_Enable_ARA=0'","'JucePlugin_ARAFactoryID=\"com.HomeMade.DDD1MidiHub.arafactory.1.0.0\"'","'JucePlugin_ARADocumentArchiveID=\"com.HomeMade.DDD1MidiHub.aradocumentarchive.1\"'","'JucePlugin_ARACompatibleArchiveIDs=\"\"'","'JucePlugin_ARAContentTypes=0'","'JucePlugin_ARATransformationFlags=0'","'JUCE_WEB_BROWSER=0'","'JUCE_USE_CURL=0'","'JUCE_VST3_CAN_REPLACE_VST2=0'","'JUCE_MODULE_AVAILABLE_juce_audio_plugin_client=1'","'JUCE_MODULE_AVAILABLE_juce_audio_processors=1'","'JUCE_MODULE_AVAILABLE_juce_gui_extra=1'","'JUCE_MODULE_AVAILABLE_juce_gui_basics=1'","'JUCE_MODULE_AVAILABLE_juce_graphics=1'","'JUCE_MODULE_AVAILABLE_juce_events=1'","'JUCE_GLOBAL_MODULE_SETTINGS_INCLUDED=1'","'DEBUG=1'","'_DEBUG=1'","'JUCE_MODULE_AVAILABLE_juce_core=1'","'JUCE_MODULE_AVAILABLE_juce_data_structures=1'","'JUCE_MODULE_AVAILABLE_juce_audio_processors_headless=1'","'JUCE_MODULE_AVAILABLE_juce_audio_basics=1'","'JUCE_MODULE_AVAILABLE_juce_audio_utils=1'","'JUCE_MODULE_AVAILABLE_juce_audio_formats=1'","'JUCE_MODULE_AVAILABLE_juce_audio_devices=1'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/JuceLibraryCode,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/VST3_SDK,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK/lv2,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK/serd,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK/sord,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK/sord/src,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK/sratom,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK/lilv,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK/lilv/src,"$(inherited)");
+				INSTALL_PATH = "";
+				LIBRARY_STYLE = STATIC;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CFLAGS = ("   -fPIC -fvisibility=hidden ","$(inherited)");
+				OTHER_CPLUSPLUSFLAGS = "   '-std=gnu++17' -fPIC -fvisibility=hidden -fvisibility-inlines-hidden ";
+				OTHER_LIBTOOLFLAGS = ("");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = "DDD-1 MIDI Hub_SharedCode";
+				SECTORDER_FLAGS = "";
+				TARGET_TEMP_DIR = "/Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/build/DDD1MidiHub.build/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Debug;
+		};
+		2629ABEDB4F541B188D269CA /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ZERO_CHECK;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = MinSizeRel;
+		};
+		2BF4639F9BEC4AC59141FA71 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ZERO_CHECK;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = RelWithDebInfo;
+		};
+		321F53B27DDE414BA48464C0 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ALL_BUILD;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = RelWithDebInfo;
+		};
+		34125FBF90D144CB905B4C3F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = install;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Release;
+		};
+		3B649D05FD8A4B55AE064295 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/Release;
+				EXECUTABLE_PREFIX = lib;
+				EXECUTABLE_SUFFIX = .a;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","'JucePlugin_Build_AU=0'","'JucePlugin_Build_AUv3=0'","'JucePlugin_Build_AAX=0'","'JucePlugin_Build_LV2=0'","'JucePlugin_Build_Standalone=1'","'JucePlugin_Build_Unity=0'","'JucePlugin_Build_VST=0'","'JucePlugin_Build_VST3=0'","'JUCE_SHARED_CODE=1'","'JUCE_STANDALONE_APPLICATION=JucePlugin_Build_Standalone'","'JucePlugin_IsSynth=0'","'JucePlugin_ManufacturerCode=0x486d4d64'","'JucePlugin_Manufacturer=\"HomeMade\"'","'JucePlugin_ManufacturerWebsite=\"\"'","'JucePlugin_ManufacturerEmail=\"\"'","'JucePlugin_PluginCode=0x446d6831'","'JucePlugin_ProducesMidiOutput=0'","'JucePlugin_IsMidiEffect=0'","'JucePlugin_WantsMidiInput=1'","'JucePlugin_EditorRequiresKeyboardFocus=0'","'JucePlugin_Name=\"DDD-1 MIDI Hub\"'","'JucePlugin_Desc=\"DDD-1 MIDI Hub\"'","'JucePlugin_Version=1.0.0'","'JucePlugin_VersionString=\"1.0.0\"'","'JucePlugin_VersionCode=0x10000'","'JucePlugin_VSTUniqueID=JucePlugin_PluginCode'","'JucePlugin_VSTCategory=kPlugCategEffect'","'JucePlugin_Vst3Category=\"Fx\"'","'JucePlugin_AUMainType='\\''aumf'\\'''","'JucePlugin_AUSubType=JucePlugin_PluginCode'","'JucePlugin_AUExportPrefix=DDD_1_MIDI_HubAU'","'JucePlugin_AUExportPrefixQuoted=\"DDD_1_MIDI_HubAU\"'","'JucePlugin_AUManufacturerCode=JucePlugin_ManufacturerCode'","'JucePlugin_CFBundleIdentifier=com.HomeMade.DDD1MidiHub'","'JucePlugin_AAXIdentifier=com.HomeMade.DDD1MidiHub'","'JucePlugin_AAXManufacturerCode=JucePlugin_ManufacturerCode'","'JucePlugin_AAXProductId=JucePlugin_PluginCode'","'JucePlugin_AAXCategory=0'","'JucePlugin_AAXDisableBypass=0'","'JucePlugin_AAXDisableMultiMono=0'","'JucePlugin_VSTNumMidiInputs=16'","'JucePlugin_VSTNumMidiOutputs=16'","'JucePlugin_Enable_ARA=0'","'JucePlugin_ARAFactoryID=\"com.HomeMade.DDD1MidiHub.arafactory.1.0.0\"'","'JucePlugin_ARADocumentArchiveID=\"com.HomeMade.DDD1MidiHub.aradocumentarchive.1\"'","'JucePlugin_ARACompatibleArchiveIDs=\"\"'","'JucePlugin_ARAContentTypes=0'","'JucePlugin_ARATransformationFlags=0'","'JUCE_WEB_BROWSER=0'","'JUCE_USE_CURL=0'","'JUCE_VST3_CAN_REPLACE_VST2=0'","'JUCE_MODULE_AVAILABLE_juce_audio_plugin_client=1'","'JUCE_MODULE_AVAILABLE_juce_audio_processors=1'","'JUCE_MODULE_AVAILABLE_juce_gui_extra=1'","'JUCE_MODULE_AVAILABLE_juce_gui_basics=1'","'JUCE_MODULE_AVAILABLE_juce_graphics=1'","'JUCE_MODULE_AVAILABLE_juce_events=1'","'JUCE_GLOBAL_MODULE_SETTINGS_INCLUDED=1'","'NDEBUG=1'","'_NDEBUG=1'","'JUCE_MODULE_AVAILABLE_juce_core=1'","'JUCE_MODULE_AVAILABLE_juce_data_structures=1'","'JUCE_MODULE_AVAILABLE_juce_audio_processors_headless=1'","'JUCE_MODULE_AVAILABLE_juce_audio_basics=1'","'JUCE_MODULE_AVAILABLE_juce_audio_utils=1'","'JUCE_MODULE_AVAILABLE_juce_audio_formats=1'","'JUCE_MODULE_AVAILABLE_juce_audio_devices=1'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/JuceLibraryCode,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/VST3_SDK,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK/lv2,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK/serd,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK/sord,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK/sord/src,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK/sratom,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK/lilv,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK/lilv/src,"$(inherited)");
+				INSTALL_PATH = "";
+				LIBRARY_STYLE = STATIC;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CFLAGS = ("    -DNDEBUG -fPIC -fvisibility=hidden ","$(inherited)");
+				OTHER_CPLUSPLUSFLAGS = "    -DNDEBUG '-std=gnu++17' -fPIC -fvisibility=hidden -fvisibility-inlines-hidden ";
+				OTHER_LIBTOOLFLAGS = ("");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = "DDD-1 MIDI Hub_SharedCode";
+				SECTORDER_FLAGS = "";
+				TARGET_TEMP_DIR = "/Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/build/DDD1MidiHub.build/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Release;
+		};
+		5C0CE25658EC4A31AB495991 /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/MinSizeRel;
+				EXECUTABLE_PREFIX = lib;
+				EXECUTABLE_SUFFIX = .a;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","'JucePlugin_Build_AU=0'","'JucePlugin_Build_AUv3=0'","'JucePlugin_Build_AAX=0'","'JucePlugin_Build_LV2=0'","'JucePlugin_Build_Standalone=1'","'JucePlugin_Build_Unity=0'","'JucePlugin_Build_VST=0'","'JucePlugin_Build_VST3=0'","'JUCE_SHARED_CODE=1'","'JUCE_STANDALONE_APPLICATION=JucePlugin_Build_Standalone'","'JucePlugin_IsSynth=0'","'JucePlugin_ManufacturerCode=0x486d4d64'","'JucePlugin_Manufacturer=\"HomeMade\"'","'JucePlugin_ManufacturerWebsite=\"\"'","'JucePlugin_ManufacturerEmail=\"\"'","'JucePlugin_PluginCode=0x446d6831'","'JucePlugin_ProducesMidiOutput=0'","'JucePlugin_IsMidiEffect=0'","'JucePlugin_WantsMidiInput=1'","'JucePlugin_EditorRequiresKeyboardFocus=0'","'JucePlugin_Name=\"DDD-1 MIDI Hub\"'","'JucePlugin_Desc=\"DDD-1 MIDI Hub\"'","'JucePlugin_Version=1.0.0'","'JucePlugin_VersionString=\"1.0.0\"'","'JucePlugin_VersionCode=0x10000'","'JucePlugin_VSTUniqueID=JucePlugin_PluginCode'","'JucePlugin_VSTCategory=kPlugCategEffect'","'JucePlugin_Vst3Category=\"Fx\"'","'JucePlugin_AUMainType='\\''aumf'\\'''","'JucePlugin_AUSubType=JucePlugin_PluginCode'","'JucePlugin_AUExportPrefix=DDD_1_MIDI_HubAU'","'JucePlugin_AUExportPrefixQuoted=\"DDD_1_MIDI_HubAU\"'","'JucePlugin_AUManufacturerCode=JucePlugin_ManufacturerCode'","'JucePlugin_CFBundleIdentifier=com.HomeMade.DDD1MidiHub'","'JucePlugin_AAXIdentifier=com.HomeMade.DDD1MidiHub'","'JucePlugin_AAXManufacturerCode=JucePlugin_ManufacturerCode'","'JucePlugin_AAXProductId=JucePlugin_PluginCode'","'JucePlugin_AAXCategory=0'","'JucePlugin_AAXDisableBypass=0'","'JucePlugin_AAXDisableMultiMono=0'","'JucePlugin_VSTNumMidiInputs=16'","'JucePlugin_VSTNumMidiOutputs=16'","'JucePlugin_Enable_ARA=0'","'JucePlugin_ARAFactoryID=\"com.HomeMade.DDD1MidiHub.arafactory.1.0.0\"'","'JucePlugin_ARADocumentArchiveID=\"com.HomeMade.DDD1MidiHub.aradocumentarchive.1\"'","'JucePlugin_ARACompatibleArchiveIDs=\"\"'","'JucePlugin_ARAContentTypes=0'","'JucePlugin_ARATransformationFlags=0'","'JUCE_WEB_BROWSER=0'","'JUCE_USE_CURL=0'","'JUCE_VST3_CAN_REPLACE_VST2=0'","'JUCE_MODULE_AVAILABLE_juce_audio_plugin_client=1'","'JUCE_MODULE_AVAILABLE_juce_audio_processors=1'","'JUCE_MODULE_AVAILABLE_juce_gui_extra=1'","'JUCE_MODULE_AVAILABLE_juce_gui_basics=1'","'JUCE_MODULE_AVAILABLE_juce_graphics=1'","'JUCE_MODULE_AVAILABLE_juce_events=1'","'JUCE_GLOBAL_MODULE_SETTINGS_INCLUDED=1'","'NDEBUG=1'","'_NDEBUG=1'","'JUCE_MODULE_AVAILABLE_juce_core=1'","'JUCE_MODULE_AVAILABLE_juce_data_structures=1'","'JUCE_MODULE_AVAILABLE_juce_audio_processors_headless=1'","'JUCE_MODULE_AVAILABLE_juce_audio_basics=1'","'JUCE_MODULE_AVAILABLE_juce_audio_utils=1'","'JUCE_MODULE_AVAILABLE_juce_audio_formats=1'","'JUCE_MODULE_AVAILABLE_juce_audio_devices=1'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/JuceLibraryCode,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/VST3_SDK,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK/lv2,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK/serd,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK/sord,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK/sord/src,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK/sratom,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK/lilv,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK/lilv/src,"$(inherited)");
+				INSTALL_PATH = "";
+				LIBRARY_STYLE = STATIC;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CFLAGS = ("    -DNDEBUG -fPIC -fvisibility=hidden ","$(inherited)");
+				OTHER_CPLUSPLUSFLAGS = "    -DNDEBUG '-std=gnu++17' -fPIC -fvisibility=hidden -fvisibility-inlines-hidden ";
+				OTHER_LIBTOOLFLAGS = ("");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = "DDD-1 MIDI Hub_SharedCode";
+				SECTORDER_FLAGS = "";
+				TARGET_TEMP_DIR = "/Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/build/DDD1MidiHub.build/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = MinSizeRel;
+		};
+		617C861346944A189328F963 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				CLANG_LINK_OBJC_RUNTIME = NO;
+				CODE_SIGN_ENTITLEMENTS = /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/JuceLibraryCode/DDD1MidiHub_Standalone.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/Debug/Standalone;
+				ENABLE_HARDENED_RUNTIME = FALSE;
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","'JUCE_GLOBAL_MODULE_SETTINGS_INCLUDED=1'","'DEBUG=1'","'_DEBUG=1'","'JucePlugin_IsSynth=0'","'JucePlugin_ManufacturerCode=0x486d4d64'","'JucePlugin_Manufacturer=\"HomeMade\"'","'JucePlugin_ManufacturerWebsite=\"\"'","'JucePlugin_ManufacturerEmail=\"\"'","'JucePlugin_PluginCode=0x446d6831'","'JucePlugin_ProducesMidiOutput=0'","'JucePlugin_IsMidiEffect=0'","'JucePlugin_WantsMidiInput=1'","'JucePlugin_EditorRequiresKeyboardFocus=0'","'JucePlugin_Name=\"DDD-1 MIDI Hub\"'","'JucePlugin_Desc=\"DDD-1 MIDI Hub\"'","'JucePlugin_Version=1.0.0'","'JucePlugin_VersionString=\"1.0.0\"'","'JucePlugin_VersionCode=0x10000'","'JucePlugin_VSTUniqueID=JucePlugin_PluginCode'","'JucePlugin_VSTCategory=kPlugCategEffect'","'JucePlugin_Vst3Category=\"Fx\"'","'JucePlugin_AUMainType='\\''aumf'\\'''","'JucePlugin_AUSubType=JucePlugin_PluginCode'","'JucePlugin_AUExportPrefix=DDD_1_MIDI_HubAU'","'JucePlugin_AUExportPrefixQuoted=\"DDD_1_MIDI_HubAU\"'","'JucePlugin_AUManufacturerCode=JucePlugin_ManufacturerCode'","'JucePlugin_CFBundleIdentifier=com.HomeMade.DDD1MidiHub'","'JucePlugin_AAXIdentifier=com.HomeMade.DDD1MidiHub'","'JucePlugin_AAXManufacturerCode=JucePlugin_ManufacturerCode'","'JucePlugin_AAXProductId=JucePlugin_PluginCode'","'JucePlugin_AAXCategory=0'","'JucePlugin_AAXDisableBypass=0'","'JucePlugin_AAXDisableMultiMono=0'","'JucePlugin_VSTNumMidiInputs=16'","'JucePlugin_VSTNumMidiOutputs=16'","'JucePlugin_Enable_ARA=0'","'JucePlugin_ARAFactoryID=\"com.HomeMade.DDD1MidiHub.arafactory.1.0.0\"'","'JucePlugin_ARADocumentArchiveID=\"com.HomeMade.DDD1MidiHub.aradocumentarchive.1\"'","'JucePlugin_ARACompatibleArchiveIDs=\"\"'","'JucePlugin_ARAContentTypes=0'","'JucePlugin_ARATransformationFlags=0'","'JUCE_WEB_BROWSER=0'","'JUCE_USE_CURL=0'","'JUCE_VST3_CAN_REPLACE_VST2=0'","'JUCE_MODULE_AVAILABLE_juce_audio_plugin_client=1'","'JUCE_MODULE_AVAILABLE_juce_audio_processors=1'","'JUCE_MODULE_AVAILABLE_juce_gui_extra=1'","'JUCE_MODULE_AVAILABLE_juce_gui_basics=1'","'JUCE_MODULE_AVAILABLE_juce_graphics=1'","'JUCE_MODULE_AVAILABLE_juce_events=1'","'JUCE_MODULE_AVAILABLE_juce_core=1'","'JUCE_MODULE_AVAILABLE_juce_data_structures=1'","'JUCE_MODULE_AVAILABLE_juce_audio_processors_headless=1'","'JUCE_MODULE_AVAILABLE_juce_audio_basics=1'","'JUCE_MODULE_AVAILABLE_juce_audio_utils=1'","'JUCE_MODULE_AVAILABLE_juce_audio_formats=1'","'JUCE_MODULE_AVAILABLE_juce_audio_devices=1'","'JUCE_STANDALONE_APPLICATION=JucePlugin_Build_Standalone'","'JucePlugin_Build_AU=0'","'JucePlugin_Build_AUv3=0'","'JucePlugin_Build_AAX=0'","'JucePlugin_Build_LV2=0'","'JucePlugin_Build_Standalone=1'","'JucePlugin_Build_Unity=0'","'JucePlugin_Build_VST=0'","'JucePlugin_Build_VST3=0'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/JuceLibraryCode,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/VST3_SDK,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK/lv2,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK/serd,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK/sord,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK/sord/src,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK/sratom,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK/lilv,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK/lilv/src,"$(inherited)");
+				INFOPLIST_FILE = /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/CMakeFiles/DDD1MidiHub_Standalone.dir/Info.plist;
+				INSTALL_PATH = "$(LOCAL_APPS_DIR)";
+				LD_NO_PIE = NO;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CODE_SIGN_FLAGS = "--timestamp";
+				OTHER_CPLUSPLUSFLAGS = "   '-std=gnu++17' -fPIE -fvisibility=hidden -fvisibility-inlines-hidden ";
+				OTHER_LDFLAGS = ("-Xlinker -adhoc_codesign -Wl,-search_paths_first -Wl,-headerpad_max_install_names","\"/Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/Debug/libDDD-1 MIDI Hub_SharedCode.a\"","-framework WebKit","-weak_framework Metal","-weak_framework MetalKit","-framework CoreAudioKit","-framework DiscRecording","-framework QuartzCore","-framework CoreAudio","-framework CoreMIDI","-framework AudioToolbox","-framework Accelerate","-framework Cocoa","-framework Foundation","-framework IOKit","-framework Security","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.HomeMade.DDD1MidiHub;
+				PRODUCT_NAME = "DDD-1 MIDI Hub";
+				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = NO;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGET_TEMP_DIR = "/Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/build/DDD1MidiHub_Standalone.build/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Debug;
+		};
+		84694DC8DE03481D97A8CCB3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = arm64;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				SDKROOT = "";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SYMROOT = /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/build;
+			};
+			name = Release;
+		};
+		8501D07EB8C64D6E8BA2FEE9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = arm64;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				SDKROOT = "";
+				SYMROOT = /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/build;
+			};
+			name = Debug;
+		};
+		8A0FCAD5C71D45ED9EE04891 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ALL_BUILD;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Debug;
+		};
+		8BA478869F674628B3173D42 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = DDD1MidiHub_All;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Debug;
+		};
+		8E168DAACCC44AB7B848F9BD /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = arm64;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				SDKROOT = "";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SYMROOT = /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/build;
+			};
+			name = MinSizeRel;
+		};
+		95254B3E79434C96A8C5E8FA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ZERO_CHECK;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Debug;
+		};
+		9AC6D2DF047D4266B964185C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				CLANG_LINK_OBJC_RUNTIME = NO;
+				CODE_SIGN_ENTITLEMENTS = /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/JuceLibraryCode/DDD1MidiHub_Standalone.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/Release/Standalone;
+				ENABLE_HARDENED_RUNTIME = FALSE;
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","'JUCE_GLOBAL_MODULE_SETTINGS_INCLUDED=1'","'NDEBUG=1'","'_NDEBUG=1'","'JucePlugin_IsSynth=0'","'JucePlugin_ManufacturerCode=0x486d4d64'","'JucePlugin_Manufacturer=\"HomeMade\"'","'JucePlugin_ManufacturerWebsite=\"\"'","'JucePlugin_ManufacturerEmail=\"\"'","'JucePlugin_PluginCode=0x446d6831'","'JucePlugin_ProducesMidiOutput=0'","'JucePlugin_IsMidiEffect=0'","'JucePlugin_WantsMidiInput=1'","'JucePlugin_EditorRequiresKeyboardFocus=0'","'JucePlugin_Name=\"DDD-1 MIDI Hub\"'","'JucePlugin_Desc=\"DDD-1 MIDI Hub\"'","'JucePlugin_Version=1.0.0'","'JucePlugin_VersionString=\"1.0.0\"'","'JucePlugin_VersionCode=0x10000'","'JucePlugin_VSTUniqueID=JucePlugin_PluginCode'","'JucePlugin_VSTCategory=kPlugCategEffect'","'JucePlugin_Vst3Category=\"Fx\"'","'JucePlugin_AUMainType='\\''aumf'\\'''","'JucePlugin_AUSubType=JucePlugin_PluginCode'","'JucePlugin_AUExportPrefix=DDD_1_MIDI_HubAU'","'JucePlugin_AUExportPrefixQuoted=\"DDD_1_MIDI_HubAU\"'","'JucePlugin_AUManufacturerCode=JucePlugin_ManufacturerCode'","'JucePlugin_CFBundleIdentifier=com.HomeMade.DDD1MidiHub'","'JucePlugin_AAXIdentifier=com.HomeMade.DDD1MidiHub'","'JucePlugin_AAXManufacturerCode=JucePlugin_ManufacturerCode'","'JucePlugin_AAXProductId=JucePlugin_PluginCode'","'JucePlugin_AAXCategory=0'","'JucePlugin_AAXDisableBypass=0'","'JucePlugin_AAXDisableMultiMono=0'","'JucePlugin_VSTNumMidiInputs=16'","'JucePlugin_VSTNumMidiOutputs=16'","'JucePlugin_Enable_ARA=0'","'JucePlugin_ARAFactoryID=\"com.HomeMade.DDD1MidiHub.arafactory.1.0.0\"'","'JucePlugin_ARADocumentArchiveID=\"com.HomeMade.DDD1MidiHub.aradocumentarchive.1\"'","'JucePlugin_ARACompatibleArchiveIDs=\"\"'","'JucePlugin_ARAContentTypes=0'","'JucePlugin_ARATransformationFlags=0'","'JUCE_WEB_BROWSER=0'","'JUCE_USE_CURL=0'","'JUCE_VST3_CAN_REPLACE_VST2=0'","'JUCE_MODULE_AVAILABLE_juce_audio_plugin_client=1'","'JUCE_MODULE_AVAILABLE_juce_audio_processors=1'","'JUCE_MODULE_AVAILABLE_juce_gui_extra=1'","'JUCE_MODULE_AVAILABLE_juce_gui_basics=1'","'JUCE_MODULE_AVAILABLE_juce_graphics=1'","'JUCE_MODULE_AVAILABLE_juce_events=1'","'JUCE_MODULE_AVAILABLE_juce_core=1'","'JUCE_MODULE_AVAILABLE_juce_data_structures=1'","'JUCE_MODULE_AVAILABLE_juce_audio_processors_headless=1'","'JUCE_MODULE_AVAILABLE_juce_audio_basics=1'","'JUCE_MODULE_AVAILABLE_juce_audio_utils=1'","'JUCE_MODULE_AVAILABLE_juce_audio_formats=1'","'JUCE_MODULE_AVAILABLE_juce_audio_devices=1'","'JUCE_STANDALONE_APPLICATION=JucePlugin_Build_Standalone'","'JucePlugin_Build_AU=0'","'JucePlugin_Build_AUv3=0'","'JucePlugin_Build_AAX=0'","'JucePlugin_Build_LV2=0'","'JucePlugin_Build_Standalone=1'","'JucePlugin_Build_Unity=0'","'JucePlugin_Build_VST=0'","'JucePlugin_Build_VST3=0'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/JuceLibraryCode,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/VST3_SDK,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK/lv2,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK/serd,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK/sord,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK/sord/src,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK/sratom,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK/lilv,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK/lilv/src,"$(inherited)");
+				INFOPLIST_FILE = /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/CMakeFiles/DDD1MidiHub_Standalone.dir/Info.plist;
+				INSTALL_PATH = "$(LOCAL_APPS_DIR)";
+				LD_NO_PIE = NO;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CODE_SIGN_FLAGS = "--timestamp";
+				OTHER_CPLUSPLUSFLAGS = "    -DNDEBUG '-std=gnu++17' -fPIE -fvisibility=hidden -fvisibility-inlines-hidden ";
+				OTHER_LDFLAGS = ("-Xlinker -adhoc_codesign -Wl,-search_paths_first -Wl,-headerpad_max_install_names","\"/Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/Release/libDDD-1 MIDI Hub_SharedCode.a\"","-framework WebKit","-weak_framework Metal","-weak_framework MetalKit","-framework CoreAudioKit","-framework DiscRecording","-framework QuartzCore","-framework CoreAudio","-framework CoreMIDI","-framework AudioToolbox","-framework Accelerate","-framework Cocoa","-framework Foundation","-framework IOKit","-framework Security","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.HomeMade.DDD1MidiHub;
+				PRODUCT_NAME = "DDD-1 MIDI Hub";
+				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = NO;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGET_TEMP_DIR = "/Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/build/DDD1MidiHub_Standalone.build/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Release;
+		};
+		A251C3C6FD6340F1829FAF1C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = DDD1MidiHub_All;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Release;
+		};
+		A53761C8EAA84286AA0B5DA7 /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = install;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = MinSizeRel;
+		};
+		C04BC21D4ABC490C9A29F752 /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = DDD1MidiHub_All;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = MinSizeRel;
+		};
+		C28621C2C1BF4C81AD61E5B7 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = arm64;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				SDKROOT = "";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SYMROOT = /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/build;
+			};
+			name = RelWithDebInfo;
+		};
+		DAFCB3BCB6994C74B962E45D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = install;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Debug;
+		};
+		DB9C4392E16F49BB8C85689F /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				CLANG_LINK_OBJC_RUNTIME = NO;
+				CODE_SIGN_ENTITLEMENTS = /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/JuceLibraryCode/DDD1MidiHub_Standalone.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/MinSizeRel/Standalone;
+				ENABLE_HARDENED_RUNTIME = FALSE;
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","'JUCE_GLOBAL_MODULE_SETTINGS_INCLUDED=1'","'NDEBUG=1'","'_NDEBUG=1'","'JucePlugin_IsSynth=0'","'JucePlugin_ManufacturerCode=0x486d4d64'","'JucePlugin_Manufacturer=\"HomeMade\"'","'JucePlugin_ManufacturerWebsite=\"\"'","'JucePlugin_ManufacturerEmail=\"\"'","'JucePlugin_PluginCode=0x446d6831'","'JucePlugin_ProducesMidiOutput=0'","'JucePlugin_IsMidiEffect=0'","'JucePlugin_WantsMidiInput=1'","'JucePlugin_EditorRequiresKeyboardFocus=0'","'JucePlugin_Name=\"DDD-1 MIDI Hub\"'","'JucePlugin_Desc=\"DDD-1 MIDI Hub\"'","'JucePlugin_Version=1.0.0'","'JucePlugin_VersionString=\"1.0.0\"'","'JucePlugin_VersionCode=0x10000'","'JucePlugin_VSTUniqueID=JucePlugin_PluginCode'","'JucePlugin_VSTCategory=kPlugCategEffect'","'JucePlugin_Vst3Category=\"Fx\"'","'JucePlugin_AUMainType='\\''aumf'\\'''","'JucePlugin_AUSubType=JucePlugin_PluginCode'","'JucePlugin_AUExportPrefix=DDD_1_MIDI_HubAU'","'JucePlugin_AUExportPrefixQuoted=\"DDD_1_MIDI_HubAU\"'","'JucePlugin_AUManufacturerCode=JucePlugin_ManufacturerCode'","'JucePlugin_CFBundleIdentifier=com.HomeMade.DDD1MidiHub'","'JucePlugin_AAXIdentifier=com.HomeMade.DDD1MidiHub'","'JucePlugin_AAXManufacturerCode=JucePlugin_ManufacturerCode'","'JucePlugin_AAXProductId=JucePlugin_PluginCode'","'JucePlugin_AAXCategory=0'","'JucePlugin_AAXDisableBypass=0'","'JucePlugin_AAXDisableMultiMono=0'","'JucePlugin_VSTNumMidiInputs=16'","'JucePlugin_VSTNumMidiOutputs=16'","'JucePlugin_Enable_ARA=0'","'JucePlugin_ARAFactoryID=\"com.HomeMade.DDD1MidiHub.arafactory.1.0.0\"'","'JucePlugin_ARADocumentArchiveID=\"com.HomeMade.DDD1MidiHub.aradocumentarchive.1\"'","'JucePlugin_ARACompatibleArchiveIDs=\"\"'","'JucePlugin_ARAContentTypes=0'","'JucePlugin_ARATransformationFlags=0'","'JUCE_WEB_BROWSER=0'","'JUCE_USE_CURL=0'","'JUCE_VST3_CAN_REPLACE_VST2=0'","'JUCE_MODULE_AVAILABLE_juce_audio_plugin_client=1'","'JUCE_MODULE_AVAILABLE_juce_audio_processors=1'","'JUCE_MODULE_AVAILABLE_juce_gui_extra=1'","'JUCE_MODULE_AVAILABLE_juce_gui_basics=1'","'JUCE_MODULE_AVAILABLE_juce_graphics=1'","'JUCE_MODULE_AVAILABLE_juce_events=1'","'JUCE_MODULE_AVAILABLE_juce_core=1'","'JUCE_MODULE_AVAILABLE_juce_data_structures=1'","'JUCE_MODULE_AVAILABLE_juce_audio_processors_headless=1'","'JUCE_MODULE_AVAILABLE_juce_audio_basics=1'","'JUCE_MODULE_AVAILABLE_juce_audio_utils=1'","'JUCE_MODULE_AVAILABLE_juce_audio_formats=1'","'JUCE_MODULE_AVAILABLE_juce_audio_devices=1'","'JUCE_STANDALONE_APPLICATION=JucePlugin_Build_Standalone'","'JucePlugin_Build_AU=0'","'JucePlugin_Build_AUv3=0'","'JucePlugin_Build_AAX=0'","'JucePlugin_Build_LV2=0'","'JucePlugin_Build_Standalone=1'","'JucePlugin_Build_Unity=0'","'JucePlugin_Build_VST=0'","'JucePlugin_Build_VST3=0'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/JuceLibraryCode,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/VST3_SDK,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK/lv2,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK/serd,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK/sord,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK/sord/src,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK/sratom,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK/lilv,/Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_audio_processors_headless/format_types/LV2_SDK/lilv/src,"$(inherited)");
+				INFOPLIST_FILE = /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/CMakeFiles/DDD1MidiHub_Standalone.dir/Info.plist;
+				INSTALL_PATH = "$(LOCAL_APPS_DIR)";
+				LD_NO_PIE = NO;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CODE_SIGN_FLAGS = "--timestamp";
+				OTHER_CPLUSPLUSFLAGS = "    -DNDEBUG '-std=gnu++17' -fPIE -fvisibility=hidden -fvisibility-inlines-hidden ";
+				OTHER_LDFLAGS = ("-Xlinker -adhoc_codesign -Wl,-search_paths_first -Wl,-headerpad_max_install_names","\"/Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/MinSizeRel/libDDD-1 MIDI Hub_SharedCode.a\"","-framework WebKit","-weak_framework Metal","-weak_framework MetalKit","-framework CoreAudioKit","-framework DiscRecording","-framework QuartzCore","-framework CoreAudio","-framework CoreMIDI","-framework AudioToolbox","-framework Accelerate","-framework Cocoa","-framework Foundation","-framework IOKit","-framework Security","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.HomeMade.DDD1MidiHub;
+				PRODUCT_NAME = "DDD-1 MIDI Hub";
+				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = NO;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGET_TEMP_DIR = "/Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/build/DDD1MidiHub_Standalone.build/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = MinSizeRel;
+		};
+		E4AAE77C259049ABB1208F7E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ALL_BUILD;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Release;
+		};
+		FF5E7626DE1945E1AC6FA242 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = DDD1MidiHub_All;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = RelWithDebInfo;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		038A80CCF22A412ABC88F34E /* Build configuration list for PBXProject "DDD1MidiHub" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8501D07EB8C64D6E8BA2FEE9 /* Debug */,
+				84694DC8DE03481D97A8CCB3 /* Release */,
+				8E168DAACCC44AB7B848F9BD /* MinSizeRel */,
+				C28621C2C1BF4C81AD61E5B7 /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		07B5E4BE62474F76BF20D47C /* Build configuration list for PBXAggregateTarget "DDD1MidiHub_All" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8BA478869F674628B3173D42 /* Debug */,
+				A251C3C6FD6340F1829FAF1C /* Release */,
+				C04BC21D4ABC490C9A29F752 /* MinSizeRel */,
+				FF5E7626DE1945E1AC6FA242 /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		438C1BF4440649299C38653C /* Build configuration list for PBXAggregateTarget "ZERO_CHECK" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				95254B3E79434C96A8C5E8FA /* Debug */,
+				18D06E311F7545FCA1E0069E /* Release */,
+				2629ABEDB4F541B188D269CA /* MinSizeRel */,
+				2BF4639F9BEC4AC59141FA71 /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		47F7EFE88DAD406BAC46326A /* Build configuration list for PBXAggregateTarget "ALL_BUILD" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8A0FCAD5C71D45ED9EE04891 /* Debug */,
+				E4AAE77C259049ABB1208F7E /* Release */,
+				1CEF949638164D5893041232 /* MinSizeRel */,
+				321F53B27DDE414BA48464C0 /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		730747C29729483DBF28B924 /* Build configuration list for PBXNativeTarget "DDD1MidiHub" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				248A868C9D8144888998F89F /* Debug */,
+				3B649D05FD8A4B55AE064295 /* Release */,
+				5C0CE25658EC4A31AB495991 /* MinSizeRel */,
+				0BC84106C2694A6E92D44F39 /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		B8C0440C655C44F18DB72C89 /* Build configuration list for PBXAggregateTarget "install" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DAFCB3BCB6994C74B962E45D /* Debug */,
+				34125FBF90D144CB905B4C3F /* Release */,
+				A53761C8EAA84286AA0B5DA7 /* MinSizeRel */,
+				1AC9A1C322B8490EB08D6C6D /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		DC4238AC494F404883F97C64 /* Build configuration list for PBXNativeTarget "DDD1MidiHub_Standalone" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				617C861346944A189328F963 /* Debug */,
+				9AC6D2DF047D4266B964185C /* Release */,
+				DB9C4392E16F49BB8C85689F /* MinSizeRel */,
+				025E82BE0B8A482485BD0CB0 /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 9C74921325C540329EC8E89F /* Project object */;
+}
