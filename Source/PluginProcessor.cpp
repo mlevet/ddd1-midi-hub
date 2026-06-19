@@ -1173,6 +1173,9 @@ void DDD1HubProcessor::savePatternSetBank()
 void DDD1HubProcessor::applyPatternSet (const PatternSet& s)
 {
     juce::ScopedLock lk (patternBankLock);
+    // Transactional: clear previous scene assignments before loading new one
+    for (int i = 0; i < numPads; ++i)
+        pads[i].selectedPatternId = {};
     for (const auto& a : s.assignments)
     {
         if (a.padIndex < 0 || a.padIndex >= numPads) continue;
