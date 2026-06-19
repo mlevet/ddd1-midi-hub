@@ -157,11 +157,24 @@ private:
     };
     std::unique_ptr<SetsListModel> setsListModel;
 
+    struct IdeasListModel : public juce::ListBoxModel
+    {
+        DDD1HubEditor& owner;
+        explicit IdeasListModel (DDD1HubEditor& o) : owner (o) {}
+        int  getNumRows () override;
+        void paintListBoxItem (int row, juce::Graphics& g, int w, int h, bool sel) override;
+        void listBoxItemClicked (int row, const juce::MouseEvent&) override;
+    };
+    std::unique_ptr<IdeasListModel> ideasListModel;
+
     juce::Label      setsHdrLbl;
     juce::ListBox    setsListBox;
+    juce::ListBox    ideasListBox;
     juce::TextButton setsSaveSceneBtn {"Save Scene"};
     juce::TextButton setsResetBtn     {"Reset All"};
     juce::TextButton setsRefreshBtn   {"\xe2\x86\xba"};
+    juce::TextButton saveIdeaBtn      {"Save Idea"};
+    juce::TextButton ideasTabBtn      {"Ideas"};
     juce::Label      setsGenreLbl;
     juce::ComboBox   setsGenreBox;
     juce::Label      setsSourceLbl;
@@ -176,8 +189,11 @@ private:
     int              setsTypeFilter  = 0;
     // 0 = all, 1 = favorites, 2 = unrated, 3 = skipped
     int              setsStateFilter = 0;
+    bool             showIdeas       = false;
     void rebuildGenreBoxes();
     void rebuildSourceBox();
+    void rebuildIdeasList ();
+    void updateScenesMode ();
 
     // Capture toggle — sits before pad buttons, red = all pads in PatternBank+overdub
     juce::TextButton captureToggleBtn {""};

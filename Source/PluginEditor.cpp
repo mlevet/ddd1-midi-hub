@@ -561,6 +561,14 @@ DDD1HubEditor::DDD1HubEditor (DDD1HubProcessor& p)
     setsListBox.setOutlineThickness (1);
     addAndMakeVisible (setsListBox);
 
+    ideasListModel = std::make_unique<IdeasListModel> (*this);
+    ideasListBox.setModel (ideasListModel.get());
+    ideasListBox.setColour (juce::ListBox::backgroundColourId, col::bg);
+    ideasListBox.setColour (juce::ListBox::outlineColourId,    col::muted);
+    ideasListBox.setRowHeight (22);
+    ideasListBox.setOutlineThickness (1);
+    addAndMakeVisible (ideasListBox);
+
     addLbl (setsGenreLbl, "Genre:");
     addCombo (setsGenreBox, { "All" }, [this] { rebuildSetsList(); });
 
@@ -657,6 +665,49 @@ DDD1HubEditor::DDD1HubEditor (DDD1HubProcessor& p)
 
     styleBtn (setsRefreshBtn);
     setsRefreshBtn.onClick = [this] { rebuildSetsList(); };
+
+    styleBtn (saveIdeaBtn);
+    saveIdeaBtn.onClick = [this]
+    {
+        auto* aw = new juce::AlertWindow ("Save Idea", "Idea name:", juce::AlertWindow::NoIcon);
+        aw->addTextEditor ("name", "Untitled Idea");
+        aw->addButton ("Save",   1);
+        aw->addButton ("Cancel", 0);
+        struct Cb : public juce::ModalComponentManager::Callback
+        {
+            DDD1HubEditor& ed;
+            juce::AlertWindow* win;
+            Cb (DDD1HubEditor& e, juce::AlertWindow* w) : ed (e), win (w) {}
+            void modalStateFinished (int result) override
+            {
+                if (result == 1)
+                {
+                    auto name = win->getTextEditorContents ("name");
+                    if (name.isNotEmpty())
+                    {
+                        auto idea = ed.proc.captureCurrentIdea (name);
+                        ed.proc.saveIdea (idea);
+                        ed.rebuildIdeasList();
+                    }
+                }
+                delete win;
+            }
+        };
+        aw->enterModalState (true, new Cb (*this, aw), false);
+    };
+    addAndMakeVisible (saveIdeaBtn);
+
+    styleBtn (ideasTabBtn);
+    ideasTabBtn.setClickingTogglesState (true);
+    ideasTabBtn.onClick = [this]
+    {
+        showIdeas = ideasTabBtn.getToggleState();
+        if (showIdeas) rebuildIdeasList();
+        updateScenesMode();
+    };
+    addAndMakeVisible (ideasTabBtn);
+
+    updateScenesMode();
 
     styleBtn (captureToggleBtn);
     captureToggleBtn.onClick = [this]
@@ -1609,6 +1660,75 @@ void DDD1HubEditor::applySetEntry (int idx)
     repaint();
 }
 
+// ── Ideas list ────────────────────────────────────────────────────────────────
+
+int DDD1HubEditor::IdeasListModel::getNumRows()
+{
+    return (int)owner.proc.ideaBank.getAll().size();
+}
+
+void DDD1HubEditor::IdeasListModel::paintListBoxItem (int row, juce::Graphics& g, int w, int h, bool selected)
+{
+    const auto& ideas = owner.proc.ideaBank.getAll();
+    if (row < 0 || row >= (int)ideas.size()) return;
+    const auto& idea = ideas[(size_t)row];
+
+    if (selected)
+        g.fillAll (col::accent.withAlpha (0.25f));
+
+    g.setColour (col::text);
+    g.drawText (idea.name, 8, 0, w - 70, h, juce::Justification::centredLeft, true);
+
+    // Show origin type as dim label on the right
+    if (idea.origin.type.isNotEmpty())
+    {
+        g.setColour (col::muted);
+        g.drawText (idea.origin.type, w - 66, 0, 60, h, juce::Justification::centredRight, true);
+    }
+}
+
+void DDD1HubEditor::IdeasListModel::listBoxItemClicked (int row, const juce::MouseEvent&)
+{
+    const auto& ideas = owner.proc.ideaBank.getAll();
+    if (row < 0 || row >= (int)ideas.size()) return;
+    owner.proc.loadIdea (ideas[(size_t)row].id);
+    owner.loadPadConfig();
+    owner.refreshPadColors();
+    owner.repaint();
+}
+
+void DDD1HubEditor::rebuildIdeasList()
+{
+    ideasListBox.updateContent();
+    ideasListBox.repaint();
+}
+
+void DDD1HubEditor::updateScenesMode()
+{
+    bool sets = !showIdeas;
+
+    // Sets-mode widgets
+    setsRefreshBtn .setVisible (sets);
+    setsSaveSceneBtn.setVisible (sets);
+    setsResetBtn   .setVisible (sets);
+    setsGenreLbl   .setVisible (sets);
+    setsGenreBox   .setVisible (sets);
+    setsSourceLbl  .setVisible (sets);
+    setsSourceBox  .setVisible (sets);
+    setsFillBtn    .setVisible (sets);
+    setsGrooveBtn  .setVisible (sets);
+    setsAllBtn     .setVisible (sets);
+    setsFavBtn     .setVisible (sets);
+    setsUnratedBtn .setVisible (sets);
+    setsSkipBtn    .setVisible (sets);
+    setsListBox    .setVisible (sets);
+
+    // Ideas-mode widgets
+    ideasListBox.setVisible (showIdeas);
+
+    ideasTabBtn.setToggleState (showIdeas, juce::dontSendNotification);
+}
+
 // ── GroupTableModel ───────────────────────────────────────────────────────────
 
 int DDD1HubEditor::GroupTableModel::getNumRows()
@@ -2143,8 +2263,10 @@ void DDD1HubEditor::resized()
     setsSaveSceneBtn.setBounds(M + 94,   398, 84, 20);
     setsResetBtn.setBounds    (M + 184,  398, 72, 20);
     patternBankLoadBtn.setBounds (M + 268, 398, 90,  20);
-    // Row 1: header + save/reset/load
-    // Row 2 (y=420): genre + source + fill/groove toggles
+    saveIdeaBtn.setBounds     (M + 370,  398, 80, 20);
+    ideasTabBtn.setBounds     (M + 456,  398, 52, 20);
+    // Row 1: header + save/reset/load + save idea + ideas toggle
+    // Row 2 (y=420): genre + source + fill/groove + state (sets mode only)
     setsGenreLbl.setBounds    (M,        420, 36,  20);
     setsGenreBox.setBounds    (M + 38,   420, 120, 20);
     setsSourceLbl.setBounds   (M + 168,  420, 44,  20);
@@ -2155,7 +2277,11 @@ void DDD1HubEditor::resized()
     setsFavBtn.setBounds      (M + 462,  420, 34,  20);
     setsUnratedBtn.setBounds  (M + 500,  420, 54,  20);
     setsSkipBtn.setBounds     (M + 558,  420, 52,  20);
-    setsListBox.setBounds     (M,        444, W - 2 * M, bz - 6 - 444);
+    {
+        auto listBounds = juce::Rectangle<int> (M, 444, W - 2 * M, bz - 6 - 444);
+        setsListBox.setBounds  (listBounds);
+        ideasListBox.setBounds (listBounds);
+    }
 
     // ── Bottom zone ───────────────────────────────────────────────────────────
     globalLengthLbl.setBounds (M,       bz + 4, 52, 22);
