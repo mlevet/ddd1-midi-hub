@@ -233,31 +233,44 @@ factory/
   badness/      122 patterns
   bardet/     1,117 patterns
   roland/       659 patterns
-imported/           ← gitignored (150 MB, regenerable)
+imported/           ← gitignored (regenerable)
   midi_archive/
-    funk/     1,059 patterns
-    jazz/       562 patterns
-    blues/      428 patterns
-    electronic/ 3,012 patterns
-    rock/      46,075 patterns  ← too large, needs style split
-    world/     18,498 patterns  ← too large, needs style split
-    latin/      489 patterns
-    … 13 genres total, 70,830 patterns
+    rock/
+      rock/       8,145 patterns
+      metal/      3,804 patterns
+      shuffle/    1,001 patterns
+      indie_rock/ 5,649 patterns
+      hard_rock/  2,829 patterns
+      … (14 rock sub-styles)
+    electronic/
+      electronic_dance/  17,066 patterns
+      progressive/          464 patterns
+      house/                394 patterns
+      … (7 electronic sub-styles)
+    world/
+      world/      1,495 patterns
+      africa/       791 patterns
+      asia/         708 patterns
+      middle_east/  311 patterns
+      acoustic/     226 patterns
+    blues/, jazz/, funk/, latin/, pop/, dance/, disco/, reggae/, rnb/, ska/
+    … 51 total files across 13 genres, 15,113 imported patterns
 registry/
-  import_registry.json  (SHA-256 dedup, 18,819 entries)
+  import_registry.json  (SHA-256 dedup, ~15k entries)
 user/
   patterns.json, pattern_sets.json, ratings.json  (user's working files)
 ```
 
 ### Scripts
 
-- `import_midi.py` — imports 800k MIDI archive; skips SD2 (425k, single-instrument) and GM pack (360k); SHA-256 dedup; GM note map 35-81 → canonical instrument names; outputs per-genre `patterns.json`
+- `import_midi.py` — imports 800k MIDI archive; skips SD2 (425k) and GM pack (360k, with --skip-gm); SHA-256 dedup; deepest-match genre/style extraction; outputs `genre/style/patterns.json` two-level structure; coverage field tracks unknown notes
+- Run command: `python3 import_midi.py "/path/to/archive" --skip-gm`
 - `reorganize.py` — one-time migration that created the factory/ structure
 
 ### Open issues in database
 
-1. `rock/` (86 MB) and `world/` (51 MB) are too large for practical loading. Fix: use `genre/style/` two-level folder so rock splits into rock/shuffle/, rock/linear/, rock/vintage/ etc.
-2. Superior Drummer 2 (425k files, single-instrument per file) skipped — needs a separate grouping pass to reconstruct multi-part patterns.
+1. Superior Drummer 2 (425k files, single-instrument per file) skipped — needs a separate grouping pass to reconstruct multi-part patterns.
+2. GM MIDI Pack (360k files of full arrangements) always excluded with --skip-gm — not a drum pattern library.
 
 ---
 
@@ -272,7 +285,8 @@ user/
 
 `PatternBank::loadDirectory(root)` walks:
 - `root/factory/*/patterns.json`
-- `root/imported/midi_archive/*/patterns.json`
+- `root/imported/midi_archive/<genre>/patterns.json` (flat, for any legacy flat files)
+- `root/imported/midi_archive/<genre>/<style>/patterns.json` (two-level, current structure)
 - `root/user/patterns.json`
 
 `filter()` checks `p.genre` and `p.style` directly (not only `p.styles[]`).
@@ -299,9 +313,16 @@ Instrument list includes: kick, snare, rimshot, clap, closed_hihat, open_hihat, 
 
 ---
 
-## Open plan: 4 UI bugs (from plan file)
+## UI bugs status (plan file)
 
-1. Playhead off by one step
-2. Stop doesn't silence last note
-3. Tune not visible in grid cell
-4. Pattern list back in top panel (single-click assignment)
+1. Playhead off by one step — FIXED: `patternPlayingStep` set at exact fire moment; editor uses `proc.getPatternStep(selectedPad)` with `proc.transportRunning` guard
+2. Stop doesn't silence last note — FIXED: explicit noteOff loop in MidiStop handler before state reset
+3. Tune not visible in grid cell — PARTIAL: green dot shown when tune≠0; toggle gridViewBtn ("Vel"/"Tune") to switch to full tune bar view
+4. Pattern list back in top panel — DONE: `patternListBox` + genre/style/instr filters are in top panel; BottomZoneState has no Browse state
+
+## RhythmPattern coverage field
+
+`float coverage = 1.0f` — fraction of note_on events that mapped to known GM instruments.
+- World percussion folders: all 100% coverage (GM notes 60-81)
+- Patterns with coverage < 1.0 get `coverage_XXpct` tag
+- World sub-folder names (djembe_set, darabuka_set) added as tags for instrument identity
