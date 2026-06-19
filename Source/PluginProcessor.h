@@ -2,6 +2,7 @@
 #include <JuceHeader.h>
 #include "PatternBank.h"
 #include "PatternSetBank.h"
+#include "RatingBank.h"
 
 enum class PadMode { PassThrough = 0, Keyboard = 1, Arpeggiator = 2, PatternBank = 3, GroupedTrigs = 4 };
 
@@ -151,6 +152,10 @@ public:
     void applyPatternSet (const PatternSet& s);
     void resetAllPatternAssignments ();
     PatternSet captureCurrentPatternSet () const;
+
+    RatingBank ratingBank;
+    void loadRatings ();
+    void saveRatings ();
 
     // ── Global params ────────────────────────────────────────────────────────
     juce::AudioProcessorValueTreeState apvts;

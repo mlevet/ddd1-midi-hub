@@ -567,8 +567,10 @@ DDD1HubEditor::DDD1HubEditor (DDD1HubProcessor& p)
 
     styleBtn (setsFillBtn);
     styleBtn (setsGrooveBtn);
+    styleBtn (showHiddenBtn);
     addAndMakeVisible (setsFillBtn);
     addAndMakeVisible (setsGrooveBtn);
+    addAndMakeVisible (showHiddenBtn);
     setsFillBtn.onClick = [this] {
         setsTypeFilter = (setsTypeFilter == 2) ? 0 : 2;
         if (setsTypeFilter == 2) setsGrooveBtn.setToggleState (false, juce::dontSendNotification);
@@ -579,6 +581,11 @@ DDD1HubEditor::DDD1HubEditor (DDD1HubProcessor& p)
         setsTypeFilter = (setsTypeFilter == 1) ? 0 : 1;
         if (setsTypeFilter == 1) setsFillBtn.setToggleState (false, juce::dontSendNotification);
         setsGrooveBtn.setToggleState (setsTypeFilter == 1, juce::dontSendNotification);
+        rebuildSetsList();
+    };
+    showHiddenBtn.setClickingTogglesState (true);
+    showHiddenBtn.onClick = [this] {
+        showHidden = showHiddenBtn.getToggleState();
         rebuildSetsList();
     };
 
@@ -1418,33 +1425,88 @@ void DDD1HubEditor::SetsListModel::paintListBoxItem (int row, juce::Graphics& g,
 {
     if (row < 0 || row >= (int)owner.setsEntries.size()) return;
     const auto& e = owner.setsEntries[(size_t)row];
+    auto rating  = owner.proc.ratingBank.get (e.groupId);
 
-    if (sel)            g.fillAll (col::accent.withAlpha (0.3f));
-    else if (row % 2)   g.fillAll (col::bg);
-    else                g.fillAll (col::panel);
+    if (sel)          g.fillAll (col::accent.withAlpha (0.3f));
+    else if (row % 2) g.fillAll (col::bg);
+    else              g.fillAll (col::panel);
+
+    // Zones (right → left): skip 20px | stars 50px (5×10) | name fills rest
+    const int skipW  = 20;
+    const int starW  = 50;
+    const int rightW = skipW + starW;   // 70
+
+    int nameX = 8;
+    int nameW = w - rightW - nameX - 4;
 
     g.setFont (12.f);
-    if (e.isAuto)
+
+    if (!e.isAuto)
     {
-        // right side: source tag
-        g.setColour (col::muted);
-        g.drawText (e.source, w - 90, 0, 82, h, juce::Justification::centredRight, true);
-        g.setColour (col::text);
-        g.drawText (e.name, 8, 0, w - 100, h, juce::Justification::centredLeft, true);
-    }
-    else
-    {
+        // Saved scene indicator
         g.setColour (col::green);
         g.drawText ("\xe2\x98\x85", 4, 0, 14, h, juce::Justification::centred);
-        g.setColour (col::text);
-        g.drawText (e.name, 20, 0, w - 28, h, juce::Justification::centredLeft, true);
+        nameX = 20;
+        nameW = w - rightW - nameX - 4;
     }
+
+    auto textCol = rating.hidden ? col::muted : col::text;
+    g.setColour (textCol);
+    g.drawText (e.name, nameX, 0, nameW, h, juce::Justification::centredLeft, true);
+
+    // Stars: 5 × 10px starting at w - rightW
+    int starsX = w - rightW;
+    for (int i = 0; i < 5; ++i)
+    {
+        bool filled = (i < rating.stars);
+        g.setColour (filled ? juce::Colour (0xFFD4A017) : col::muted);
+        g.drawText (filled ? "\xe2\x98\x85" : "\xe2\x98\x86",
+                    starsX + i * 10, 0, 10, h, juce::Justification::centred);
+    }
+
+    // Skip "×" button — lit red if already hidden
+    g.setColour (rating.hidden ? col::accent : col::muted);
+    g.drawText ("\xc3\x97", w - skipW, 0, skipW, h, juce::Justification::centred);
 }
 
 void DDD1HubEditor::SetsListModel::listBoxItemDoubleClicked (int, const juce::MouseEvent&) {}
 
-void DDD1HubEditor::SetsListModel::listBoxItemClicked (int row, const juce::MouseEvent&)
+void DDD1HubEditor::SetsListModel::listBoxItemClicked (int row, const juce::MouseEvent& me)
 {
+    if (row < 0 || row >= (int)owner.setsEntries.size()) return;
+    const auto& e = owner.setsEntries[(size_t)row];
+    const int w = owner.setsListBox.getWidth();
+
+    const int skipW = 20;
+    const int starW = 50;
+
+    // Skip "×" zone
+    if (me.x >= w - skipW)
+    {
+        bool curHidden = owner.proc.ratingBank.isHidden (e.groupId);
+        owner.proc.ratingBank.setHidden (e.groupId, !curHidden);
+        owner.proc.saveRatings();
+        if (!owner.showHidden)
+            owner.rebuildSetsList();   // entry disappears when hidden
+        else
+            owner.setsListBox.repaint();
+        return;
+    }
+
+    // Stars zone: 5 × 10px starting at w - skipW - starW
+    if (me.x >= w - skipW - starW)
+    {
+        int starIdx = juce::jlimit (0, 4, (me.x - (w - skipW - starW)) / 10);
+        int newStar = starIdx + 1;
+        if (owner.proc.ratingBank.get (e.groupId).stars == newStar)
+            newStar = 0;   // click same star → unrate
+        owner.proc.ratingBank.setStars (e.groupId, newStar);
+        owner.proc.saveRatings();
+        owner.setsListBox.repaint();
+        return;
+    }
+
+    // Name zone → apply scene
     owner.applySetEntry (row);
 }
 
@@ -1460,10 +1522,11 @@ void DDD1HubEditor::rebuildSetsList()
         juce::ScopedLock lk (proc.patternSetBankLock);
         const auto& all = proc.patternSetBank.getAll();
         for (int i = 0; i < (int)all.size(); ++i)
-            setsEntries.push_back ({ false, i, all[(size_t)i].name, all[(size_t)i].style });
+            setsEntries.push_back ({ false, i, all[(size_t)i].name, all[(size_t)i].style, "",
+                                     all[(size_t)i].id });
     }
 
-    // Auto-sets filtered by genre, source, fill/groove
+    // Auto-sets filtered by genre, source, fill/groove, hidden
     int noteReceive[DDD1HubProcessor::numPads];
     for (int i = 0; i < DDD1HubProcessor::numPads; ++i)
         noteReceive[i] = proc.pads[i].noteReceive;
@@ -1476,7 +1539,8 @@ void DDD1HubEditor::rebuildSetsList()
         if (!source.isEmpty() && s.source != source)  continue;
         if (setsTypeFilter == 1 &&  s.isFill) continue; // groove only
         if (setsTypeFilter == 2 && !s.isFill) continue; // fill only
-        setsEntries.push_back ({ true, autoBase + i, s.name, s.style, s.source });
+        if (!showHidden && proc.ratingBank.isHidden (s.id)) continue;
+        setsEntries.push_back ({ true, autoBase + i, s.name, s.style, s.source, s.id });
     }
 
     setsListBox.updateContent();
@@ -2044,6 +2108,7 @@ void DDD1HubEditor::resized()
     setsSaveSceneBtn.setBounds(M + 94,   398, 84, 20);
     setsResetBtn.setBounds    (M + 184,  398, 72, 20);
     patternBankLoadBtn.setBounds (M + 268, 398, 90,  20);
+    showHiddenBtn.setBounds      (M + 368, 398, 100, 20);
     // Row 1: header + save/reset/load
     // Row 2 (y=420): genre + source + fill/groove toggles
     setsGenreLbl.setBounds    (M,        420, 36,  20);

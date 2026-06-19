@@ -60,6 +60,8 @@ DDD1HubProcessor::DDD1HubProcessor()
         juce::File::userApplicationDataDirectory)
         .getChildFile ("DDD1MidiHub/patternsets.json").getFullPathName();
     patternSetBank.load (juce::File (patternSetBankFilePath));
+
+    loadRatings();
 }
 
 DDD1HubProcessor::~DDD1HubProcessor()
@@ -1159,6 +1161,19 @@ void DDD1HubProcessor::applyPatternSet (const PatternSet& s)
             pads[a.padIndex].mode = PadMode::PatternBank;
     }
 }
+
+// ── Rating Bank ──────────────────────────────────────────────────────────────
+
+static juce::File ratingsFile()
+{
+    return juce::File::getSpecialLocation (juce::File::userApplicationDataDirectory)
+               .getChildFile ("DDD1MidiHub/ratings.json");
+}
+
+void DDD1HubProcessor::loadRatings()  { ratingBank.load (ratingsFile()); }
+void DDD1HubProcessor::saveRatings()  { ratingBank.save (ratingsFile()); }
+
+// ─────────────────────────────────────────────────────────────────────────────
 
 void DDD1HubProcessor::resetAllPatternAssignments()
 {

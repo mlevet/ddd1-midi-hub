@@ -166,10 +166,12 @@ private:
     juce::ComboBox   setsGenreBox;
     juce::Label      setsSourceLbl;
     juce::ComboBox   setsSourceBox;
-    juce::TextButton setsFillBtn   {"Fill"};
-    juce::TextButton setsGrooveBtn {"Groove"};
+    juce::TextButton setsFillBtn      {"Fill"};
+    juce::TextButton setsGrooveBtn    {"Groove"};
+    juce::TextButton showHiddenBtn    {"Show Hidden"};
     // 0 = all, 1 = groove only, 2 = fill only
     int              setsTypeFilter = 0;
+    bool             showHidden     = false;
     void rebuildGenreBoxes();
     void rebuildSourceBox();
 
@@ -178,7 +180,7 @@ private:
     bool captureActive = false;
     void updateCaptureToggle();
 
-    struct SceneEntry { bool isAuto; int idx; juce::String name; juce::String style; juce::String source; };
+    struct SceneEntry { bool isAuto; int idx; juce::String name; juce::String style; juce::String source; juce::String groupId; };
     std::vector<SceneEntry> setsEntries;
     void rebuildSetsList();
     void applySetEntry (int entryIdx);
