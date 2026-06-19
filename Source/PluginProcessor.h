@@ -56,7 +56,9 @@ public:
     // ── Status / data readable by editor ─────────────────────────────────────
     bool  clockSyncActive  = false;
     bool  transportRunning = false;
-    bool  captureActive    = false;
+    bool  captureActive       = false;
+    std::array<PadConfig, numPads> preRecordPadConfigs {};
+    bool  recordSnapshotValid = false;
     float detectedBpm      = 120.f;
 
     // Global pattern position (readable by editor for playhead / recording)

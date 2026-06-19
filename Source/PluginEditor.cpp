@@ -716,10 +716,14 @@ DDD1HubEditor::DDD1HubEditor (DDD1HubProcessor& p)
         proc.captureActive = captureActive;
         if (captureActive)
         {
-            // Steps = bars × 16 (1/16 grid) so 4 bars → 64 steps, no early overwrite
+            // Snapshot all pad configs before overwriting — restored when Record turns off
+            proc.recordSnapshotValid = true;
+            for (int i = 0; i < DDD1HubProcessor::numPads; ++i)
+                proc.preRecordPadConfigs[i] = proc.pads[i];
+
+            // Steps = bars × 16 (1/16 grid) so 4 bars → 64 steps
             int numSteps = proc.patternLengthBars * 16;
             proc.patternTotalSteps = numSteps;
-            // Sync steps combobox (1→16, 2→32, 3→64)
             int stepsId = (numSteps <= 16) ? 1 : (numSteps <= 32) ? 2 : 3;
             globalStepsBox.setSelectedId (stepsId, juce::dontSendNotification);
 
@@ -727,7 +731,7 @@ DDD1HubEditor::DDD1HubEditor (DDD1HubProcessor& p)
             {
                 proc.pads[i].mode              = PadMode::PatternBank;
                 proc.pads[i].overdubEnabled    = true;
-                proc.pads[i].patternResolution = 1;  // force 1/16 to match numSteps calculation
+                proc.pads[i].patternResolution = 1;
                 juce::String liveId = "__live_" + juce::String (i) + "__";
                 RhythmPattern live;
                 live.id    = liveId;
@@ -738,9 +742,19 @@ DDD1HubEditor::DDD1HubEditor (DDD1HubProcessor& p)
         }
         else
         {
-            // Stop capture: keep PatternBank mode + patterns, just stop overdub and start playback
-            for (int i = 0; i < DDD1HubProcessor::numPads; ++i)
-                proc.pads[i].overdubEnabled = false;
+            // Restore pre-record pad configs: modes, KB/Arp/Grouped settings all come back.
+            // Captured patterns remain in patternBank. Overdub is off because snapshot had it off.
+            if (proc.recordSnapshotValid)
+            {
+                for (int i = 0; i < DDD1HubProcessor::numPads; ++i)
+                    proc.pads[i] = proc.preRecordPadConfigs[i];
+                proc.recordSnapshotValid = false;
+            }
+            else
+            {
+                for (int i = 0; i < DDD1HubProcessor::numPads; ++i)
+                    proc.pads[i].overdubEnabled = false;
+            }
         }
         updateCaptureToggle();
         loadPadConfig();
