@@ -1445,9 +1445,9 @@ void DDD1HubEditor::SetsListModel::paintListBoxItem (int row, juce::Graphics& g,
 
     if (!e.isAuto)
     {
-        // Saved scene indicator
+        // Saved scene indicator — green filled diamond
         g.setColour (col::green);
-        g.drawText ("\xe2\x98\x85", 4, 0, 14, h, juce::Justification::centred);
+        g.fillEllipse (6.f, (float)(h / 2 - 4), 8.f, 8.f);
         nameX = 20;
         nameW = w - rightW - nameX - 4;
     }
@@ -1456,19 +1456,32 @@ void DDD1HubEditor::SetsListModel::paintListBoxItem (int row, juce::Graphics& g,
     g.setColour (textCol);
     g.drawText (e.name, nameX, 0, nameW, h, juce::Justification::centredLeft, true);
 
-    // Stars: 5 × 10px starting at w - rightW
-    int starsX = w - rightW;
+    // Stars: 5 small squares, 7×7px each, 10px pitch, vertically centred
+    const int starSize = 7;
+    const int starY    = (h - starSize) / 2;
+    int starsX = w - rightW + 1;
     for (int i = 0; i < 5; ++i)
     {
-        bool filled = (i < rating.stars);
-        g.setColour (filled ? juce::Colour (0xFFD4A017) : col::muted);
-        g.drawText (filled ? "\xe2\x98\x85" : "\xe2\x98\x86",
-                    starsX + i * 10, 0, 10, h, juce::Justification::centred);
+        int sx = starsX + i * 10 + 1;
+        if (i < rating.stars)
+        {
+            g.setColour (juce::Colour (0xFFD4A017));   // gold — rated
+            g.fillRect (sx, starY, starSize, starSize);
+        }
+        else
+        {
+            g.setColour (col::muted.withAlpha (0.5f));
+            g.drawRect (sx, starY, starSize, starSize, 1);
+        }
     }
 
-    // Skip "×" button — lit red if already hidden
-    g.setColour (rating.hidden ? col::accent : col::muted);
-    g.drawText ("\xc3\x97", w - skipW, 0, skipW, h, juce::Justification::centred);
+    // Skip button: small "x" drawn as two diagonal lines
+    const int xCx = w - skipW / 2;
+    const int xCy = h / 2;
+    const int xR  = 4;
+    g.setColour (rating.hidden ? col::accent : col::muted.withAlpha (0.6f));
+    g.drawLine ((float)(xCx - xR), (float)(xCy - xR), (float)(xCx + xR), (float)(xCy + xR), 1.5f);
+    g.drawLine ((float)(xCx + xR), (float)(xCy - xR), (float)(xCx - xR), (float)(xCy + xR), 1.5f);
 }
 
 void DDD1HubEditor::SetsListModel::listBoxItemDoubleClicked (int, const juce::MouseEvent&) {}
