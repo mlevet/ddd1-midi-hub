@@ -569,11 +569,13 @@ DDD1HubEditor::DDD1HubEditor (DDD1HubProcessor& p)
 
     styleBtn (setsFillBtn);
     styleBtn (setsGrooveBtn);
+    styleBtn (setsAllBtn);
     styleBtn (setsFavBtn);
     styleBtn (setsUnratedBtn);
     styleBtn (setsSkipBtn);
     addAndMakeVisible (setsFillBtn);
     addAndMakeVisible (setsGrooveBtn);
+    addAndMakeVisible (setsAllBtn);
     addAndMakeVisible (setsFavBtn);
     addAndMakeVisible (setsUnratedBtn);
     addAndMakeVisible (setsSkipBtn);
@@ -593,14 +595,17 @@ DDD1HubEditor::DDD1HubEditor (DDD1HubProcessor& p)
 
     auto setStateFilter = [this](int s) {
         setsStateFilter = s;
+        setsAllBtn    .setToggleState (s == 0, juce::dontSendNotification);
         setsFavBtn    .setToggleState (s == 1, juce::dontSendNotification);
         setsUnratedBtn.setToggleState (s == 2, juce::dontSendNotification);
         setsSkipBtn   .setToggleState (s == 3, juce::dontSendNotification);
         rebuildSetsList();
     };
+    setsAllBtn    .onClick = [this, setStateFilter] { setStateFilter (0); };
     setsFavBtn    .onClick = [this, setStateFilter] { setStateFilter (setsStateFilter == 1 ? 0 : 1); };
     setsUnratedBtn.onClick = [this, setStateFilter] { setStateFilter (setsStateFilter == 2 ? 0 : 2); };
     setsSkipBtn   .onClick = [this, setStateFilter] { setStateFilter (setsStateFilter == 3 ? 0 : 3); };
+    setsAllBtn.setToggleState (true, juce::dontSendNotification);
 
     styleBtn (setsSaveSceneBtn);
     setsSaveSceneBtn.onClick = [this]
@@ -1469,22 +1474,17 @@ void DDD1HubEditor::SetsListModel::paintListBoxItem (int row, juce::Graphics& g,
     g.setColour (isSkip ? col::muted.withAlpha (0.5f) : col::text);
     g.drawText (e.name, nameX, 0, nameW, h, juce::Justification::centredLeft, true);
 
-    // ★ Favourite button (centre of favW zone)
-    auto drawStar = [&](float cx, float cy, float outerR, float innerR, bool filled)
+    // Heart favourite button (centre of favW zone)
+    auto drawHeart = [&](float cx, float cy, float r, bool filled)
     {
         juce::Path p;
-        for (int pt = 0; pt < 5; ++pt)
-        {
-            float oa = juce::MathConstants<float>::twoPi * pt / 5.0f
-                       - juce::MathConstants<float>::halfPi;
-            float ia = oa + juce::MathConstants<float>::twoPi / 10.0f;
-            float ox = cx + outerR * std::cos (oa);
-            float oy = cy + outerR * std::sin (oa);
-            float ix = cx + innerR * std::cos (ia);
-            float iy = cy + innerR * std::sin (ia);
-            if (pt == 0) p.startNewSubPath (ox, oy); else p.lineTo (ox, oy);
-            p.lineTo (ix, iy);
-        }
+        p.startNewSubPath (cx, cy + r);
+        p.cubicTo (cx - r * 1.4f, cy + r * 0.4f,
+                   cx - r * 1.4f, cy - r * 0.7f,
+                   cx,            cy - r * 0.1f);
+        p.cubicTo (cx + r * 1.4f, cy - r * 0.7f,
+                   cx + r * 1.4f, cy + r * 0.4f,
+                   cx,            cy + r);
         p.closeSubPath();
         if (filled) g.fillPath (p);
         else        g.strokePath (p, juce::PathStrokeType (0.8f));
@@ -1492,8 +1492,8 @@ void DDD1HubEditor::SetsListModel::paintListBoxItem (int row, juce::Graphics& g,
 
     float cy  = (float)h * 0.5f;
     float favCx = (float)(w - skipW - favW / 2);
-    g.setColour (isFav ? juce::Colour (0xFFD4A017) : col::muted.withAlpha (0.4f));
-    drawStar (favCx, cy, 5.0f, 5.0f * 0.45f, isFav);
+    g.setColour (isFav ? juce::Colour (0xFFAA44EE) : col::muted.withAlpha (0.4f));
+    drawHeart (favCx, cy, 5.0f, isFav);
 
     // × Skip button
     float xCx = (float)(w - skipW / 2);
@@ -2151,9 +2151,10 @@ void DDD1HubEditor::resized()
     setsSourceBox.setBounds   (M + 214,  420, 90,  20);
     setsFillBtn.setBounds     (M + 314,  420, 44,  20);
     setsGrooveBtn.setBounds   (M + 362,  420, 58,  20);
-    setsFavBtn.setBounds      (M + 428,  420, 38,  20);
-    setsUnratedBtn.setBounds  (M + 470,  420, 58,  20);
-    setsSkipBtn.setBounds     (M + 532,  420, 58,  20);
+    setsAllBtn.setBounds      (M + 428,  420, 30,  20);
+    setsFavBtn.setBounds      (M + 462,  420, 34,  20);
+    setsUnratedBtn.setBounds  (M + 500,  420, 54,  20);
+    setsSkipBtn.setBounds     (M + 558,  420, 52,  20);
     setsListBox.setBounds     (M,        444, W - 2 * M, bz - 6 - 444);
 
     // ── Bottom zone ───────────────────────────────────────────────────────────

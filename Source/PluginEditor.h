@@ -168,6 +168,7 @@ private:
     juce::ComboBox   setsSourceBox;
     juce::TextButton setsFillBtn      {"Fill"};
     juce::TextButton setsGrooveBtn    {"Groove"};
+    juce::TextButton setsAllBtn       {"All"};
     juce::TextButton setsFavBtn       {"Fav"};
     juce::TextButton setsUnratedBtn   {"Unrated"};
     juce::TextButton setsSkipBtn      {"Skipped"};
