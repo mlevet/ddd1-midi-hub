@@ -978,10 +978,14 @@ void DDD1HubEditor::rebuildStyleBox()
         juce::ScopedLock lk (proc.patternBankLock);
         for (const auto& pat : proc.patternBank.getAll())
         {
-            if (selectedGenre.isNotEmpty() && (pat.styles.size() == 0 || pat.styles[0] != selectedGenre))
+            juce::String g = pat.genre.isNotEmpty() ? pat.genre
+                           : (pat.styles.size() > 0 ? pat.styles[0] : "");
+            if (selectedGenre.isNotEmpty() && g != selectedGenre)
                 continue;
-            for (int i = 1; i < pat.styles.size(); ++i)  // styles[1] = specific style
-                if (!styles.contains (pat.styles[i])) styles.add (pat.styles[i]);
+            juce::String s = pat.style.isNotEmpty() ? pat.style
+                           : (pat.styles.size() > 1 ? pat.styles[1] : "");
+            if (s.isNotEmpty() && s != g && !styles.contains (s))
+                styles.add (s);
         }
     }
     styles.sort (false);

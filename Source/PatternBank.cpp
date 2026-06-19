@@ -176,6 +176,7 @@ void PatternBank::appendFromFile (std::vector<RhythmPattern>& out, const juce::F
         p.group      = obj->getProperty ("group").toString();
         p.genre      = obj->getProperty ("genre").toString();
         p.style      = obj->getProperty ("style").toString();
+        p.coverage   = obj->hasProperty ("coverage") ? (float)(double)obj->getProperty ("coverage") : 1.0f;
 
         if (p.source.isEmpty()) p.source = extractSource (p.id);
         if (p.group.isEmpty() && p.instrument.isNotEmpty())
@@ -228,11 +229,20 @@ void PatternBank::loadDirectory (const juce::File& root)
         for (auto& sub : factory.findChildFiles (juce::File::findDirectories, false, "*"))
             appendFromFile (patterns, sub.getChildFile ("patterns.json"));
 
-    // imported/midi_archive/<genre>/patterns.json
+    // imported/midi_archive/<genre>/<style>/patterns.json  (two-level, new structure)
+    // Also handles <genre>/patterns.json for any flat files that still exist
     auto imported = root.getChildFile ("imported").getChildFile ("midi_archive");
     if (imported.isDirectory())
-        for (auto& sub : imported.findChildFiles (juce::File::findDirectories, false, "*"))
-            appendFromFile (patterns, sub.getChildFile ("patterns.json"));
+    {
+        for (auto& genreDir : imported.findChildFiles (juce::File::findDirectories, false, "*"))
+        {
+            // Flat file at genre level (legacy / single-style genres)
+            appendFromFile (patterns, genreDir.getChildFile ("patterns.json"));
+            // Two-level: genre/style/patterns.json
+            for (auto& styleDir : genreDir.findChildFiles (juce::File::findDirectories, false, "*"))
+                appendFromFile (patterns, styleDir.getChildFile ("patterns.json"));
+        }
+    }
 
     // user/patterns.json
     appendFromFile (patterns, root.getChildFile ("user").getChildFile ("patterns.json"));

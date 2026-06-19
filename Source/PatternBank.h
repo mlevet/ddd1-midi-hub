@@ -22,6 +22,7 @@ struct RhythmPattern
     int                      resolution = 1;
     juce::String             notes;
     juce::String             hash;
+    float                    coverage = 1.0f;
 
     bool isFill() const
     {
