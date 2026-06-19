@@ -6,10 +6,11 @@
 
 struct IdeaOrigin
 {
-    juce::String type;         // "library" | "scratch" | "capture"
+    juce::String type;         // "library" | "scratch" | "capture" | "idea"
     juce::String source;       // e.g. "allen", "bardet" — empty for scratch/capture
-    juce::String parentGroup;  // library group key — empty for scratch/capture
-    juce::String parentName;   // human-readable parent name — empty for scratch/capture
+    juce::String parentGroup;  // library group key — for type=="library"
+    juce::String parentName;   // human-readable parent name — for type=="library"
+    juce::String parentIdeaId; // source Idea ID — for type=="idea" (Save As from existing Idea)
 };
 
 struct Idea

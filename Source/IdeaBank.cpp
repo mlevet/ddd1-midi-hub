@@ -237,20 +237,22 @@ static PatternSet patternSetFromVar (const juce::var& v)
 static juce::var ideaOriginToVar (const IdeaOrigin& o)
 {
     auto obj = std::make_unique<juce::DynamicObject>();
-    obj->setProperty ("type",         o.type);
-    obj->setProperty ("source",       o.source);
-    obj->setProperty ("parent_group", o.parentGroup);
-    obj->setProperty ("parent_name",  o.parentName);
+    obj->setProperty ("type",           o.type);
+    obj->setProperty ("source",         o.source);
+    obj->setProperty ("parent_group",   o.parentGroup);
+    obj->setProperty ("parent_name",    o.parentName);
+    obj->setProperty ("parent_idea_id", o.parentIdeaId);
     return juce::var (obj.release());
 }
 
 static IdeaOrigin ideaOriginFromVar (const juce::var& v)
 {
     IdeaOrigin o;
-    o.type        = v.getProperty ("type",         "scratch").toString();
-    o.source      = v.getProperty ("source",       "").toString();
-    o.parentGroup = v.getProperty ("parent_group", "").toString();
-    o.parentName  = v.getProperty ("parent_name",  "").toString();
+    o.type         = v.getProperty ("type",           "scratch").toString();
+    o.source       = v.getProperty ("source",         "").toString();
+    o.parentGroup  = v.getProperty ("parent_group",   "").toString();
+    o.parentName   = v.getProperty ("parent_name",    "").toString();
+    o.parentIdeaId = v.getProperty ("parent_idea_id", "").toString();
     return o;
 }
 

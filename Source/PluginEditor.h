@@ -173,7 +173,8 @@ private:
     juce::TextButton setsSaveSceneBtn {"Save Scene"};
     juce::TextButton setsResetBtn     {"Reset All"};
     juce::TextButton setsRefreshBtn   {"\xe2\x86\xba"};
-    juce::TextButton saveIdeaBtn      {"Save Idea"};
+    juce::TextButton saveIdeaBtn      {"Save"};
+    juce::TextButton saveAsIdeaBtn    {"Save As"};
     juce::TextButton ideasTabBtn      {"Ideas"};
     juce::Label      setsGenreLbl;
     juce::ComboBox   setsGenreBox;
@@ -190,10 +191,14 @@ private:
     // 0 = all, 1 = favorites, 2 = unrated, 3 = skipped
     int              setsStateFilter = 0;
     bool             showIdeas       = false;
+    juce::String     currentIdeaId;
     void rebuildGenreBoxes();
     void rebuildSourceBox();
     void rebuildIdeasList ();
     void updateScenesMode ();
+    void updateIdeaButtons ();
+    void renameIdea (const juce::String& id, const juce::String& currentName);
+    void deleteIdea (const juce::String& id);
 
     // Capture toggle — sits before pad buttons, red = all pads in PatternBank+overdub
     juce::TextButton captureToggleBtn {""};

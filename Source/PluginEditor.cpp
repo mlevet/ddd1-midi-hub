@@ -666,18 +666,52 @@ DDD1HubEditor::DDD1HubEditor (DDD1HubProcessor& p)
     styleBtn (setsRefreshBtn);
     setsRefreshBtn.onClick = [this] { rebuildSetsList(); };
 
+    // ── Save (overwrite current Idea) ─────────────────────────────────────────
     styleBtn (saveIdeaBtn);
+    saveIdeaBtn.setEnabled (false);   // enabled only when an Idea is loaded
     saveIdeaBtn.onClick = [this]
     {
-        auto* aw = new juce::AlertWindow ("Save Idea", "Idea name:", juce::AlertWindow::NoIcon);
-        aw->addTextEditor ("name", "Untitled Idea");
+        if (currentIdeaId.isEmpty()) return;
+        const auto* existing = proc.ideaBank.findById (currentIdeaId);
+        if (!existing) { currentIdeaId = {}; updateIdeaButtons(); return; }
+
+        auto updated        = proc.captureCurrentIdea (existing->name, existing->origin);
+        updated.id          = existing->id;
+        updated.createdAt   = existing->createdAt;
+        proc.saveIdea (updated);
+        rebuildIdeasList();
+    };
+    addAndMakeVisible (saveIdeaBtn);
+
+    // ── Save As (capture to new Idea, set as current) ─────────────────────────
+    styleBtn (saveAsIdeaBtn);
+    saveAsIdeaBtn.onClick = [this]
+    {
+        juce::String prefill = "Untitled Idea";
+        IdeaOrigin   origin;
+
+        if (currentIdeaId.isNotEmpty())
+        {
+            if (const auto* cur = proc.ideaBank.findById (currentIdeaId))
+            {
+                prefill             = cur->name;
+                origin.type         = "idea";
+                origin.parentIdeaId = currentIdeaId;
+            }
+        }
+        if (origin.type.isEmpty()) origin.type = "scratch";
+
+        auto* aw = new juce::AlertWindow ("Save As Idea", "Idea name:", juce::AlertWindow::NoIcon);
+        aw->addTextEditor ("name", prefill);
         aw->addButton ("Save",   1);
         aw->addButton ("Cancel", 0);
         struct Cb : public juce::ModalComponentManager::Callback
         {
             DDD1HubEditor& ed;
             juce::AlertWindow* win;
-            Cb (DDD1HubEditor& e, juce::AlertWindow* w) : ed (e), win (w) {}
+            IdeaOrigin orig;
+            Cb (DDD1HubEditor& e, juce::AlertWindow* w, IdeaOrigin o)
+                : ed (e), win (w), orig (std::move (o)) {}
             void modalStateFinished (int result) override
             {
                 if (result == 1)
@@ -685,17 +719,19 @@ DDD1HubEditor::DDD1HubEditor (DDD1HubProcessor& p)
                     auto name = win->getTextEditorContents ("name");
                     if (name.isNotEmpty())
                     {
-                        auto idea = ed.proc.captureCurrentIdea (name);
+                        auto idea = ed.proc.captureCurrentIdea (name, orig);
                         ed.proc.saveIdea (idea);
+                        ed.currentIdeaId = idea.id;
+                        ed.updateIdeaButtons();
                         ed.rebuildIdeasList();
                     }
                 }
                 delete win;
             }
         };
-        aw->enterModalState (true, new Cb (*this, aw), false);
+        aw->enterModalState (true, new Cb (*this, aw, std::move (origin)), false);
     };
-    addAndMakeVisible (saveIdeaBtn);
+    addAndMakeVisible (saveAsIdeaBtn);
 
     styleBtn (ideasTabBtn);
     ideasTabBtn.setClickingTogglesState (true);
@@ -1701,11 +1737,31 @@ void DDD1HubEditor::IdeasListModel::paintListBoxItem (int row, juce::Graphics& g
     }
 }
 
-void DDD1HubEditor::IdeasListModel::listBoxItemClicked (int row, const juce::MouseEvent&)
+void DDD1HubEditor::IdeasListModel::listBoxItemClicked (int row, const juce::MouseEvent& me)
 {
     const auto& ideas = owner.proc.ideaBank.getAll();
     if (row < 0 || row >= (int)ideas.size()) return;
+
+    if (me.mods.isRightButtonDown() || me.mods.isPopupMenu())
+    {
+        juce::String id   = ideas[(size_t)row].id;
+        juce::String name = ideas[(size_t)row].name;
+        juce::PopupMenu menu;
+        menu.addItem (1, "Rename...");
+        menu.addSeparator();
+        menu.addItem (2, "Delete...");
+        menu.showMenuAsync (juce::PopupMenu::Options{},
+            [this, id, name](int choice)
+            {
+                if (choice == 1) owner.renameIdea (id, name);
+                if (choice == 2) owner.deleteIdea  (id);
+            });
+        return;
+    }
+
     owner.proc.loadIdea (ideas[(size_t)row].id);
+    owner.currentIdeaId = ideas[(size_t)row].id;
+    owner.updateIdeaButtons();
     owner.loadPadConfig();
     owner.refreshPadColors();
     owner.repaint();
@@ -1715,6 +1771,85 @@ void DDD1HubEditor::rebuildIdeasList()
 {
     ideasListBox.updateContent();
     ideasListBox.repaint();
+}
+
+void DDD1HubEditor::updateIdeaButtons()
+{
+    saveIdeaBtn.setEnabled (currentIdeaId.isNotEmpty());
+}
+
+void DDD1HubEditor::renameIdea (const juce::String& id, const juce::String& currentName)
+{
+    auto* aw = new juce::AlertWindow ("Rename Idea", "New name:", juce::AlertWindow::NoIcon);
+    aw->addTextEditor ("name", currentName);
+    aw->addButton ("Rename", 1);
+    aw->addButton ("Cancel", 0);
+    struct Cb : public juce::ModalComponentManager::Callback
+    {
+        DDD1HubEditor& ed;
+        juce::AlertWindow* win;
+        juce::String ideaId;
+        Cb (DDD1HubEditor& e, juce::AlertWindow* w, juce::String i)
+            : ed (e), win (w), ideaId (std::move (i)) {}
+        void modalStateFinished (int result) override
+        {
+            if (result == 1)
+            {
+                auto newName = win->getTextEditorContents ("name");
+                if (newName.isNotEmpty())
+                {
+                    const auto* existing = ed.proc.ideaBank.findById (ideaId);
+                    if (existing)
+                    {
+                        Idea updated      = *existing;
+                        updated.name      = newName;
+                        updated.updatedAt = juce::Time::getCurrentTime().toISO8601 (true);
+                        ed.proc.ideaBank.overwrite (ideaId, updated);
+                        ed.proc.saveIdeas();
+                        ed.rebuildIdeasList();
+                    }
+                }
+            }
+            delete win;
+        }
+    };
+    aw->enterModalState (true, new Cb (*this, aw, id), false);
+}
+
+void DDD1HubEditor::deleteIdea (const juce::String& id)
+{
+    const auto* existing = proc.ideaBank.findById (id);
+    if (!existing) return;
+
+    auto* aw = new juce::AlertWindow ("Delete Idea",
+        "Delete \"" + existing->name + "\"?\nThis cannot be undone.",
+        juce::AlertWindow::QuestionIcon);
+    aw->addButton ("Delete", 1);
+    aw->addButton ("Cancel", 0);
+    struct Cb : public juce::ModalComponentManager::Callback
+    {
+        DDD1HubEditor& ed;
+        juce::AlertWindow* win;
+        juce::String ideaId;
+        Cb (DDD1HubEditor& e, juce::AlertWindow* w, juce::String i)
+            : ed (e), win (w), ideaId (std::move (i)) {}
+        void modalStateFinished (int result) override
+        {
+            if (result == 1)
+            {
+                ed.proc.ideaBank.remove (ideaId);
+                ed.proc.saveIdeas();
+                if (ed.currentIdeaId == ideaId)
+                {
+                    ed.currentIdeaId = {};
+                    ed.updateIdeaButtons();
+                }
+                ed.rebuildIdeasList();
+            }
+            delete win;
+        }
+    };
+    aw->enterModalState (true, new Cb (*this, aw, id), false);
 }
 
 void DDD1HubEditor::updateScenesMode()
@@ -1741,6 +1876,7 @@ void DDD1HubEditor::updateScenesMode()
     ideasListBox.setVisible (showIdeas);
 
     ideasTabBtn.setToggleState (showIdeas, juce::dontSendNotification);
+    updateIdeaButtons();
 }
 
 // ── GroupTableModel ───────────────────────────────────────────────────────────
@@ -2277,8 +2413,9 @@ void DDD1HubEditor::resized()
     setsSaveSceneBtn.setBounds(M + 94,   398, 84, 20);
     setsResetBtn.setBounds    (M + 184,  398, 72, 20);
     patternBankLoadBtn.setBounds (M + 268, 398, 90,  20);
-    saveIdeaBtn.setBounds     (M + 370,  398, 80, 20);
-    ideasTabBtn.setBounds     (M + 456,  398, 52, 20);
+    saveIdeaBtn.setBounds     (M + 370,  398, 46, 20);
+    saveAsIdeaBtn.setBounds   (M + 420,  398, 64, 20);
+    ideasTabBtn.setBounds     (M + 488,  398, 52, 20);
     // Row 1: header + save/reset/load + save idea + ideas toggle
     // Row 2 (y=420): genre + source + fill/groove + state (sets mode only)
     setsGenreLbl.setBounds    (M,        420, 36,  20);
