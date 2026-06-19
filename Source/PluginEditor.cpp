@@ -238,7 +238,7 @@ DDD1HubEditor::DDD1HubEditor (DDD1HubProcessor& p)
     addLbl (rangeLbl, "", col::muted);
     rangeLbl.setFont (juce::Font (10.f));
 
-    addLbl (retriggHdrLbl, "\xe2\x94\x80\xe2\x94\x80 RETRIGGER ", col::muted);
+    addLbl (retriggHdrLbl, "-- RETRIGGER ", col::muted);
     addToggle (retriggToggle, [this]
     {
         if (loadingCfg) return;
@@ -270,7 +270,7 @@ DDD1HubEditor::DDD1HubEditor (DDD1HubProcessor& p)
                                  juce::dontSendNotification);
     });
 
-    addLbl (lfoHdrLbl, "\xe2\x94\x80\xe2\x94\x80 LFO ", col::muted);
+    addLbl (lfoHdrLbl, "-- LFO ", col::muted);
     addToggle (lfoToggle, [this]
     {
         if (loadingCfg) return;
@@ -291,7 +291,7 @@ DDD1HubEditor::DDD1HubEditor (DDD1HubProcessor& p)
         if (loadingCfg) return;
         proc.pads[selectedPad].lfoRate = lfoRateBox.getSelectedId() - 1;
     });
-    addCombo (lfoShapeBox, { "Sine", "Square", "Triangle", "Saw \xe2\x86\x91", "Saw \xe2\x86\x93" }, [this]
+    addCombo (lfoShapeBox, { "Sine", "Square", "Triangle", "Saw Up", "Saw Dn" }, [this]
     {
         if (loadingCfg) return;
         proc.pads[selectedPad].lfoShape = lfoShapeBox.getSelectedId() - 1;
@@ -305,7 +305,7 @@ DDD1HubEditor::DDD1HubEditor (DDD1HubProcessor& p)
     });
 
     // ── Arpeggiator mode ──────────────────────────────────────────────────────
-    addLbl (arpHdrLbl, "\xe2\x94\x80\xe2\x94\x80 ARPEGGIATOR ", col::muted);
+    addLbl (arpHdrLbl, "-- ARPEGGIATOR ", col::muted);
     addToggle (arpLatchToggle, [this]
     {
         if (loadingCfg) return;
@@ -334,7 +334,7 @@ DDD1HubEditor::DDD1HubEditor (DDD1HubProcessor& p)
     });
 
     // ── Pattern Bank mode top panel ───────────────────────────────────────────
-    addLbl (patternHdrLbl, "\xe2\x94\x80\xe2\x94\x80 PATTERN ", col::muted);
+    addLbl (patternHdrLbl, "-- PATTERN ", col::muted);
 
     styleBtn (patternBankLoadBtn);
     patternBankLoadBtn.onClick = [this]
@@ -1433,10 +1433,10 @@ void DDD1HubEditor::SetsListModel::paintListBoxItem (int row, juce::Graphics& g,
     else if (row % 2) g.fillAll (col::bg);
     else              g.fillAll (col::panel);
 
-    // Zones (right → left): skip 20px | stars 50px (5×10) | name fills rest
+    // Zones (right → left): skip 20px | stars 57px (5×11+2) | name fills rest
     const int skipW  = 20;
-    const int starW  = 50;
-    const int rightW = skipW + starW;   // 70
+    const int starW  = 57;
+    const int rightW = skipW + starW;   // 77
 
     int nameX = 8;
     int nameW = w - rightW - nameX - 4;
@@ -1456,22 +1456,42 @@ void DDD1HubEditor::SetsListModel::paintListBoxItem (int row, juce::Graphics& g,
     g.setColour (textCol);
     g.drawText (e.name, nameX, 0, nameW, h, juce::Justification::centredLeft, true);
 
-    // Stars: 5 small squares, 7×7px each, 10px pitch, vertically centred
-    const int starSize = 7;
-    const int starY    = (h - starSize) / 2;
-    int starsX = w - rightW + 1;
+    // Stars: 5 drawn star shapes, 12px pitch, vertically centred
+    auto drawStar = [&](float cx, float cy, float outerR, float innerR, bool filled)
+    {
+        juce::Path p;
+        for (int pt = 0; pt < 5; ++pt)
+        {
+            float oa = juce::MathConstants<float>::twoPi * pt / 5.0f
+                       - juce::MathConstants<float>::halfPi;
+            float ia = oa + juce::MathConstants<float>::twoPi / 10.0f;
+            float ox = cx + outerR * std::cos (oa);
+            float oy = cy + outerR * std::sin (oa);
+            float ix = cx + innerR * std::cos (ia);
+            float iy = cy + innerR * std::sin (ia);
+            if (pt == 0) p.startNewSubPath (ox, oy); else p.lineTo (ox, oy);
+            p.lineTo (ix, iy);
+        }
+        p.closeSubPath();
+        if (filled) g.fillPath (p);
+        else        g.strokePath (p, juce::PathStrokeType (0.8f));
+    };
+
+    float starCy = (float)h * 0.5f;
+    float starR  = 4.5f;
+    int   starsX = w - rightW + 2;
     for (int i = 0; i < 5; ++i)
     {
-        int sx = starsX + i * 10 + 1;
+        float cx = (float)(starsX + i * 11) + starR;
         if (i < rating.stars)
         {
-            g.setColour (juce::Colour (0xFFD4A017));   // gold — rated
-            g.fillRect (sx, starY, starSize, starSize);
+            g.setColour (juce::Colour (0xFFD4A017));
+            drawStar (cx, starCy, starR, starR * 0.45f, true);
         }
         else
         {
-            g.setColour (col::muted.withAlpha (0.5f));
-            g.drawRect (sx, starY, starSize, starSize, 1);
+            g.setColour (col::muted.withAlpha (0.45f));
+            drawStar (cx, starCy, starR, starR * 0.45f, false);
         }
     }
 
@@ -1493,7 +1513,7 @@ void DDD1HubEditor::SetsListModel::listBoxItemClicked (int row, const juce::Mous
     const int w = owner.setsListBox.getWidth();
 
     const int skipW = 20;
-    const int starW = 50;
+    const int starW = 57;
 
     // Skip "×" zone
     if (me.x >= w - skipW)
@@ -1511,7 +1531,7 @@ void DDD1HubEditor::SetsListModel::listBoxItemClicked (int row, const juce::Mous
     // Stars zone: 5 × 10px starting at w - skipW - starW
     if (me.x >= w - skipW - starW)
     {
-        int starIdx = juce::jlimit (0, 4, (me.x - (w - skipW - starW)) / 10);
+        int starIdx = juce::jlimit (0, 4, (me.x - (w - skipW - starW)) / 11);
         int newStar = starIdx + 1;
         if (owner.proc.ratingBank.get (e.groupId).stars == newStar)
             newStar = 0;   // click same star → unrate
