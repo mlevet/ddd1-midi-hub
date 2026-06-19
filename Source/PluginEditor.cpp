@@ -1438,7 +1438,6 @@ void DDD1HubEditor::SetsListModel::paintListBoxItem (int row, juce::Graphics& g,
 {
     if (row < 0 || row >= (int)owner.setsEntries.size()) return;
     const auto& e = owner.setsEntries[(size_t)row];
-    auto rating  = owner.proc.ratingBank.get (e.groupId);
 
     if (sel)          g.fillAll (col::accent.withAlpha (0.3f));
     else if (row % 2) g.fillAll (col::bg);
