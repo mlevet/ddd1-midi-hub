@@ -24,6 +24,8 @@ juce::String DDD1HubEditor::noteName (int n)
 DDD1HubEditor::DDD1HubEditor (DDD1HubProcessor& p)
     : AudioProcessorEditor (&p), proc (p)
 {
+    setResizable (true, true);
+    setResizeLimits (720, 720, 3840, 2160);
     setSize (720, 720);
 
     auto addLbl = [&](juce::Label& l, const juce::String& t, juce::Colour c = col::muted)
@@ -1158,7 +1160,7 @@ void DDD1HubEditor::injectPianoNote (int note, bool on)
 
 int DDD1HubEditor::pianoHitTest (int mx, int my) const
 {
-    const int bz = 500;
+    const int bz = getHeight() - 220;
     const int px = 16, py = bz + 8;
     const int pw = getWidth() - 32, ph = getHeight() - bz - 16;
     if (mx < px || mx >= px + pw || my < py || my >= py + ph) return -1;
@@ -1848,7 +1850,7 @@ void DDD1HubEditor::paint (juce::Graphics& g)
                 16, 108, 50, 22, juce::Justification::centredLeft);
 
     // Bottom zone background (always drawn)
-    const int bz = 500;
+    const int bz = getHeight() - 220;
     g.setColour (col::panel);
     g.fillRoundedRectangle (8.f, (float)(bz - 4), (float)getWidth() - 16.f,
                             (float)(getHeight() - bz), 5.f);
@@ -1955,8 +1957,9 @@ void DDD1HubEditor::paint (juce::Graphics& g)
 
 void DDD1HubEditor::resized()
 {
-    const int W = getWidth();
-    const int M = 16;
+    const int W  = getWidth();
+    const int M  = 16;
+    const int bz = getHeight() - 220;   // bottom zone top; anchored to window bottom
 
     // Row 1
     int y = 6;
@@ -2117,10 +2120,9 @@ void DDD1HubEditor::resized()
     setsSourceBox.setBounds   (M + 214,  420, 90,  20);
     setsFillBtn.setBounds     (M + 314,  420, 44,  20);
     setsGrooveBtn.setBounds   (M + 362,  420, 58,  20);
-    setsListBox.setBounds     (M,        444, W - 2 * M, 50);
+    setsListBox.setBounds     (M,        444, W - 2 * M, bz - 6 - 444);
 
     // ── Bottom zone ───────────────────────────────────────────────────────────
-    const int bz = 500;
     globalLengthLbl.setBounds (M,       bz + 4, 52, 22);
     globalLengthBox.setBounds (M + 54,  bz + 4, 78, 22);
     globalStepsLbl.setBounds  (M + 142, bz + 4, 44, 22);
