@@ -40,10 +40,21 @@ DDD1HubProcessor::DDD1HubProcessor()
         pads[i].instKey     = defaultNotes[i];
     }
 
-    patternBankFilePath = juce::File::getSpecialLocation (
-        juce::File::userApplicationDataDirectory)
-        .getChildFile ("DDD1MidiHub/patterns.json").getFullPathName();
-    patternBank.load (juce::File (patternBankFilePath));
+    // Search for drum-pattern-database in likely locations; fall back to app data single file
+    {
+        auto home = juce::File::getSpecialLocation (juce::File::userHomeDirectory);
+        juce::File candidates[] = {
+            home.getChildFile ("PycharmProjects/drum-pattern-database"),
+            home.getChildFile ("Documents/drum-pattern-database"),
+            home.getChildFile ("Desktop/drum-pattern-database"),
+            juce::File::getSpecialLocation (juce::File::userApplicationDataDirectory)
+                .getChildFile ("DDD1MidiHub/patterns.json"),
+        };
+        patternBankFilePath = candidates[3].getFullPathName(); // fallback
+        for (auto& f : candidates)
+            if (f.exists()) { patternBankFilePath = f.getFullPathName(); break; }
+    }
+    loadPatternBank (juce::File (patternBankFilePath));
 
     patternSetBankFilePath = juce::File::getSpecialLocation (
         juce::File::userApplicationDataDirectory)
