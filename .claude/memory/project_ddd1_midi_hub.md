@@ -1,6 +1,6 @@
 ---
 name: project-ddd1-midi-hub
-description: "DDD-1 MIDI Hub — current state, architecture, bugs fixed, Pattern mode editor, virtual piano"
+description: "DDD-1 MIDI Hub — current state, architecture, bugs fixed, Pattern mode editor, MIDI library imported, git repo created"
 metadata: 
   node_type: memory
   type: project
@@ -206,4 +206,102 @@ When the user hits a DDD-1 pad that's in PatternBank mode, delay echoes now fire
 
 ## Startup behavior (clean)
 
-Pad configs NOT restored on launch (`setStateInformation` comment: "intentionally not restored"). Only restores: device IDs, bank paths, global length/steps. Everything else starts at defaults (PassThrough, no delay, no delay, no overdub). User sets up pads fresh each session.
+Pad configs NOT restored on launch (`setStateInformation` comment: "intentionally not restored"). Only restores: device IDs, bank paths, global length/steps. Everything else starts at defaults (PassThrough, no delay, no overdub). User sets up pads fresh each session.
+
+---
+
+## Git repo
+
+DDD1MidiHub now has a git repo at `/Users/matthieulevet/PycharmProjects/DDD1MidiHub/`.
+- `.gitignore` excludes `build_xcode/`
+- Claude Code memory lives in `.claude/memory/` inside the repo
+- **To preserve context: open Claude Code from `DDD1MidiHub/` going forward** (memory copied to `~/.claude/projects/-Users-matthieulevet-PycharmProjects-DDD1MidiHub/memory/`)
+- Build command (from DDD1MidiHub/): `xcodebuild -project build_xcode/DDD1MidiHub.xcodeproj -scheme DDD1MidiHub_Standalone -configuration Release -quiet`
+- Install: `cp -R "build_xcode/DDD1MidiHub_artefacts/Release/Standalone/DDD-1 MIDI Hub.app" /Applications/`
+
+---
+
+## Drum pattern database
+
+Repo: `/Users/matthieulevet/PycharmProjects/drum-pattern-database/` (on GitHub, origin/main)
+
+### Structure (as of 2026-06-19)
+
+```
+factory/
+  allen/      3,796 patterns (curated, Allen source)
+  badness/      122 patterns
+  bardet/     1,117 patterns
+  roland/       659 patterns
+imported/           ← gitignored (150 MB, regenerable)
+  midi_archive/
+    funk/     1,059 patterns
+    jazz/       562 patterns
+    blues/      428 patterns
+    electronic/ 3,012 patterns
+    rock/      46,075 patterns  ← too large, needs style split
+    world/     18,498 patterns  ← too large, needs style split
+    latin/      489 patterns
+    … 13 genres total, 70,830 patterns
+registry/
+  import_registry.json  (SHA-256 dedup, 18,819 entries)
+user/
+  patterns.json, pattern_sets.json, ratings.json  (user's working files)
+```
+
+### Scripts
+
+- `import_midi.py` — imports 800k MIDI archive; skips SD2 (425k, single-instrument) and GM pack (360k); SHA-256 dedup; GM note map 35-81 → canonical instrument names; outputs per-genre `patterns.json`
+- `reorganize.py` — one-time migration that created the factory/ structure
+
+### Open issues in database
+
+1. `rock/` (86 MB) and `world/` (51 MB) are too large for practical loading. Fix: use `genre/style/` two-level folder so rock splits into rock/shuffle/, rock/linear/, rock/vintage/ etc.
+2. Superior Drummer 2 (425k files, single-instrument per file) skipped — needs a separate grouping pass to reconstruct multi-part patterns.
+
+---
+
+## PatternBank — extended data model (new format)
+
+`RhythmPattern` now has:
+- `source` — collection slug (bardet, allen, roland, badness, or genre for imported)
+- `group` — groups related patterns (same groove, different instruments)
+- `genre` — top-level genre string
+- `style` — sub-style string
+- `isFill()` — checks group name for `_break_`, `_fill_`, `_ending_` OR legacy styles array
+
+`PatternBank::loadDirectory(root)` walks:
+- `root/factory/*/patterns.json`
+- `root/imported/midi_archive/*/patterns.json`
+- `root/user/patterns.json`
+
+`filter()` checks `p.genre` and `p.style` directly (not only `p.styles[]`).
+
+Load Bank button now accepts a **directory** (loads all sub-collections) or a **single `.json` file** (loads one collection). Directory load of the full 150 MB takes ~30s — for daily use load a single genre file.
+
+---
+
+## Browser UI (PatternBank mode)
+
+Filters: Instrument / Genre / Style
+Buttons: Clear Steps, Undo (restores before last Clear Steps), Unassign (removes pad assignment)
+
+Instrument list includes: kick, snare, rimshot, clap, closed_hihat, open_hihat, pedal_hihat, high_tom, mid_tom, low_tom, ride, crash, cowbell, tambourine, shaker, claves, conga, bongo, perc, bass
+
+---
+
+## Scenes panel
+
+- Load Bank button moved here (always visible, not buried in PatternBank mode)
+- Filters: Genre, Source, Fill/Groove toggle
+- Single-click loads a scene (was double-click)
+- Row shows name left, source right (muted); saved scenes show ★
+
+---
+
+## Open plan: 4 UI bugs (from plan file)
+
+1. Playhead off by one step
+2. Stop doesn't silence last note
+3. Tune not visible in grid cell
+4. Pattern list back in top panel (single-click assignment)
