@@ -55,10 +55,9 @@ DDD1HubProcessor::DDD1HubProcessor()
             if (f.exists()) { patternBankFilePath = f.getFullPathName(); break; }
     }
     loadPatternBank (juce::File (patternBankFilePath));
+    // userDataDir is now set by loadPatternBank
 
-    patternSetBankFilePath = juce::File::getSpecialLocation (
-        juce::File::userApplicationDataDirectory)
-        .getChildFile ("DDD1MidiHub/patternsets.json").getFullPathName();
+    patternSetBankFilePath = userDataDir.getChildFile ("patternsets.json").getFullPathName();
     patternSetBank.load (juce::File (patternSetBankFilePath));
 
     loadRatings();
@@ -1176,6 +1175,11 @@ void DDD1HubProcessor::loadPatternBank (const juce::File& f)
 {
     juce::ScopedLock lk (patternBankLock);
     patternBankFilePath = f.getFullPathName();
+    userDataDir = f.isDirectory()
+        ? f.getChildFile ("user")
+        : juce::File::getSpecialLocation (juce::File::userApplicationDataDirectory)
+            .getChildFile ("DDD1MidiHub");
+    userDataDir.createDirectory();
     if (f.isDirectory())
         patternBank.loadDirectory (f);
     else
@@ -1185,7 +1189,10 @@ void DDD1HubProcessor::loadPatternBank (const juce::File& f)
 void DDD1HubProcessor::savePatternBank()
 {
     juce::ScopedLock lk (patternBankLock);
-    patternBank.save (juce::File (patternBankFilePath));
+    juce::File f (patternBankFilePath);
+    if (f.isDirectory())
+        f = userDataDir.getChildFile ("patterns.json");
+    patternBank.save (f);
 }
 
 
@@ -1246,25 +1253,13 @@ void DDD1HubProcessor::applyPatternSet (const PatternSet& s)
 
 // ── Rating Bank ──────────────────────────────────────────────────────────────
 
-static juce::File ratingsFile()
-{
-    return juce::File::getSpecialLocation (juce::File::userApplicationDataDirectory)
-               .getChildFile ("DDD1MidiHub/ratings.json");
-}
-
-void DDD1HubProcessor::loadRatings()  { ratingBank.load (ratingsFile()); }
-void DDD1HubProcessor::saveRatings()  { ratingBank.save (ratingsFile()); }
+void DDD1HubProcessor::loadRatings()  { ratingBank.load (userDataDir.getChildFile ("ratings.json")); }
+void DDD1HubProcessor::saveRatings()  { ratingBank.save (userDataDir.getChildFile ("ratings.json")); }
 
 // ── Crate Bank ───────────────────────────────────────────────────────────────
 
-static juce::File crateFile()
-{
-    return juce::File::getSpecialLocation (juce::File::userApplicationDataDirectory)
-               .getChildFile ("DDD1MidiHub/crate.json");
-}
-
-void DDD1HubProcessor::loadCrate() { crateBank.load (crateFile()); }
-void DDD1HubProcessor::saveCrate() { crateBank.save (crateFile()); }
+void DDD1HubProcessor::loadCrate() { crateBank.load (userDataDir.getChildFile ("crate.json")); }
+void DDD1HubProcessor::saveCrate() { crateBank.save (userDataDir.getChildFile ("crate.json")); }
 
 // ── Virtual MIDI Out ─────────────────────────────────────────────────────────
 
@@ -1281,14 +1276,8 @@ void DDD1HubProcessor::openVirtualMidiOut (const juce::String& deviceId)
 
 // ── Idea Bank ─────────────────────────────────────────────────────────────────
 
-static juce::File ideasFile()
-{
-    return juce::File::getSpecialLocation (juce::File::userApplicationDataDirectory)
-               .getChildFile ("DDD1MidiHub/ideas.json");
-}
-
-void DDD1HubProcessor::loadIdeas() { ideaBank.load (ideasFile()); }
-void DDD1HubProcessor::saveIdeas() { ideaBank.save (ideasFile()); }
+void DDD1HubProcessor::loadIdeas() { ideaBank.load (userDataDir.getChildFile ("ideas.json")); }
+void DDD1HubProcessor::saveIdeas() { ideaBank.save (userDataDir.getChildFile ("ideas.json")); }
 
 Idea DDD1HubProcessor::captureCurrentIdea (const juce::String& name, const IdeaOrigin& origin)
 {

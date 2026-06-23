@@ -221,5 +221,7 @@ private:
     std::unique_ptr<juce::MidiOutput> virtualMidiOut;
     juce::CriticalSection             virtualMidiOutLock;
 
+    juce::File userDataDir;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DDD1HubProcessor)
 };
