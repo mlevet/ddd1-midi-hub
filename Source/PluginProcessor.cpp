@@ -1293,31 +1293,38 @@ Idea DDD1HubProcessor::captureCurrentIdea (const juce::String& name, const IdeaO
     if (idea.origin.type.isEmpty())
         idea.origin.type = "scratch";
 
-    // Capture current pattern set (pad assignments, no patterns yet)
-    idea.patternSet        = captureCurrentPatternSet();
-    idea.patternSet.source = "user";
-
-    // Snapshot each assigned pattern; rewrite assignment IDs to idea-scoped copies
+    // Snapshot all assigned patterns — including __live_N__ scratch patterns
+    // (captureCurrentPatternSet() excludes __ IDs so we scan pads directly here)
     {
+        idea.patternSet.id     = "idea_" + idea.id + "_set";
+        idea.patternSet.name   = name;
+        idea.patternSet.source = "user";
+
         juce::ScopedLock lk (patternBankLock);
-        for (auto& a : idea.patternSet.assignments)
+        for (int i = 0; i < numPads; ++i)
         {
-            if (const auto* p = patternBank.findById (a.patternId))
+            const auto& pid = pads[i].selectedPatternId;
+            if (pid.isEmpty()) continue;
+            if (const auto* p = patternBank.findById (pid))
             {
+                PadAssignment a;
+                a.padIndex   = i;
+                a.resolution = pads[i].patternResolution;
+                a.offset     = pads[i].patternOffset;
+
                 RhythmPattern snap = *p;
-                snap.id     = "idea_" + idea.id + "_pad" + juce::String (a.padIndex);
+                snap.id     = "idea_" + idea.id + "_pad" + juce::String (i);
                 snap.source = "idea";
                 a.patternId = snap.id;
+                idea.patternSet.assignments.push_back (a);
                 idea.patterns.push_back (std::move (snap));
             }
         }
     }
 
-    // Snapshot all 14 pad configs (position = pad index)
+    // Snapshot all 14 pad configs; align selectedPatternId to snapshot IDs
     for (int i = 0; i < numPads; ++i)
         idea.padConfigs.push_back (pads[i]);
-
-    // Align selectedPatternId in each pad config to its snapshot ID
     for (const auto& a : idea.patternSet.assignments)
         if (a.padIndex >= 0 && a.padIndex < numPads)
             idea.padConfigs[(size_t)a.padIndex].selectedPatternId = a.patternId;
