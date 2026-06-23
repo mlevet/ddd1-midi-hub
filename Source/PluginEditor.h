@@ -209,8 +209,9 @@ private:
     void renameIdea (const juce::String& id, const juce::String& currentName);
     void deleteIdea (const juce::String& id);
 
-    // Capture toggle — sits before pad buttons, red = all pads in PatternBank+overdub
+    // Capture toggle + Restore Setup — sit before pad buttons
     juce::TextButton captureToggleBtn {""};
+    juce::TextButton restoreSetupBtn  {"↩"};
     bool captureActive = false;
     void updateCaptureToggle();
 

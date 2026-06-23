@@ -826,20 +826,25 @@ DDD1HubEditor::DDD1HubEditor (DDD1HubProcessor& p)
         }
         else
         {
-            // Restore pre-record pad configs: modes, KB/Arp/Grouped settings all come back.
-            // Captured patterns remain in patternBank. Overdub is off because snapshot had it off.
-            if (proc.recordSnapshotValid)
-            {
-                for (int i = 0; i < DDD1HubProcessor::numPads; ++i)
-                    proc.pads[i] = proc.preRecordPadConfigs[i];
-                proc.recordSnapshotValid = false;
-            }
-            else
-            {
-                for (int i = 0; i < DDD1HubProcessor::numPads; ++i)
-                    proc.pads[i].overdubEnabled = false;
-            }
+            // Stop recording — leave recorded patterns active so user can audition.
+            // Snapshot stays valid; use Restore Setup (↩) to explicitly revert.
+            for (int i = 0; i < DDD1HubProcessor::numPads; ++i)
+                proc.pads[i].overdubEnabled = false;
         }
+        updateCaptureToggle();
+        loadPadConfig();
+        refreshPadColors();
+        repaint();
+    };
+
+    styleBtn (restoreSetupBtn);
+    restoreSetupBtn.setEnabled (false);
+    restoreSetupBtn.onClick = [this]
+    {
+        if (!proc.recordSnapshotValid) return;
+        for (int i = 0; i < DDD1HubProcessor::numPads; ++i)
+            proc.pads[i] = proc.preRecordPadConfigs[i];
+        proc.recordSnapshotValid = false;
         updateCaptureToggle();
         loadPadConfig();
         refreshPadColors();
@@ -1574,6 +1579,10 @@ void DDD1HubEditor::mouseDrag (const juce::MouseEvent& e)
 void DDD1HubEditor::updateCaptureToggle()
 {
     captureToggleBtn.setColour (juce::TextButton::buttonColourId, captureActive ? col::red : col::panel);
+    bool hasSnapshot = proc.recordSnapshotValid;
+    restoreSetupBtn.setEnabled (hasSnapshot);
+    restoreSetupBtn.setColour (juce::TextButton::buttonColourId,
+                               hasSnapshot ? col::accent.withAlpha (0.6f) : col::panel);
 }
 
 void DDD1HubEditor::refreshPadColors()
@@ -2480,10 +2489,11 @@ void DDD1HubEditor::resized()
     virtChLbl.setBounds       (M + 614, y, 26, 22);
     virtChBox.setBounds       (M + 642, y, 50, 22);
 
-    // Pad buttons — one extra slot at the left for the capture toggle
+    // Pad buttons — one extra slot at the left for capture toggle + restore
     y = 60;
     const int padW = (W - 2 * M) / (DDD1HubProcessor::numPads + 1);
-    captureToggleBtn.setBounds (M, y, padW - 2, 36);
+    captureToggleBtn.setBounds (M, y,      padW - 2, 22);
+    restoreSetupBtn .setBounds (M, y + 23, padW - 2, 13);
     for (int i = 0; i < DDD1HubProcessor::numPads; ++i)
         padBtns[i].setBounds (M + (i + 1) * padW, y, padW - 2, 36);
 
