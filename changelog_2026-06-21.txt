@@ -1,0 +1,136 @@
+DDD1MidiHub — Changes 2026-06-21
+=================================
+
+
+PRIORITY 1 — TRANSACTIONAL SCENE LOADING
+-----------------------------------------
+
+Problem:
+  Loading Scene A then Scene B accumulated state. Pads assigned by Scene A
+  that were not in Scene B stayed in PatternBank mode with their old pattern.
+
+Fix (Source/PluginProcessor.cpp — applyPatternSet):
+  Before applying a new scene, the function now computes which pads the new
+  scene will assign. Any pad currently in PatternBank mode that is NOT in the
+  new scene is reset to PassThrough and its selectedPatternId is cleared.
+  KB, Arp, and GroupedTrigs pads are never touched — only PatternBank pads
+  that the scene "owns" are managed.
+
+Result:
+  Scene loading is now transactional. Loading Scene B after Scene A leaves
+  exactly the pads Scene B declares, and nothing else. User-configured
+  KB/Arp/GroupedTrigs pads survive scene changes.
+
+
+PRIORITY 2 — CURRENT CRATE (pin icon)
+---------------------------------------
+
+What it is:
+  A "currently exploring" layer between Favorites and Ideas. One global crate,
+  no naming, no hierarchy. A pin icon on each Scenes row toggles membership.
+
+New files:
+  Source/CrateBank.h
+  Source/CrateBank.cpp
+
+  CrateBank is a thin wrapper around std::set<juce::String> of scene group IDs.
+  Persists to: ~/Library/Application Support/DDD1MidiHub/crate.json
+  Format: {"patterns": ["id1", "id2", ...]}
+
+UI changes (Source/PluginEditor.cpp):
+  - Each Scenes row now has a pin icon in a new 22px click zone (to the left
+    of the heart icon). The icon is a custom juce::Path: diamond head + needle.
+    Filled = in crate (accent color). Outline = not in crate (muted).
+  - New "Crate" filter button in the Scenes panel filter row.
+  - setsStateFilter values: 0=All, 1=Fav, 2=Crate (NEW), 3=Unrated, 4=Skipped
+    (Unrated and Skipped shifted from 2/3 to 3/4 to make room.)
+
+Behavior:
+  Clicking the pin calls crateBank.toggle(groupId) and saves immediately.
+  The "Crate" filter shows only scenes whose groupId is in the crate.
+
+
+PRIORITY 3 — VIRTUAL DDD1 MIDI OUT
+-------------------------------------
+
+What it is:
+  A second MIDI output device that emits the same MIDI stream the DDD-1 would
+  emit on its MIDI OUT after a pattern is recorded. Use it to drive an external
+  synth (bass synth, sampler, etc.) from the hub's pattern engine in real time.
+
+Rules:
+  - Note = pad's noteReceive value (same note the DDD-1 would send)
+  - Velocity = step velocity
+  - Tune is ignored (the DDD-1 does not output tune on MIDI OUT)
+  - No output during capture (captureActive guard prevents feedback loop)
+
+Implementation (Source/PluginProcessor.h/.cpp):
+  - Private: std::unique_ptr<juce::MidiOutput> virtualMidiOut
+             juce::CriticalSection virtualMidiOutLock
+  - Public:  void openVirtualMidiOut(const juce::String& deviceId)
+             juce::String virtualMidiOutId
+             int virtualMidiCh (default 1)
+  - processBlock collects events into a local juce::MidiBuffer virtualOutBuf,
+    then calls virtualMidiOut->sendBlockOfMessagesNow(virtualOutBuf) at the
+    end of the block, under the lock.
+  - virtualMidiOutId and virtualMidiCh are saved/restored in state.
+
+UI (Source/PluginEditor.h/.cpp):
+  Top bar row 2 (y=32): "Virt:" label + device combo box + refresh button +
+  "Ch:" label + channel combo box.
+  Device list is populated by refreshVirtualMidiOutputs().
+
+
+PRIORITY 4 — GROUPEDTRIGS PAD MODE → VIRTUAL MIDI OUT
+-------------------------------------------------------
+
+Scope clarification:
+  GroupedTrigs is a pad MODE. A pad is either in GroupedTrigs mode OR in
+  Keyboard/Arp/PatternBank mode — not both simultaneously. There is no
+  routing from Keyboard or Arp into GroupedTrigs. That architecture does
+  not exist yet.
+
+What was done:
+  A live trigger on a pad in GroupedTrigs mode already fanned out to target
+  pads (existing behavior, unchanged). Those same fan-out events now also
+  route to the Virtual MIDI Out.
+
+Implementation:
+  The GroupedTrigs code had two existing fire points in processBlock:
+  1. Immediate fan-outs (offsetPulses <= 0 branch)
+  2. Deferred fan-outs (pendingGroupTrigs loop, pulsesRemaining <= 0 branch)
+  At both points, virtualOutBuf.addEvent(noteOn(...)) was added using the
+  target pad's noteReceive note and the already-computed scaled velocity.
+  No new routing logic was introduced.
+
+What does NOT exist yet (future work):
+  Pattern playback events → GroupedTrigs fan-out processor.
+  Today, Pattern and GroupedTrigs are separate pad modes. A PatternBank step
+  firing does not feed into GroupedTrigs fan-out. That bridge is the next
+  planned feature — Pattern + GroupedTrigs as a minimal, explicit connection.
+
+Future architecture (not yet built):
+  Sources:    Live Pad | Keyboard | Arp | Pattern
+  Processors: GroupedTrigs | Delay | LFO
+  The full source/processor separation is a longer-term direction.
+
+
+BUILD NOTES
+-----------
+
+Build system: Xcode project (CMakeLists.txt is out of sync, not used).
+CrateBank.h and CrateBank.cpp were added directly to project.pbxproj
+following the same pattern as RatingBank and IdeaBank (custom GUIDs in
+PBXBuildFile, PBXFileReference, PBXGroup, PBXSourcesBuildPhase).
+
+Build command:
+  xcodebuild -project build_xcode/DDD1MidiHub.xcodeproj \
+             -scheme DDD1MidiHub_Standalone \
+             -configuration Release -quiet
+
+Install (macOS 26 Tahoe — codesign skipped due to unsealed contents):
+  cp -R "build_xcode/DDD1MidiHub_artefacts/Release/Standalone/DDD-1 MIDI Hub.app" \
+        /Applications/
+  xattr -cr "/Applications/DDD-1 MIDI Hub.app"
+
+Build result: clean (expected JUCE deprecation warnings only).

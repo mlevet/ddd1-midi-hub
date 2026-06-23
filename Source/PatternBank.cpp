@@ -134,19 +134,22 @@ bool PatternBank::overwrite (const juce::String& id, const RhythmPattern& update
 
 std::vector<const RhythmPattern*> PatternBank::filter (const juce::String& instrument,
                                                         const juce::String& genre,
-                                                        const juce::String& style) const
+                                                        const juce::String& style,
+                                                        const juce::String& source) const
 {
     std::vector<const RhythmPattern*> result;
     for (auto& p : patterns)
     {
-        bool instrMatch = instrument.isEmpty() || instrument == "All" || p.instrument == instrument;
-        bool genreMatch = genre.isEmpty() || genre == "All"
-                          || p.genre == genre
-                          || (p.styles.size() > 0 && p.styles[0] == genre);
-        bool styleMatch = style.isEmpty() || style == "All"
-                          || p.style == style
-                          || (p.styles.size() > 1 && p.styles[1] == style);
-        if (instrMatch && genreMatch && styleMatch && !p.id.startsWith ("__"))
+        bool instrMatch  = instrument.isEmpty() || instrument == "All" || p.instrument == instrument;
+        bool genreMatch  = genre.isEmpty()  || genre  == "All"
+                           || p.genre == genre
+                           || (p.styles.size() > 0 && p.styles[0] == genre);
+        bool styleMatch  = style.isEmpty()  || style  == "All"
+                           || p.style == style
+                           || (p.styles.size() > 1 && p.styles[1] == style);
+        juce::String pSrc = p.source.isNotEmpty() ? p.source : extractSource (p.id);
+        bool sourceMatch = source.isEmpty() || source == "All" || pSrc == source;
+        if (instrMatch && genreMatch && styleMatch && sourceMatch && !p.id.startsWith ("__"))
             result.push_back (&p);
     }
     return result;

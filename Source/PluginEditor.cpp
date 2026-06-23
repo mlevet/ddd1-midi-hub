@@ -167,6 +167,31 @@ DDD1HubEditor::DDD1HubEditor (DDD1HubProcessor& p)
     syncLbl.setFont (juce::Font (12.f));
     syncLbl.setJustificationType (juce::Justification::centredRight);
 
+    // ── Virtual MIDI Out ──────────────────────────────────────────────────────
+    addLbl (virtOutLbl, "Virt:");
+    styleCombo (virtOutBox);
+    virtOutBox.addItem ("-- none --", 1);
+    virtOutBox.setSelectedId (1, juce::dontSendNotification);
+    virtOutBox.onChange = [this]
+    {
+        int id = virtOutBox.getSelectedId();
+        if (id < 2) { proc.openVirtualMidiOut ({}); return; }
+        auto devs = juce::MidiOutput::getAvailableDevices();
+        if (id - 2 < (int)devs.size())
+            proc.openVirtualMidiOut (devs[(size_t)(id - 2)].identifier);
+    };
+    addAndMakeVisible (virtOutBox);
+    refreshVirtOutBtn.onClick = [this] { refreshVirtualMidiOutputs(); };
+    styleBtn (refreshVirtOutBtn);
+    addLbl (virtChLbl, "Ch:");
+    styleCombo (virtChBox);
+    for (int i = 1; i <= 16; ++i) virtChBox.addItem (juce::String (i), i);
+    virtChBox.setSelectedId (1, juce::dontSendNotification);
+    virtChBox.onChange = [this] { proc.virtualMidiCh = virtChBox.getSelectedId(); };
+    addAndMakeVisible (virtChBox);
+
+
+
     // ── Pad buttons ───────────────────────────────────────────────────────────
     for (int i = 0; i < DDD1HubProcessor::numPads; ++i)
     {
@@ -355,6 +380,7 @@ DDD1HubEditor::DDD1HubEditor (DDD1HubProcessor& p)
                     proc.loadPatternBank (f);
                     rebuildGenreBoxes();
                     rebuildSourceBox();
+                    rebuildPatternSourceBox();
                     rebuildStyleBox();
                     rebuildPatternList();
                     rebuildSetsList();
@@ -381,6 +407,10 @@ DDD1HubEditor::DDD1HubEditor (DDD1HubProcessor& p)
     addCombo (patternStyleBox, { "All" },
         [this] { if (!loadingCfg) rebuildPatternList(); });
 
+    addLbl (patternSourceLbl, "Src:");
+    addCombo (patternSourceBox, { "All" },
+        [this] { if (!loadingCfg) rebuildPatternList(); });
+
     addLbl (patternResLbl, "Res:");
     addCombo (patternResBox, { "1/8", "1/16", "1/32" }, [this]
     {
@@ -403,6 +433,14 @@ DDD1HubEditor::DDD1HubEditor (DDD1HubProcessor& p)
         patternOffsetVal.setText (juce::String (proc.pads[selectedPad].patternOffset),
                                   juce::dontSendNotification);
     });
+    addAndMakeVisible (grpOverlayToggle);
+    grpOverlayToggle.onClick = [this]
+    {
+        if (loadingCfg) return;
+        proc.pads[selectedPad].grpOverlay = grpOverlayToggle.getToggleState();
+        updateVisibility();
+    };
+
     addToggle (overdubToggle, [this]
     {
         if (loadingCfg) return;
@@ -579,12 +617,15 @@ DDD1HubEditor::DDD1HubEditor (DDD1HubProcessor& p)
     styleBtn (setsGrooveBtn);
     styleBtn (setsAllBtn);
     styleBtn (setsFavBtn);
+    styleBtn (setsCrateBtn);
     styleBtn (setsUnratedBtn);
     styleBtn (setsSkipBtn);
     addAndMakeVisible (setsFillBtn);
     addAndMakeVisible (setsGrooveBtn);
     addAndMakeVisible (setsAllBtn);
     addAndMakeVisible (setsFavBtn);
+    addAndMakeVisible (setsCrateBtn);
+    addAndMakeVisible (clearCrateBtn);
     addAndMakeVisible (setsUnratedBtn);
     addAndMakeVisible (setsSkipBtn);
 
@@ -605,14 +646,21 @@ DDD1HubEditor::DDD1HubEditor (DDD1HubProcessor& p)
         setsStateFilter = s;
         setsAllBtn    .setToggleState (s == 0, juce::dontSendNotification);
         setsFavBtn    .setToggleState (s == 1, juce::dontSendNotification);
-        setsUnratedBtn.setToggleState (s == 2, juce::dontSendNotification);
-        setsSkipBtn   .setToggleState (s == 3, juce::dontSendNotification);
+        setsCrateBtn  .setToggleState (s == 2, juce::dontSendNotification);
+        setsUnratedBtn.setToggleState (s == 3, juce::dontSendNotification);
+        setsSkipBtn   .setToggleState (s == 4, juce::dontSendNotification);
         rebuildSetsList();
     };
     setsAllBtn    .onClick = [this, setStateFilter] { setStateFilter (0); };
     setsFavBtn    .onClick = [this, setStateFilter] { setStateFilter (setsStateFilter == 1 ? 0 : 1); };
-    setsUnratedBtn.onClick = [this, setStateFilter] { setStateFilter (setsStateFilter == 2 ? 0 : 2); };
-    setsSkipBtn   .onClick = [this, setStateFilter] { setStateFilter (setsStateFilter == 3 ? 0 : 3); };
+    setsCrateBtn  .onClick = [this, setStateFilter] { setStateFilter (setsStateFilter == 2 ? 0 : 2); };
+    setsUnratedBtn.onClick = [this, setStateFilter] { setStateFilter (setsStateFilter == 3 ? 0 : 3); };
+    setsSkipBtn   .onClick = [this, setStateFilter] { setStateFilter (setsStateFilter == 4 ? 0 : 4); };
+    clearCrateBtn .onClick = [this] {
+        proc.crateBank.clear();
+        proc.saveCrate();
+        rebuildSetsList();
+    };
     setsAllBtn.setToggleState (true, juce::dontSendNotification);
 
     styleBtn (setsSaveSceneBtn);
@@ -800,6 +848,7 @@ DDD1HubEditor::DDD1HubEditor (DDD1HubProcessor& p)
 
     rebuildGenreBoxes();
     rebuildSourceBox();
+    rebuildPatternSourceBox();
     rebuildStyleBox();
     rebuildSetsList();
 
@@ -976,6 +1025,7 @@ DDD1HubEditor::DDD1HubEditor (DDD1HubProcessor& p)
     refreshDdd1Inputs();
     refreshKbInputs();
     refreshMidiOutputs();
+    refreshVirtualMidiOutputs();
     selectPad (0);
     startTimerHz (15);
 }
@@ -1015,6 +1065,22 @@ void DDD1HubEditor::refreshMidiOutputs()
     }
     if (midiOutBox.getSelectedId() == 0)
         midiOutBox.setSelectedId (1, juce::dontSendNotification);
+}
+
+void DDD1HubEditor::refreshVirtualMidiOutputs()
+{
+    virtOutBox.clear (juce::dontSendNotification);
+    virtOutBox.addItem ("-- none --", 1);
+    auto devs = juce::MidiOutput::getAvailableDevices();
+    for (int i = 0; i < (int)devs.size(); ++i)
+    {
+        virtOutBox.addItem (devs[(size_t)i].name, i + 2);
+        if (devs[(size_t)i].identifier == proc.virtualMidiOutId)
+            virtOutBox.setSelectedId (i + 2, juce::dontSendNotification);
+    }
+    if (virtOutBox.getSelectedId() == 0)
+        virtOutBox.setSelectedId (1, juce::dontSendNotification);
+    virtChBox.setSelectedId (proc.virtualMidiCh, juce::dontSendNotification);
 }
 
 // ── ListBoxModel (top panel pattern list) ─────────────────────────────────────
@@ -1091,6 +1157,28 @@ void DDD1HubEditor::rebuildGenreBoxes()
     repopulate (setsGenreBox);
 }
 
+void DDD1HubEditor::rebuildPatternSourceBox()
+{
+    juce::String cur = patternSourceBox.getText();
+    patternSourceBox.clear (juce::dontSendNotification);
+    patternSourceBox.addItem ("All", 1);
+
+    juce::StringArray sources;
+    {
+        juce::ScopedLock lk (proc.patternBankLock);
+        sources = proc.patternBank.getSources();
+    }
+
+    int id = 2;
+    for (const auto& s : sources) patternSourceBox.addItem (s, id++);
+
+    bool found = false;
+    for (int i = 0; i < patternSourceBox.getNumItems(); ++i)
+        if (patternSourceBox.getItemText (i) == cur)
+            { patternSourceBox.setSelectedItemIndex (i, juce::dontSendNotification); found = true; break; }
+    if (!found) patternSourceBox.setSelectedItemIndex (0, juce::dontSendNotification);
+}
+
 void DDD1HubEditor::rebuildStyleBox()
 {
     // Populate specific styles filtered by selected genre
@@ -1127,15 +1215,13 @@ void DDD1HubEditor::rebuildStyleBox()
 
 void DDD1HubEditor::rebuildPatternList()
 {
-    juce::String instr = patternInstrBox.getSelectedId() > 1
-                       ? patternInstrBox.getText() : "All";
-    juce::String genre = patternGenreBox.getSelectedId() > 1
-                       ? patternGenreBox.getText() : "All";
-    juce::String style = patternStyleBox.getSelectedId() > 1
-                       ? patternStyleBox.getText() : "All";
+    juce::String instr  = patternInstrBox.getSelectedId()   > 1 ? patternInstrBox.getText()   : "All";
+    juce::String genre  = patternGenreBox.getSelectedId()   > 1 ? patternGenreBox.getText()   : "All";
+    juce::String style  = patternStyleBox.getSelectedId()   > 1 ? patternStyleBox.getText()   : "All";
+    juce::String source = patternSourceBox.getSelectedId()  > 1 ? patternSourceBox.getText()  : "All";
     {
         juce::ScopedLock lk (proc.patternBankLock);
-        filteredPatterns = proc.patternBank.filter (instr, genre, style);
+        filteredPatterns = proc.patternBank.filter (instr, genre, style, source);
     }
     patternListBox.updateContent();
 
@@ -1208,7 +1294,7 @@ void DDD1HubEditor::updateBottomZoneState()
 
 void DDD1HubEditor::repaintBottomZone()
 {
-    repaint (0, 500, getWidth(), getHeight() - 500);
+    repaint (0, getHeight() - 220, getWidth(), 220);
 }
 
 // ── Virtual piano ─────────────────────────────────────────────────────────────
@@ -1380,7 +1466,7 @@ void DDD1HubEditor::pushEditingPatternToProcessor()
 
 int DDD1HubEditor::hitTestGridStep (int x, int y) const
 {
-    const int bz    = 500;
+    const int bz    = getHeight() - 220;
     const int gridY = bz + 54;
     const int gridH = 96;
     if (y < gridY || y >= gridY + gridH) return -1;
@@ -1415,14 +1501,19 @@ void DDD1HubEditor::mouseDown (const juce::MouseEvent& e)
     if (step < 0) return;
 
     auto& s = editingPattern.steps[(size_t)step];
-    dragStartStep = step;
+    dragStartStep  = step;
+    gridDragWasHit = s.hit;
+    gridDragMoved  = false;
 
-    s.hit = !s.hit;
-    if (s.hit && s.velocity == 0) s.velocity = 100;
+    if (!s.hit)
+    {
+        s.hit = true;
+        if (s.velocity == 0) s.velocity = 100;
+        editingDirty = true;
+        pushEditingPatternToProcessor();
+        repaintBottomZone();
+    }
     dragStartVel = gridShowTune ? s.tune : (int)s.velocity;
-    editingDirty = true;
-    pushEditingPatternToProcessor();
-    repaintBottomZone();
 }
 
 void DDD1HubEditor::mouseUp (const juce::MouseEvent&)
@@ -1432,6 +1523,18 @@ void DDD1HubEditor::mouseUp (const juce::MouseEvent&)
         injectPianoNote (pianoMouseNote, false);
         pianoMouseNote = -1;
     }
+
+    // Tap on existing hit step (no drag) → toggle it off
+    if (bottomState == BottomZoneState::Grid
+        && gridDragWasHit && !gridDragMoved
+        && dragStartStep >= 0 && dragStartStep < (int)editingPattern.steps.size())
+    {
+        editingPattern.steps[(size_t)dragStartStep].hit = false;
+        editingDirty = true;
+        pushEditingPatternToProcessor();
+        repaintBottomZone();
+    }
+    dragStartStep = -1;
 }
 
 void DDD1HubEditor::mouseDrag (const juce::MouseEvent& e)
@@ -1454,6 +1557,7 @@ void DDD1HubEditor::mouseDrag (const juce::MouseEvent& e)
     if (!s.hit) return;
 
     int delta = -e.getDistanceFromDragStartY() / 2;
+    if (delta != 0) gridDragMoved = true;
 
     if (gridShowTune)
         s.tune     = juce::jlimit (-12, 12, dragStartVel + delta);
@@ -1549,10 +1653,11 @@ void DDD1HubEditor::SetsListModel::paintListBoxItem (int row, juce::Graphics& g,
     else if (row % 2) g.fillAll (col::bg);
     else              g.fillAll (col::panel);
 
-    // Zones (right → left): skip 22px | fav 22px | name fills rest
+    // Zones (right → left): skip 22px | fav 22px | pin(crate) 22px | name fills rest
     const int skipW  = 22;
     const int favW   = 22;
-    const int rightW = skipW + favW;    // 44
+    const int pinW   = 22;
+    const int rightW = skipW + favW + pinW;  // 66
 
     int nameX = 8;
     int nameW = w - rightW - nameX - 4;
@@ -1596,6 +1701,28 @@ void DDD1HubEditor::SetsListModel::paintListBoxItem (int row, juce::Graphics& g,
     g.setColour (isFav ? juce::Colour (0xFFAA44EE) : col::muted.withAlpha (0.4f));
     drawHeart (favCx, cy, 5.0f, isFav);
 
+    // 📌 Crate pin button
+    bool isInCrate = owner.proc.crateBank.contains (e.groupId);
+    auto drawPin = [&](float cx, float top, float r, bool filled)
+    {
+        juce::Path p;
+        // Diamond head
+        p.startNewSubPath (cx,       top);
+        p.lineTo          (cx + r,   top + r);
+        p.lineTo          (cx,       top + r * 1.7f);
+        p.lineTo          (cx - r,   top + r);
+        p.closeSubPath();
+        if (filled) g.fillPath (p);
+        else        g.strokePath (p, juce::PathStrokeType (0.8f));
+        // Needle
+        float lineW = filled ? 1.5f : 0.8f;
+        g.drawLine (cx, top + r * 1.7f, cx, top + r * 2.6f, lineW);
+    };
+    float pinCx  = (float)(w - skipW - favW - pinW / 2);
+    float pinTop = cy - 5.5f;
+    g.setColour (isInCrate ? col::accent : col::muted.withAlpha (0.4f));
+    drawPin (pinCx, pinTop, 4.0f, isInCrate);
+
     // × Skip button
     float xCx = (float)(w - skipW / 2);
     float xR  = 4.0f;
@@ -1614,6 +1741,7 @@ void DDD1HubEditor::SetsListModel::listBoxItemClicked (int row, const juce::Mous
 
     const int skipW = 22;
     const int favW  = 22;
+    const int pinW  = 22;
 
     // × Skip zone
     if (me.x >= w - skipW)
@@ -1626,13 +1754,22 @@ void DDD1HubEditor::SetsListModel::listBoxItemClicked (int row, const juce::Mous
         return;
     }
 
-    // ★ Favourite zone
+    // ♥ Favourite zone
     if (me.x >= w - skipW - favW)
     {
         auto cur = owner.proc.ratingBank.getState (e.groupId);
         auto next = (cur == CurationState::Favorite) ? CurationState::Unrated : CurationState::Favorite;
         owner.proc.ratingBank.setState (e.groupId, next);
         owner.proc.saveRatings();
+        owner.setsListBox.repaint();
+        return;
+    }
+
+    // 📌 Crate zone
+    if (me.x >= w - skipW - favW - pinW)
+    {
+        owner.proc.crateBank.toggle (e.groupId);
+        owner.proc.saveCrate();
         owner.setsListBox.repaint();
         return;
     }
@@ -1648,16 +1785,35 @@ void DDD1HubEditor::rebuildSetsList()
 
     setsEntries.clear();
 
-    // Saved scenes always shown (no filter)
+    auto passesFilters = [&](const juce::String& style, const juce::String& src,
+                              bool isFill, const juce::String& id) -> bool
+    {
+        if (!genre.isEmpty()  && style != genre)   return false;
+        if (!source.isEmpty() && src   != source)  return false;
+        if (setsTypeFilter == 1 &&  isFill) return false; // groove only
+        if (setsTypeFilter == 2 && !isFill) return false; // fill only
+        auto cstate = proc.ratingBank.getState (id);
+        if (setsStateFilter == 0 && cstate == CurationState::Skip)   return false;
+        if (setsStateFilter == 1 && cstate != CurationState::Favorite) return false;
+        if (setsStateFilter == 2 && !proc.crateBank.contains (id))   return false;
+        if (setsStateFilter == 3 && cstate != CurationState::Unrated) return false;
+        if (setsStateFilter == 4 && cstate != CurationState::Skip)   return false;
+        return true;
+    };
+
+    // Saved scenes — same filter rules as auto-sets
     {
         juce::ScopedLock lk (proc.patternSetBankLock);
         const auto& all = proc.patternSetBank.getAll();
         for (int i = 0; i < (int)all.size(); ++i)
-            setsEntries.push_back ({ false, i, all[(size_t)i].name, all[(size_t)i].style, "",
-                                     all[(size_t)i].id });
+        {
+            const auto& s = all[(size_t)i];
+            if (!passesFilters (s.style, s.source, s.isFill, s.id)) continue;
+            setsEntries.push_back ({ false, i, s.name, s.style, s.source, s.id });
+        }
     }
 
-    // Auto-sets filtered by genre, source, fill/groove, hidden
+    // Auto-sets
     int noteReceive[DDD1HubProcessor::numPads];
     for (int i = 0; i < DDD1HubProcessor::numPads; ++i)
         noteReceive[i] = proc.pads[i].noteReceive;
@@ -1666,15 +1822,7 @@ void DDD1HubEditor::rebuildSetsList()
     for (int i = 0; i < (int)autoSets.size(); ++i)
     {
         const auto& s = autoSets[(size_t)i];
-        if (!genre.isEmpty()  && s.style  != genre)  continue;
-        if (!source.isEmpty() && s.source != source)  continue;
-        if (setsTypeFilter == 1 &&  s.isFill) continue; // groove only
-        if (setsTypeFilter == 2 && !s.isFill) continue; // fill only
-        auto cstate = proc.ratingBank.getState (s.id);
-        if (setsStateFilter == 0 && cstate == CurationState::Skip)     continue; // hide skipped by default
-        if (setsStateFilter == 1 && cstate != CurationState::Favorite) continue;
-        if (setsStateFilter == 2 && cstate != CurationState::Unrated)  continue;
-        if (setsStateFilter == 3 && cstate != CurationState::Skip)     continue;
+        if (!passesFilters (s.style, s.source, s.isFill, s.id)) continue;
         setsEntries.push_back ({ true, autoBase + i, s.name, s.style, s.source, s.id });
     }
 
@@ -1703,6 +1851,21 @@ void DDD1HubEditor::applySetEntry (int idx)
         int localIdx = e.idx - (int)proc.patternSetBank.getAll().size();
         if (localIdx >= 0 && localIdx < (int)autoSets.size())
             proc.applyPatternSet (autoSets[(size_t)localIdx]);
+    }
+
+    // If the selected pad is no longer PatternBank after the scene swap (e.g. because
+    // an idea was previously loaded that left it in Keyboard/Arp mode), jump to the
+    // first PatternBank pad so the grid is immediately usable.
+    if (proc.pads[selectedPad].mode != PadMode::PatternBank)
+    {
+        for (int i = 0; i < DDD1HubProcessor::numPads; ++i)
+        {
+            if (proc.pads[i].mode == PadMode::PatternBank)
+            {
+                selectedPad = i;
+                break;
+            }
+        }
     }
 
     loadPadConfig();
@@ -1762,6 +1925,22 @@ void DDD1HubEditor::IdeasListModel::listBoxItemClicked (int row, const juce::Mou
     owner.proc.loadIdea (ideas[(size_t)row].id);
     owner.currentIdeaId = ideas[(size_t)row].id;
     owner.updateIdeaButtons();
+
+    // After restoring idea pad configs, jump to first PatternBank pad if the
+    // currently selected pad is no longer PatternBank (idea may have had a
+    // different mode there).
+    if (owner.proc.pads[owner.selectedPad].mode != PadMode::PatternBank)
+    {
+        for (int i = 0; i < DDD1HubProcessor::numPads; ++i)
+        {
+            if (owner.proc.pads[i].mode == PadMode::PatternBank)
+            {
+                owner.selectedPad = i;
+                break;
+            }
+        }
+    }
+
     owner.loadPadConfig();
     owner.refreshPadColors();
     owner.repaint();
@@ -1868,6 +2047,8 @@ void DDD1HubEditor::updateScenesMode()
     setsGrooveBtn  .setVisible (sets);
     setsAllBtn     .setVisible (sets);
     setsFavBtn     .setVisible (sets);
+    setsCrateBtn   .setVisible (sets);
+    clearCrateBtn  .setVisible (sets);
     setsUnratedBtn .setVisible (sets);
     setsSkipBtn    .setVisible (sets);
     setsListBox    .setVisible (sets);
@@ -1977,6 +2158,7 @@ void DDD1HubEditor::loadPadConfig()
     patternOffsetSlider.setValue (cfg.patternOffset, juce::dontSendNotification);
     patternOffsetVal.setText (juce::String (cfg.patternOffset), juce::dontSendNotification);
     overdubToggle.setToggleState     (cfg.overdubEnabled,   juce::dontSendNotification);
+    grpOverlayToggle.setToggleState  (cfg.grpOverlay,       juce::dontSendNotification);
 
     delayToggle.setToggleState (cfg.delayEnabled, juce::dontSendNotification);
     delayRateBox.setSelectedId (cfg.delayRate + 1, juce::dontSendNotification);
@@ -2039,22 +2221,28 @@ void DDD1HubEditor::updateVisibility()
     arpOctLbl.setVisible (isArp);     arpOctSlider.setVisible (isArp);
     arpOctVal.setVisible (isArp);
 
+    bool overlay = isPat && proc.pads[selectedPad].grpOverlay;
+    bool grpUI   = isGrp || overlay;
+
     patternHdrLbl.setVisible (isPat);
-    patternInstrLbl.setVisible (isPat);     patternInstrBox.setVisible (isPat);
-    patternGenreLbl.setVisible (isPat);     patternGenreBox.setVisible (isPat);
-    patternStyleLbl.setVisible (isPat);     patternStyleBox.setVisible (isPat);
+    // In overlay mode hide pattern browser filters — no list to filter
+    patternInstrLbl.setVisible (isPat && !overlay);  patternInstrBox.setVisible (isPat && !overlay);
+    patternGenreLbl.setVisible (isPat && !overlay);  patternGenreBox.setVisible (isPat && !overlay);
+    patternStyleLbl.setVisible (isPat && !overlay);  patternStyleBox.setVisible (isPat && !overlay);
+    patternSourceLbl.setVisible(isPat && !overlay);  patternSourceBox.setVisible(isPat && !overlay);
     patternResLbl.setVisible (isPat);       patternResBox.setVisible (isPat);
-    patternListBox.setVisible (isPat);
+    patternListBox.setVisible (isPat && !overlay);
     patternOffsetLbl.setVisible (isPat);    patternOffsetSlider.setVisible (isPat);
     patternOffsetVal.setVisible (isPat);
     overdubToggle.setVisible (isPat || isKb);
+    grpOverlayToggle.setVisible (isPat);
 
-    bool grpRowSel = isGrp && groupSelectedRow >= 0
+    bool grpRowSel = grpUI && groupSelectedRow >= 0
                      && groupSelectedRow < (int)proc.pads[selectedPad].groupTargets.size();
-    groupHdrLbl.setVisible (isGrp);
-    groupTable.setVisible (isGrp);
-    groupAddBtn.setVisible (isGrp);
-    groupRemoveBtn.setVisible (isGrp && !proc.pads[selectedPad].groupTargets.empty());
+    groupHdrLbl.setVisible (isGrp);  // header label only for dedicated GroupedTrigs mode
+    groupTable.setVisible (grpUI);
+    groupAddBtn.setVisible (grpUI);
+    groupRemoveBtn.setVisible (grpUI && !proc.pads[selectedPad].groupTargets.empty());
     groupPadLbl.setVisible (grpRowSel);    groupPadSlider.setVisible (grpRowSel);    groupPadVal.setVisible (grpRowSel);
     groupOffsetLbl.setVisible (grpRowSel); groupOffsetSlider.setVisible (grpRowSel); groupOffsetVal.setVisible (grpRowSel);
     groupVelLbl.setVisible (grpRowSel);    groupVelSlider.setVisible (grpRowSel);    groupVelVal.setVisible (grpRowSel);
@@ -2073,6 +2261,9 @@ void DDD1HubEditor::updateVisibility()
     clearStepsBtn.setVisible  (hasGrid && !editingPattern.id.isEmpty());
     undoBtn.setVisible        (hasGrid && undoPattern.has_value());
     clearPadBtn.setVisible    (isPat);
+
+    // Re-layout group controls — their y position differs between modes
+    resized();
 }
 
 // ── Timer ─────────────────────────────────────────────────────────────────────
@@ -2278,11 +2469,16 @@ void DDD1HubEditor::resized()
 
     // Row 2
     y = 32;
-    midiChLbl.setBounds  (M, y, 48, 22);
-    midiChBox.setBounds  (M + 50, y, 56, 22);
-    bpmLbl.setBounds     (M + 118, y, 68, 22);
-    bpmSlider.setBounds  (M + 188, y, 160, 22);
-    bpmValLbl.setBounds  (M + 352, y, 44, 22);
+    midiChLbl.setBounds       (M, y, 48, 22);
+    midiChBox.setBounds       (M + 50, y, 56, 22);
+    bpmLbl.setBounds          (M + 118, y, 68, 22);
+    bpmSlider.setBounds       (M + 188, y, 160, 22);
+    bpmValLbl.setBounds       (M + 352, y, 44, 22);
+    virtOutLbl.setBounds      (M + 412, y, 42, 22);
+    virtOutBox.setBounds      (M + 456, y, 130, 22);
+    refreshVirtOutBtn.setBounds (M + 590, y, 20, 22);
+    virtChLbl.setBounds       (M + 614, y, 26, 22);
+    virtChBox.setBounds       (M + 642, y, 50, 22);
 
     // Pad buttons — one extra slot at the left for the capture toggle
     y = 60;
@@ -2303,12 +2499,11 @@ void DDD1HubEditor::resized()
     // Arpeggiator header
     arpHdrLbl.setBounds      (M, 138, 200, 22);
     arpLatchToggle.setBounds (M + 210, 138, 80, 22);
-    // Pattern Bank header
+    // Pattern Bank header + overlay toggle (right of header)
     patternHdrLbl.setBounds      (M, 138, 200, 22);
-    // Grouped Trigs header + buttons
+    grpOverlayToggle.setBounds   (M + 210, 138, 180, 22);
+    // Grouped Trigs header
     groupHdrLbl.setBounds    (M, 138, 160, 22);
-    groupAddBtn.setBounds    (M + 168, 138, 28, 22);
-    groupRemoveBtn.setBounds (M + 200, 138, 28, 22);
 
     // ── y=160: shared instKey + mode-specific extras ──────────────────────────
     // instKey is visible for KB / Arp / PatternBank modes
@@ -2330,13 +2525,16 @@ void DDD1HubEditor::resized()
     arpOctSlider.setBounds (M + 474, 160, 70, 22);
     arpOctVal.setBounds    (M + 548, 160, 24, 22);
 
-    // Pattern Bank: instrument + genre + style filters on same row as instKey
-    patternInstrLbl.setBounds  (M + 186, 160, 38,  22);
-    patternInstrBox.setBounds  (M + 226, 160, 110, 22);
-    patternGenreLbl.setBounds  (M + 346, 160, 38,  22);
-    patternGenreBox.setBounds  (M + 386, 160, 110, 22);
-    patternStyleLbl.setBounds  (M + 504, 160, 34,  22);
-    patternStyleBox.setBounds  (M + 540, 160, 110, 22);
+    // Pattern Bank: instrument + genre + style + source filters on same row as instKey
+    // 4 groups of (28-label + 84-box) with 6px gaps = (28+84)*4 + 6*3 = 448+18 = 466 ≤ W-186-M
+    patternInstrLbl.setBounds  (M + 186, 160, 28,  22);
+    patternInstrBox.setBounds  (M + 214, 160, 84,  22);
+    patternGenreLbl.setBounds  (M + 304, 160, 28,  22);
+    patternGenreBox.setBounds  (M + 332, 160, 84,  22);
+    patternStyleLbl.setBounds  (M + 422, 160, 28,  22);
+    patternStyleBox.setBounds  (M + 450, 160, 84,  22);
+    patternSourceLbl.setBounds (M + 540, 160, 24,  22);
+    patternSourceBox.setBounds (M + 566, 160, 96,  22);
 
     // Delay: always visible — row 1 (toggle + rate + repeats)
     delayToggle.setBounds        (M,        350, 60,  22);
@@ -2369,20 +2567,33 @@ void DDD1HubEditor::resized()
     // Pattern Bank: list (y=210, height=130 → ends at y=340)
     patternListBox.setBounds (M, 210, W - 2 * M, 130);
 
-    // Grouped Trigs: table (y=164, height=130 → ends at y=294) + row editor (y=298)
-    groupTable.setBounds (M, 164, W - 2 * M, 130);
-    groupPadLbl.setBounds       (M,        298, 32, 22);
-    groupPadSlider.setBounds    (M +  34,  298, 60, 22);
-    groupPadVal.setBounds       (M +  98,  298, 28, 22);
-    groupOffsetLbl.setBounds    (M + 136,  298, 44, 22);
-    groupOffsetSlider.setBounds (M + 182,  298, 70, 22);
-    groupOffsetVal.setBounds    (M + 256,  298, 32, 22);
-    groupVelLbl.setBounds       (M + 298,  298, 32, 22);
-    groupVelSlider.setBounds    (M + 332,  298, 70, 22);
-    groupVelVal.setBounds       (M + 406,  298, 40, 22);
-    groupTuneLbl.setBounds      (M + 456,  298, 38, 22);
-    groupTuneSlider.setBounds   (M + 496,  298, 80, 22);
-    groupTuneVal.setBounds      (M + 580,  298, 36, 22);
+    // Group add/remove, table, and row editor: positions differ between GroupedTrigs mode and PatternBank overlay
+    {
+        bool overlayActive = (proc.pads[selectedPad].mode == PadMode::PatternBank)
+                              && proc.pads[selectedPad].grpOverlay;
+        if (overlayActive)
+        {
+            // Overlay: add/remove below the header row; table where patternListBox would be
+            groupAddBtn.setBounds    (M,        206, 28, 18);
+            groupRemoveBtn.setBounds (M + 32,   206, 28, 18);
+            groupTable.setBounds     (M,        228, W - 2*M, 92);
+            groupPadLbl.setBounds      (M,        322, 32, 22);  groupPadSlider.setBounds    (M +  34, 322, 60, 22);  groupPadVal.setBounds    (M +  98, 322, 28, 22);
+            groupOffsetLbl.setBounds   (M + 136,  322, 44, 22);  groupOffsetSlider.setBounds (M + 182, 322, 70, 22);  groupOffsetVal.setBounds (M + 256, 322, 32, 22);
+            groupVelLbl.setBounds      (M + 298,  322, 32, 22);  groupVelSlider.setBounds    (M + 332, 322, 70, 22);  groupVelVal.setBounds    (M + 406, 322, 40, 22);
+            groupTuneLbl.setBounds     (M + 456,  322, 38, 22);  groupTuneSlider.setBounds   (M + 496, 322, 80, 22);  groupTuneVal.setBounds   (M + 580, 322, 36, 22);
+        }
+        else
+        {
+            // GroupedTrigs pad mode: original positions (y=138 for add/remove, y=164 for table, y=298 for editor)
+            groupAddBtn.setBounds    (M + 168, 138, 28, 22);
+            groupRemoveBtn.setBounds (M + 200, 138, 28, 22);
+            groupTable.setBounds     (M, 164, W - 2*M, 130);
+            groupPadLbl.setBounds      (M,        298, 32, 22);  groupPadSlider.setBounds    (M +  34,  298, 60, 22);  groupPadVal.setBounds    (M +  98,  298, 28, 22);
+            groupOffsetLbl.setBounds   (M + 136,  298, 44, 22);  groupOffsetSlider.setBounds (M + 182,  298, 70, 22);  groupOffsetVal.setBounds (M + 256,  298, 32, 22);
+            groupVelLbl.setBounds      (M + 298,  298, 32, 22);  groupVelSlider.setBounds    (M + 332,  298, 70, 22);  groupVelVal.setBounds    (M + 406,  298, 40, 22);
+            groupTuneLbl.setBounds     (M + 456,  298, 38, 22);  groupTuneSlider.setBounds   (M + 496,  298, 80, 22);  groupTuneVal.setBounds   (M + 580,  298, 36, 22);
+        }
+    }
 
     // ── Keyboard-only controls (y=206+) ───────────────────────────────────────
     retriggHdrLbl.setBounds      (M, 206, 240, 16);
@@ -2426,8 +2637,10 @@ void DDD1HubEditor::resized()
     setsGrooveBtn.setBounds   (M + 362,  420, 58,  20);
     setsAllBtn.setBounds      (M + 428,  420, 30,  20);
     setsFavBtn.setBounds      (M + 462,  420, 34,  20);
-    setsUnratedBtn.setBounds  (M + 500,  420, 54,  20);
-    setsSkipBtn.setBounds     (M + 558,  420, 52,  20);
+    setsCrateBtn.setBounds    (M + 500,  420, 44,  20);
+    clearCrateBtn.setBounds   (M + 548,  420, 16,  20);
+    setsUnratedBtn.setBounds  (M + 568,  420, 54,  20);
+    setsSkipBtn.setBounds     (M + 626,  420, 52,  20);
     {
         auto listBounds = juce::Rectangle<int> (M, 444, W - 2 * M, bz - 6 - 444);
         setsListBox.setBounds  (listBounds);

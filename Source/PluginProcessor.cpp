@@ -62,6 +62,7 @@ DDD1HubProcessor::DDD1HubProcessor()
     patternSetBank.load (juce::File (patternSetBankFilePath));
 
     loadRatings();
+    loadCrate();
     loadIdeas();
 
 #if JUCE_DEBUG
@@ -415,6 +416,7 @@ void DDD1HubProcessor::processBlock (juce::AudioBuffer<float>& audio, juce::Midi
     }
 
     juce::MidiBuffer outBuf;
+    juce::MidiBuffer virtualOutBuf;
 
     samplesSinceLastClock += numSamples;
     clockSyncActive = (samplesSinceLastClock < (int)(currentSampleRate * 2.0));
@@ -466,8 +468,9 @@ void DDD1HubProcessor::processBlock (juce::AudioBuffer<float>& audio, juce::Midi
                     if (pg.targetPadIdx >= 0 && pg.targetPadIdx < numPads)
                     {
                         int seqTune = juce::jlimit (72, 96, 84 + pg.seqTune);
-                        outBuf.addEvent (juce::MidiMessage::noteOn (pg.midiCh, seqTune, pg.velocity), samplePos);
-                        outBuf.addEvent (juce::MidiMessage::noteOn (pg.midiCh, pads[pg.targetPadIdx].instKey, pg.velocity), samplePos);
+                        outBuf.addEvent (juce::MidiMessage::noteOn (pg.midiCh, seqTune,                        pg.velocity), samplePos);
+                        outBuf.addEvent (juce::MidiMessage::noteOn (pg.midiCh, pads[pg.targetPadIdx].instKey,  pg.velocity), samplePos);
+                        virtualOutBuf.addEvent (juce::MidiMessage::noteOn (virtualMidiCh, pads[pg.targetPadIdx].instKey, pg.velocity), samplePos);
                     }
                 }
             }
@@ -535,6 +538,7 @@ void DDD1HubProcessor::processBlock (juce::AudioBuffer<float>& audio, juce::Midi
                             int seqTune  = juce::jlimit (72, 96, 84 + (note - 72) + cfg.semitoneOffset);
                             outBuf.addEvent (juce::MidiMessage::noteOn (midiCh, seqTune,     (juce::uint8)64),              samplePos);
                             outBuf.addEvent (juce::MidiMessage::noteOn (midiCh, cfg.instKey, kb.arpHitVelocity),            samplePos);
+                            virtualOutBuf.addEvent (juce::MidiMessage::noteOn (virtualMidiCh, cfg.instKey, kb.arpHitVelocity), samplePos);
                             delayEchoLastFired[cfg.instKey] = totalSamples + samplePos; // guard MIDI THRU
                             padHitSeq[p].fetch_add (1, std::memory_order_relaxed);
                             kb.arpLastNote = note;
@@ -594,12 +598,39 @@ void DDD1HubProcessor::processBlock (juce::AudioBuffer<float>& audio, juce::Midi
                         int seqTune = juce::jlimit (72, 96, 84 + step.tune);
                         outBuf.addEvent (juce::MidiMessage::noteOn (midiCh, seqTune, (juce::uint8)64), samplePos);
                         outBuf.addEvent (juce::MidiMessage::noteOn (midiCh, cfg.instKey, (juce::uint8)step.velocity), samplePos);
+                        virtualOutBuf.addEvent (juce::MidiMessage::noteOn (virtualMidiCh, cfg.instKey, (juce::uint8)step.velocity), samplePos);
                         padHitSeq[p].fetch_add (1, std::memory_order_relaxed);
                         kb.patternLastNote = seqTune;
                         if (cfg.delayEnabled)
                         {
                             scheduleClockEchoes (seqTune,     64,                         p, midiCh);
                             scheduleClockEchoes (cfg.instKey, (juce::uint8)step.velocity, p, midiCh);
+                        }
+                        // GroupedTrigs overlay: fan out to targets using step velocity
+                        if (cfg.grpOverlay)
+                        {
+                            std::vector<GroupTarget> localTargets;
+                            {
+                                juce::ScopedLock lk (groupLock);
+                                localTargets = cfg.groupTargets;
+                            }
+                            for (const auto& tgt : localTargets)
+                            {
+                                if (tgt.padIndex < 0 || tgt.padIndex >= numPads) continue;
+                                juce::uint8 outVel = (juce::uint8)juce::jlimit (1, 127,
+                                    (int)step.velocity * tgt.velocityScale / 100);
+                                int tgtTune = juce::jlimit (72, 96, 84 + tgt.tuneOffset);
+                                if (tgt.offsetPulses <= 0)
+                                {
+                                    outBuf.addEvent (juce::MidiMessage::noteOn (midiCh, tgtTune,                       outVel), samplePos);
+                                    outBuf.addEvent (juce::MidiMessage::noteOn (midiCh, pads[tgt.padIndex].instKey,    outVel), samplePos);
+                                    virtualOutBuf.addEvent (juce::MidiMessage::noteOn (virtualMidiCh, pads[tgt.padIndex].instKey, outVel), samplePos);
+                                }
+                                else
+                                {
+                                    pendingGroupTrigs.push_back ({ tgt.padIndex, tgt.offsetPulses, outVel, tgt.tuneOffset, midiCh });
+                                }
+                            }
                         }
                     }
                 }
@@ -957,8 +988,9 @@ void DDD1HubProcessor::processBlock (juce::AudioBuffer<float>& audio, juce::Midi
                         int seqTune = juce::jlimit (72, 96, 84 + tgt.tuneOffset);
                         if (tgt.offsetPulses <= 0)
                         {
-                            outBuf.addEvent (juce::MidiMessage::noteOn (midiCh, seqTune,                 outVel), t);
+                            outBuf.addEvent (juce::MidiMessage::noteOn (midiCh, seqTune,                    outVel), t);
                             outBuf.addEvent (juce::MidiMessage::noteOn (midiCh, pads[tgt.padIndex].instKey, outVel), t);
+                            virtualOutBuf.addEvent (juce::MidiMessage::noteOn (virtualMidiCh, pads[tgt.padIndex].instKey, outVel), t);
                         }
                         else
                         {
@@ -1063,6 +1095,7 @@ void DDD1HubProcessor::processBlock (juce::AudioBuffer<float>& audio, juce::Midi
                             int seqTune = juce::jlimit (72, 96, 84 + (note - 72) + cfg.semitoneOffset);
                             outBuf.addEvent (juce::MidiMessage::noteOn (midiCh, seqTune,     (juce::uint8)64),   s);
                             outBuf.addEvent (juce::MidiMessage::noteOn (midiCh, cfg.instKey, kb.arpHitVelocity), s);
+                            virtualOutBuf.addEvent (juce::MidiMessage::noteOn (virtualMidiCh, cfg.instKey, kb.arpHitVelocity), s);
                             delayEchoLastFired[cfg.instKey] = totalSamples + s; // guard MIDI THRU
                             kb.arpLastNote = note;
                             advanceArpStep (kb, cfg, poolSize);
@@ -1084,6 +1117,14 @@ void DDD1HubProcessor::processBlock (juce::AudioBuffer<float>& audio, juce::Midi
         juce::ScopedLock lk (midiOutLock);
         if (midiOut && !outBuf.isEmpty())
             midiOut->sendBlockOfMessagesNow (outBuf);
+    }
+
+    // ── Send to Virtual MIDI Out ──────────────────────────────────────────────
+    if (!virtualOutBuf.isEmpty())
+    {
+        juce::ScopedLock lk (virtualMidiOutLock);
+        if (virtualMidiOut)
+            virtualMidiOut->sendBlockOfMessagesNow (virtualOutBuf);
     }
 
     totalSamples += numSamples;
@@ -1173,17 +1214,33 @@ void DDD1HubProcessor::savePatternSetBank()
 void DDD1HubProcessor::applyPatternSet (const PatternSet& s)
 {
     juce::ScopedLock lk (patternBankLock);
-    // Transactional: clear previous scene assignments before loading new one
+
+    // Mark which pads the new scene assigns
+    bool willAssign[numPads] = {};
+    for (const auto& a : s.assignments)
+        if (a.padIndex >= 0 && a.padIndex < numPads)
+            willAssign[a.padIndex] = true;
+
+    // Clear only scene-owned state: PatternBank pads not present in the new scene
+    // go back to PassThrough. User-configured KB/Arp/GroupedTrigs pads are preserved.
     for (int i = 0; i < numPads; ++i)
-        pads[i].selectedPatternId = {};
+    {
+        if (!willAssign[i])
+        {
+            pads[i].selectedPatternId = {};
+            if (pads[i].mode == PadMode::PatternBank)
+                pads[i].mode = PadMode::PassThrough;
+        }
+    }
+
+    // Apply new scene assignments
     for (const auto& a : s.assignments)
     {
         if (a.padIndex < 0 || a.padIndex >= numPads) continue;
         pads[a.padIndex].selectedPatternId = a.patternId;
         pads[a.padIndex].patternResolution = a.resolution;
         pads[a.padIndex].patternOffset     = a.offset;
-        if (pads[a.padIndex].mode != PadMode::PatternBank)
-            pads[a.padIndex].mode = PadMode::PatternBank;
+        pads[a.padIndex].mode = PadMode::PatternBank;
     }
 }
 
@@ -1197,6 +1254,30 @@ static juce::File ratingsFile()
 
 void DDD1HubProcessor::loadRatings()  { ratingBank.load (ratingsFile()); }
 void DDD1HubProcessor::saveRatings()  { ratingBank.save (ratingsFile()); }
+
+// ── Crate Bank ───────────────────────────────────────────────────────────────
+
+static juce::File crateFile()
+{
+    return juce::File::getSpecialLocation (juce::File::userApplicationDataDirectory)
+               .getChildFile ("DDD1MidiHub/crate.json");
+}
+
+void DDD1HubProcessor::loadCrate() { crateBank.load (crateFile()); }
+void DDD1HubProcessor::saveCrate() { crateBank.save (crateFile()); }
+
+// ── Virtual MIDI Out ─────────────────────────────────────────────────────────
+
+void DDD1HubProcessor::openVirtualMidiOut (const juce::String& deviceId)
+{
+    juce::ScopedLock lk (virtualMidiOutLock);
+    virtualMidiOut.reset();
+    virtualMidiOutId = deviceId;
+    if (deviceId.isEmpty()) return;
+    for (auto& info : juce::MidiOutput::getAvailableDevices())
+        if (info.identifier == deviceId)
+            { virtualMidiOut = juce::MidiOutput::openDevice (deviceId); break; }
+}
 
 // ── Idea Bank ─────────────────────────────────────────────────────────────────
 
@@ -1298,6 +1379,11 @@ PatternSet DDD1HubProcessor::captureCurrentPatternSet() const
     PatternSet s;
     s.id   = "scene_" + juce::String (juce::Random::getSystemRandom().nextInt (99999));
     s.name = "New Scene";
+
+    juce::ScopedLock lk (patternBankLock);
+    juce::String commonSource;
+    bool sourceMixed = false;
+
     for (int i = 0; i < numPads; ++i)
     {
         if (pads[i].selectedPatternId.isNotEmpty() &&
@@ -1309,8 +1395,30 @@ PatternSet DDD1HubProcessor::captureCurrentPatternSet() const
             a.resolution = pads[i].patternResolution;
             a.offset     = pads[i].patternOffset;
             s.assignments.push_back (a);
+
+            if (const auto* pat = patternBank.findById (pads[i].selectedPatternId))
+            {
+                juce::String src = pat->source.isNotEmpty() ? pat->source
+                                 : PatternBank::extractSource (pat->id);
+                if (commonSource.isEmpty())        commonSource = src;
+                else if (commonSource != src)      sourceMixed = true;
+
+                // Genre from first pattern
+                if (s.style.isEmpty())
+                    s.style = pat->genre.isNotEmpty() ? pat->genre
+                            : (pat->styles.size() > 0 ? pat->styles[0] : "");
+            }
         }
     }
+
+    if (!sourceMixed) s.source = commonSource;
+    s.isFill = !s.assignments.empty() && [&]() {
+        for (auto& a : s.assignments)
+            if (const auto* pat = patternBank.findById (a.patternId))
+                if (pat->isFill()) return true;
+        return false;
+    }();
+
     return s;
 }
 
@@ -1324,6 +1432,8 @@ void DDD1HubProcessor::getStateInformation (juce::MemoryBlock& destData)
     state.setProperty ("kbInputId",         kbInputId,           nullptr);
     state.setProperty ("patternBankPath",    patternBankFilePath,    nullptr);
     state.setProperty ("patternSetBankPath", patternSetBankFilePath, nullptr);
+    state.setProperty ("virtualMidiOutId",   virtualMidiOutId,       nullptr);
+    state.setProperty ("virtualMidiCh",      virtualMidiCh,          nullptr);
     state.setProperty ("patternLengthBars",  patternLengthBars,      nullptr);
     state.setProperty ("patternTotalSteps",  patternTotalSteps,      nullptr);
 
@@ -1395,12 +1505,17 @@ void DDD1HubProcessor::setStateInformation (const void* data, int sizeInBytes)
     auto kbId = state.getProperty ("kbInputId", "").toString();
     if (kbId.isNotEmpty()) openKbInput (kbId);
 
+
     auto bankPath = state.getProperty ("patternBankPath", "").toString();
     if (bankPath.isNotEmpty()) loadPatternBank (juce::File (bankPath));
     auto setBankPath = state.getProperty ("patternSetBankPath", "").toString();
     if (setBankPath.isNotEmpty()) loadPatternSetBank (juce::File (setBankPath));
     patternLengthBars = state.getProperty ("patternLengthBars", 1);
     patternTotalSteps = state.getProperty ("patternTotalSteps", 16);
+
+    auto virtId = state.getProperty ("virtualMidiOutId", "").toString();
+    if (virtId.isNotEmpty()) openVirtualMidiOut (virtId);
+    virtualMidiCh = state.getProperty ("virtualMidiCh", 1);
 
     // Pad configs intentionally not restored — always start clean (PassThrough, no delay)
 }

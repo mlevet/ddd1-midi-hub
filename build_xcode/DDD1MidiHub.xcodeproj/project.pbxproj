@@ -81,6 +81,7 @@
 		749781A7B4154D2793F4FB2B /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_graphics/juce_graphics_Harfbuzz.cpp */ = {isa = PBXBuildFile; fileRef = A4BA72AFAB42494790C963F7 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_graphics/juce_graphics_Harfbuzz.cpp */; };
 		1122AABB3344CC5566EE7788 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/RatingBank.cpp */ = {isa = PBXBuildFile; fileRef = AABB1122CC3344556677DD88 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/RatingBank.cpp */; };
 		FF11AA22BB33CC44DD55EE66 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/IdeaBank.cpp */ = {isa = PBXBuildFile; fileRef = DD44EE55FF66778899001122 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/IdeaBank.cpp */; };
+		EE22FF33AA44BB55CC66DD77 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/CrateBank.cpp */ = {isa = PBXBuildFile; fileRef = AA44BB55CC66DD77EE88FF99 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/CrateBank.cpp */; };
 		754CAA447B7B4CED8A3D358D /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/PatternBank.cpp */ = {isa = PBXBuildFile; fileRef = AE3089C0EFC94A24817E3670 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/PatternBank.cpp */; };
 		780566F5EFF74D03B90B61E6 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_core/juce_core_CompilationTime.cpp */ = {isa = PBXBuildFile; fileRef = 5716FD36C3C348268C5C6B22 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_core/juce_core_CompilationTime.cpp */; };
 		7968DAA7A8DE4C6BA57D3669 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/PatternSetBank.cpp */ = {isa = PBXBuildFile; fileRef = A6F6006B224942F0B578C8D0 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/PatternSetBank.cpp */; };
@@ -241,6 +242,8 @@
 		BB22CC33DD44EE55FF667788 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/Idea.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Idea.h; path = Source/Idea.h; sourceTree = SOURCE_ROOT; };
 		CC33DD44EE55FF6677889900 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/IdeaBank.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = IdeaBank.h; path = Source/IdeaBank.h; sourceTree = SOURCE_ROOT; };
 		DD44EE55FF66778899001122 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/IdeaBank.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = IdeaBank.cpp; path = Source/IdeaBank.cpp; sourceTree = SOURCE_ROOT; };
+		BB55CC66DD77EE88FF99AA00 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/CrateBank.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = CrateBank.h; path = Source/CrateBank.h; sourceTree = SOURCE_ROOT; };
+		AA44BB55CC66DD77EE88FF99 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/CrateBank.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = CrateBank.cpp; path = Source/CrateBank.cpp; sourceTree = SOURCE_ROOT; };
 		AE3089C0EFC94A24817E3670 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/PatternBank.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = PatternBank.cpp; path = Source/PatternBank.cpp; sourceTree = SOURCE_ROOT; };
 		B2CE7FC1190A4EC882C839C0 /* /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_gui_basics/juce_gui_basics_2.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = juce_gui_basics_2.cpp; path = /Users/matthieulevet/PycharmProjects/DDD1BassTranslator/JUCE/modules/juce_gui_basics/juce_gui_basics_2.cpp; sourceTree = "<absolute>"; };
 		BB94427507A24C099F1A69ED /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/build_xcode/DDD1MidiHub_artefacts/JuceLibraryCode/DDD1MidiHub_Standalone/PkgInfo.rule */ = {isa = PBXFileReference; explicitFileType = default; fileEncoding = 4; name = PkgInfo.rule; path = build_xcode/DDD1MidiHub_artefacts/JuceLibraryCode/DDD1MidiHub_Standalone/PkgInfo.rule; sourceTree = SOURCE_ROOT; };
@@ -436,6 +439,8 @@
 				BB22CC33DD44EE55FF667788 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/Idea.h */,
 				CC33DD44EE55FF6677889900 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/IdeaBank.h */,
 				DD44EE55FF66778899001122 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/IdeaBank.cpp */,
+				BB55CC66DD77EE88FF99AA00 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/CrateBank.h */,
+				AA44BB55CC66DD77EE88FF99 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/CrateBank.cpp */,
 				C395B542EC9D4E73A6A18A24 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/PluginEditor.cpp */,
 				0226F0F886FE4AE2AAF7035B /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/PluginProcessor.cpp */,
 			);
@@ -853,6 +858,7 @@ fi
 				7968DAA7A8DE4C6BA57D3669 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/PatternSetBank.cpp */,
 				1122AABB3344CC5566EE7788 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/RatingBank.cpp */,
 				FF11AA22BB33CC44DD55EE66 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/IdeaBank.cpp */,
+				EE22FF33AA44BB55CC66DD77 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/CrateBank.cpp */,
 				F3114AD6C5A340B297E7A0C2 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/PluginEditor.cpp */,
 				925A43408B584BEDB2AEE686 /* /Users/matthieulevet/PycharmProjects/DDD1MidiHub/Source/PluginProcessor.cpp */,
 			);

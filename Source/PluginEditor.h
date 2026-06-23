@@ -31,6 +31,7 @@ private:
     void loadPadConfig();
     void updateVisibility();
     void rebuildPatternList();
+    void rebuildPatternSourceBox();
     void rebuildStyleBox();
     void updateBottomZoneState();
     void repaintBottomZone();
@@ -53,8 +54,10 @@ private:
     BottomZoneState bottomState   = BottomZoneState::Hidden;
     RhythmPattern   editingPattern;
     bool            editingDirty  = false;
-    int             dragStartVel  = 100;
-    int             dragStartStep = -1;
+    int             dragStartVel    = 100;
+    int             dragStartStep   = -1;
+    bool            gridDragWasHit  = false;  // step was already hit when mouseDown fired
+    bool            gridDragMoved   = false;  // mouse moved enough to count as a drag
 
     // Bottom zone – global settings (always visible)
     juce::Label    globalLengthLbl, globalStepsLbl;
@@ -76,8 +79,10 @@ private:
 
     // ── Top bar ───────────────────────────────────────────────────────────────
     juce::Label    ddd1InLbl, kbInLbl, midiOutLbl, midiChLbl, bpmLbl, bpmValLbl, syncLbl;
-    juce::ComboBox ddd1InBox, kbInBox, midiOutBox, midiChBox;
-    juce::TextButton refreshDdd1Btn {"↺"}, refreshKbBtn {"↺"}, refreshOutBtn {"↺"};
+    juce::Label    virtOutLbl, virtChLbl;
+    juce::ComboBox ddd1InBox, kbInBox, midiOutBox, midiChBox, virtOutBox, virtChBox;
+    juce::TextButton refreshDdd1Btn {"↺"}, refreshKbBtn {"↺"}, refreshOutBtn {"↺"}, refreshVirtOutBtn {"↺"};
+    void refreshVirtualMidiOutputs();
     juce::Slider   bpmSlider;
 
     // ── Pad buttons ───────────────────────────────────────────────────────────
@@ -112,12 +117,14 @@ private:
 
     // ── Pattern Bank mode top panel ───────────────────────────────────────────
     juce::Label        patternHdrLbl, patternInstrLbl, patternGenreLbl, patternStyleLbl,
-                       patternResLbl, patternOffsetLbl, patternOffsetVal;
-    juce::ComboBox     patternInstrBox, patternGenreBox, patternStyleBox, patternResBox;
+                       patternSourceLbl, patternResLbl, patternOffsetLbl, patternOffsetVal;
+    juce::ComboBox     patternInstrBox, patternGenreBox, patternStyleBox, patternSourceBox,
+                       patternResBox;
     juce::ListBox      patternListBox;
     juce::Slider       patternOffsetSlider;
     juce::TextButton   patternBankLoadBtn {"Load Bank"};
-    juce::ToggleButton overdubToggle {"Overdub"};
+    juce::ToggleButton overdubToggle    {"Overdub"};
+    juce::ToggleButton grpOverlayToggle {"GroupedTrigs Overlay"};
 
     // ── Grouped Trigs mode ────────────────────────────────────────────────────
     struct GroupTableModel : public juce::ListBoxModel
@@ -184,11 +191,13 @@ private:
     juce::TextButton setsGrooveBtn    {"Groove"};
     juce::TextButton setsAllBtn       {"All"};
     juce::TextButton setsFavBtn       {"Fav"};
+    juce::TextButton setsCrateBtn     {"Crate"};
+    juce::TextButton clearCrateBtn    {"\xe2\x9c\x95"}; // ✕
     juce::TextButton setsUnratedBtn   {"Unrated"};
     juce::TextButton setsSkipBtn      {"Skipped"};
     // 0 = all (non-skipped), 1 = groove only, 2 = fill only
     int              setsTypeFilter  = 0;
-    // 0 = all, 1 = favorites, 2 = unrated, 3 = skipped
+    // 0 = all, 1 = favorites, 2 = crate, 3 = unrated, 4 = skipped
     int              setsStateFilter = 0;
     bool             showIdeas       = false;
     juce::String     currentIdeaId;

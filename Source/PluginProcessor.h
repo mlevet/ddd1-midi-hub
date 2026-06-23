@@ -5,6 +5,7 @@
 #include "PatternSetBank.h"
 #include "RatingBank.h"
 #include "IdeaBank.h"
+#include "CrateBank.h"
 
 struct DelayEvent
 {
@@ -108,12 +109,21 @@ public:
     void loadRatings ();
     void saveRatings ();
 
+    CrateBank crateBank;
+    void loadCrate ();
+    void saveCrate ();
+
     IdeaBank ideaBank;
     void loadIdeas ();
     void saveIdeas ();
     Idea captureCurrentIdea (const juce::String& name, const IdeaOrigin& origin = {});
     void loadIdea  (const juce::String& id);
     void saveIdea  (Idea& idea);
+
+    // ── Virtual DDD1 MIDI Out ────────────────────────────────────────────────
+    void         openVirtualMidiOut (const juce::String& deviceId);
+    juce::String virtualMidiOutId;
+    int          virtualMidiCh = 1;
 
     // ── Global params ────────────────────────────────────────────────────────
     juce::AudioProcessorValueTreeState apvts;
@@ -207,6 +217,9 @@ private:
     std::unique_ptr<juce::MidiInput>  ddd1In;
     std::unique_ptr<juce::MidiInput>  kbIn;
     juce::CriticalSection             midiOutLock;
+
+    std::unique_ptr<juce::MidiOutput> virtualMidiOut;
+    juce::CriticalSection             virtualMidiOutLock;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DDD1HubProcessor)
 };

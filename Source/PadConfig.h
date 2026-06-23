@@ -48,8 +48,9 @@ struct PadConfig
     int     delayRepeats   = 3;
     float   delayDecay     = 50.f; // % velocity loss per repeat
 
-    // Grouped Trigs mode
+    // Grouped Trigs mode — also used as overlay on PatternBank mode
     std::vector<GroupTarget> groupTargets;
+    bool grpOverlay     = false;  // when true and mode==PatternBank: fan out each step hit through groupTargets
 
     bool muted          = false;
     bool overdubEnabled = false;

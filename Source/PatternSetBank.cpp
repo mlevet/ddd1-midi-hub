@@ -25,9 +25,11 @@ static PadAssignment assignmentFromVar (const juce::var& v)
 static juce::var setToVar (const PatternSet& s)
 {
     auto obj = std::make_unique<juce::DynamicObject>();
-    obj->setProperty ("id",    s.id);
-    obj->setProperty ("name",  s.name);
-    obj->setProperty ("style", s.style);
+    obj->setProperty ("id",     s.id);
+    obj->setProperty ("name",   s.name);
+    obj->setProperty ("style",  s.style);
+    obj->setProperty ("source", s.source);
+    obj->setProperty ("isFill", s.isFill);
     juce::Array<juce::var> arr;
     for (auto& a : s.assignments)
         arr.add (assignmentToVar (a));
@@ -38,9 +40,11 @@ static juce::var setToVar (const PatternSet& s)
 static PatternSet setFromVar (const juce::var& v)
 {
     PatternSet s;
-    s.id    = v.getProperty ("id",    "").toString();
-    s.name  = v.getProperty ("name",  "").toString();
-    s.style = v.getProperty ("style", "").toString();
+    s.id     = v.getProperty ("id",     "").toString();
+    s.name   = v.getProperty ("name",   "").toString();
+    s.style  = v.getProperty ("style",  "").toString();
+    s.source = v.getProperty ("source", "").toString();
+    s.isFill = (bool)v.getProperty ("isFill", false);
     if (const auto* arr = v.getProperty ("assignments", juce::var{}).getArray())
         for (auto& a : *arr)
             s.assignments.push_back (assignmentFromVar (a));

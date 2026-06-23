@@ -51,7 +51,8 @@ public:
 
     std::vector<const RhythmPattern*> filter (const juce::String& instrument,
                                                const juce::String& genre,
-                                               const juce::String& style) const;
+                                               const juce::String& style,
+                                               const juce::String& source = {}) const;
 
     juce::StringArray getSources() const;
     juce::StringArray getGenres()  const;
