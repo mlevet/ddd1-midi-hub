@@ -800,10 +800,14 @@ DDD1HubEditor::DDD1HubEditor (DDD1HubProcessor& p)
         proc.captureActive = captureActive;
         if (captureActive)
         {
-            // Snapshot all pad configs before overwriting — restored when Record turns off
-            proc.recordSnapshotValid = true;
-            for (int i = 0; i < DDD1HubProcessor::numPads; ++i)
-                proc.preRecordPadConfigs[i] = proc.pads[i];
+            // Take snapshot only on first capture — subsequent captures keep the original
+            // snapshot so Restore always goes back to the state before any capture.
+            if (!proc.recordSnapshotValid)
+            {
+                proc.recordSnapshotValid = true;
+                for (int i = 0; i < DDD1HubProcessor::numPads; ++i)
+                    proc.preRecordPadConfigs[i] = proc.pads[i];
+            }
 
             // Steps = bars × 16 (1/16 grid) so 4 bars → 64 steps
             int numSteps = proc.patternLengthBars * 16;
@@ -823,6 +827,11 @@ DDD1HubEditor::DDD1HubEditor (DDD1HubProcessor& p)
                 proc.pads[i].selectedPatternId = liveId;
                 proc.updateLivePattern (liveId, live);
             }
+            // Force the editor to reload the freshly cleared patterns from the bank.
+            // Without this, updateBottomZoneState skips the reload when editingPattern.id
+            // already matches the live slot ID (same ID, new content).
+            editingPattern = {};
+            editingDirty   = false;
         }
         else
         {
@@ -850,6 +859,13 @@ DDD1HubEditor::DDD1HubEditor (DDD1HubProcessor& p)
         refreshPadColors();
         repaint();
     };
+
+    styleBtn (shiftLeftBtn);
+    styleBtn (shiftRightBtn);
+    shiftLeftBtn.onClick  = [this] { shiftAllPatterns (-1); };
+    shiftRightBtn.onClick = [this] { shiftAllPatterns (+1); };
+    addAndMakeVisible (shiftLeftBtn);
+    addAndMakeVisible (shiftRightBtn);
 
     rebuildGenreBoxes();
     rebuildSourceBox();
@@ -1583,6 +1599,36 @@ void DDD1HubEditor::updateCaptureToggle()
     restoreSetupBtn.setEnabled (hasSnapshot);
     restoreSetupBtn.setColour (juce::TextButton::buttonColourId,
                                hasSnapshot ? col::accent.withAlpha (0.6f) : col::panel);
+}
+
+void DDD1HubEditor::shiftAllPatterns (int direction)
+{
+    juce::ScopedLock lk (proc.patternBankLock);
+    juce::StringArray shifted;
+    for (int i = 0; i < DDD1HubProcessor::numPads; ++i)
+    {
+        const juce::String& pid = proc.pads[i].selectedPatternId;
+        if (pid.isEmpty() || proc.pads[i].mode != PadMode::PatternBank) continue;
+        if (shifted.contains (pid)) continue;
+        const RhythmPattern* pat = proc.patternBank.findById (pid);
+        if (!pat || pat->steps.empty()) continue;
+        RhythmPattern updated = *pat;
+        int n = (int)updated.steps.size();
+        // Rotate: direction>0 shifts right (last step wraps to front),
+        //         direction<0 shifts left  (first step wraps to back).
+        if (direction > 0)
+            std::rotate (updated.steps.begin(), updated.steps.begin() + (n - 1), updated.steps.end());
+        else
+            std::rotate (updated.steps.begin(), updated.steps.begin() + 1, updated.steps.end());
+        proc.patternBank.overwrite (pid, updated);
+        shifted.add (pid);
+    }
+    // Refresh editor view for the currently selected pad
+    const juce::String& pid = proc.pads[selectedPad].selectedPatternId;
+    if (pid.isNotEmpty())
+        if (const auto* pat = proc.patternBank.findById (pid))
+            editingPattern = *pat;
+    repaintBottomZone();
 }
 
 void DDD1HubEditor::refreshPadColors()
@@ -2665,6 +2711,8 @@ void DDD1HubEditor::resized()
     gridViewBtn.setBounds   (M + 260,  bz + 4, 50, 22);
     clearStepsBtn.setBounds (M + 320,  bz + 4, 50, 22);
     undoBtn.setBounds       (M + 378,  bz + 4, 50, 22);
+    shiftLeftBtn.setBounds  (M + 436,  bz + 4, 50, 22);
+    shiftRightBtn.setBounds (M + 490,  bz + 4, 50, 22);
     saveBtn.setBounds       (W - 130,  bz + 4, 56, 22);
     saveAsBtn.setBounds     (W - 68,   bz + 4, 52, 22);
     patternNameLbl.setBounds (M, bz + 30, W - 2 * M - 220, 20);

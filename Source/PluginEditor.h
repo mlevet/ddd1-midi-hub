@@ -215,6 +215,11 @@ private:
     bool captureActive = false;
     void updateCaptureToggle();
 
+    // Global pattern shift
+    juce::TextButton shiftLeftBtn  {"← Shift"};
+    juce::TextButton shiftRightBtn {"Shift →"};
+    void shiftAllPatterns (int direction);
+
     struct SceneEntry { bool isAuto; int idx; juce::String name; juce::String style; juce::String source; juce::String groupId; };
     std::vector<SceneEntry> setsEntries;
     void rebuildSetsList();
