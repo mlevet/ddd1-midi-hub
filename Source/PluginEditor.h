@@ -60,10 +60,12 @@ private:
     bool            gridDragMoved   = false;  // mouse moved enough to count as a drag
 
     // Bottom zone – global settings (always visible)
-    juce::Label    globalLengthLbl, globalStepsLbl;
-    juce::ComboBox globalLengthBox, globalStepsBox;
+    juce::Label    globalLengthLbl, gridViewLbl;
+    juce::ComboBox globalLengthBox, gridViewBox;
 
-    bool gridShowTune = false;
+    // Editor view/grid resolution (independent of pattern step count)
+    int  gridViewSteps = 16;
+    bool gridShowTune  = false;
 
     // Bottom zone – Grid controls
     juce::Label      patternNameLbl;
@@ -73,6 +75,9 @@ private:
     juce::TextButton clearStepsBtn { "Clear Steps" };
     juce::TextButton undoBtn       { "Undo" };
     std::optional<RhythmPattern>   undoPattern;
+
+    void ensureWorkingCopy();
+    void expandPatternToGrid (int newSteps);
 
     // PatternBank pad controls
     juce::TextButton clearPadBtn { "Unassign" };

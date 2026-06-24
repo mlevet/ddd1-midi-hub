@@ -809,11 +809,9 @@ DDD1HubEditor::DDD1HubEditor (DDD1HubProcessor& p)
                     proc.preRecordPadConfigs[i] = proc.pads[i];
             }
 
-            // Steps = bars × 16 (1/16 grid) so 4 bars → 64 steps
-            int numSteps = proc.patternLengthBars * 16;
+            // Use the current Grid selector as the step count for fresh live patterns.
+            int numSteps = gridViewSteps;
             proc.patternTotalSteps = numSteps;
-            int stepsId = (numSteps <= 16) ? 1 : (numSteps <= 32) ? 2 : 3;
-            globalStepsBox.setSelectedId (stepsId, juce::dontSendNotification);
 
             for (int i = 0; i < DDD1HubProcessor::numPads; ++i)
             {
@@ -886,15 +884,18 @@ DDD1HubEditor::DDD1HubEditor (DDD1HubProcessor& p)
                                    proc.patternLengthBars == 2 ? 2 : 1,
                                    juce::dontSendNotification);
 
-    addLbl (globalStepsLbl, "Steps:");
-    addCombo (globalStepsBox, { "16", "32", "64" }, [this]
+    addLbl (gridViewLbl, "Grid:");
+    addCombo (gridViewBox, { "16", "32", "48", "64" }, [this]
     {
-        const int opts[] = { 16, 32, 64 };
-        proc.patternTotalSteps = opts[globalStepsBox.getSelectedId() - 1];
+        const int opts[] = { 16, 32, 48, 64 };
+        gridViewSteps = opts[gridViewBox.getSelectedId() - 1];
+        proc.patternTotalSteps = gridViewSteps;
+        repaintBottomZone();
     });
-    globalStepsBox.setSelectedId (proc.patternTotalSteps >= 64 ? 3 :
-                                  proc.patternTotalSteps >= 32 ? 2 : 1,
-                                  juce::dontSendNotification);
+    gridViewBox.setSelectedId (proc.patternTotalSteps >= 64 ? 4 :
+                               proc.patternTotalSteps >= 48 ? 3 :
+                               proc.patternTotalSteps >= 32 ? 2 : 1,
+                               juce::dontSendNotification);
 
     addLbl (patternNameLbl, "", col::text);
     patternNameLbl.setFont (juce::Font (12.f));
@@ -1011,6 +1012,7 @@ DDD1HubEditor::DDD1HubEditor (DDD1HubProcessor& p)
     clearStepsBtn.onClick = [this]
     {
         if (editingPattern.id.isEmpty()) return;
+        ensureWorkingCopy();            // clone library pattern before destructive edit
         undoPattern = editingPattern;
         for (auto& s : editingPattern.steps) { s.hit = false; s.velocity = 100; s.tune = 0; }
         editingDirty = true;
@@ -1280,6 +1282,19 @@ void DDD1HubEditor::updateBottomZoneState()
                 {
                     editingPattern = *pat;
                     editingDirty   = false;
+
+                    // Sync the grid selector to the pattern's natural step count
+                    // when it matches one of our available options.
+                    const int opts[] = { 16, 32, 48, 64 };
+                    for (int oi = 0; oi < 4; ++oi)
+                    {
+                        if ((int)editingPattern.steps.size() == opts[oi])
+                        {
+                            gridViewSteps = opts[oi];
+                            gridViewBox.setSelectedId (oi + 1, juce::dontSendNotification);
+                            break;
+                        }
+                    }
                 }
                 patternNameLbl.setText (editingPattern.name, juce::dontSendNotification);
                 bottomState = BottomZoneState::Grid;
@@ -1491,15 +1506,46 @@ int DDD1HubEditor::hitTestGridStep (int x, int y) const
     const int gridY = bz + 54;
     const int gridH = 96;
     if (y < gridY || y >= gridY + gridH) return -1;
-    int numSteps = (int)editingPattern.steps.size();
-    if (numSteps == 0) return -1;
-    const int cellW = (getWidth() - 32) / numSteps;
-    int step = (x - 16) / cellW;
-    if (step < 0 || step >= numSteps) return -1;
-    return step;
+    int viewCells = gridViewSteps;
+    if (viewCells == 0) return -1;
+    const int cellW = (getWidth() - 32) / viewCells;
+    int cell = (x - 16) / cellW;
+    if (cell < 0 || cell >= viewCells) return -1;
+    return cell;   // returns view-cell index, not pattern-step index
 }
 
 // ── Mouse interaction for grid editing ───────────────────────────────────────
+
+void DDD1HubEditor::ensureWorkingCopy()
+{
+    // Library/factory patterns must be cloned before editing so the source is never mutated.
+    if (editingPattern.id.startsWith ("idea_") || editingPattern.id.startsWith ("__"))
+        return;
+
+    juce::String cloneId = "__work_" + editingPattern.id;
+    RhythmPattern clone  = editingPattern;
+    clone.id             = cloneId;
+
+    juce::ScopedLock lk (proc.patternBankLock);
+    proc.patternBank.insert (clone);
+
+    proc.pads[selectedPad].selectedPatternId = cloneId;
+    editingPattern.id = cloneId;
+}
+
+void DDD1HubEditor::expandPatternToGrid (int newSteps)
+{
+    int oldSteps = (int)editingPattern.steps.size();
+    if (newSteps <= oldSteps) return;
+
+    std::vector<PatternStep> expanded ((size_t)newSteps);
+    for (int i = 0; i < oldSteps; ++i)
+        expanded[(size_t)(i * newSteps / oldSteps)] = editingPattern.steps[(size_t)i];
+
+    editingPattern.steps = std::move (expanded);
+    editingDirty = true;
+    pushEditingPatternToProcessor();
+}
 
 void DDD1HubEditor::mouseDown (const juce::MouseEvent& e)
 {
@@ -1516,13 +1562,33 @@ void DDD1HubEditor::mouseDown (const juce::MouseEvent& e)
         return;
     }
     if (bottomState != BottomZoneState::Grid) return;
-    if ((int)editingPattern.steps.size() < 16) return;
+    if ((int)editingPattern.steps.size() == 0) return;
 
-    int step = hitTestGridStep (e.x, e.y);
-    if (step < 0) return;
+    int viewCell  = hitTestGridStep (e.x, e.y);
+    if (viewCell < 0) return;
 
-    auto& s = editingPattern.steps[(size_t)step];
-    dragStartStep  = step;
+    int numSteps  = (int)editingPattern.steps.size();
+    int viewCells = gridViewSteps;
+
+    // Coarse view is read-only
+    if (viewCells < numSteps) return;
+
+    // Clone library pattern before any destructive edit
+    ensureWorkingCopy();
+
+    // Fine view: expand to the selected grid
+    if (viewCells > numSteps)
+    {
+        expandPatternToGrid (viewCells);
+        numSteps = (int)editingPattern.steps.size();   // now == viewCells
+    }
+
+    // View cell == pattern step after expansion (or for equal view)
+    int patStep = viewCell;
+    if (patStep >= numSteps) return;
+
+    auto& s = editingPattern.steps[(size_t)patStep];
+    dragStartStep  = patStep;
     gridDragWasHit = s.hit;
     gridDragMoved  = false;
 
@@ -2347,7 +2413,7 @@ void DDD1HubEditor::updateVisibility()
     bool showZone  = hasGrid;
 
     globalLengthLbl.setVisible (true); globalLengthBox.setVisible (true);
-    globalStepsLbl.setVisible  (true); globalStepsBox.setVisible  (true);
+    gridViewLbl.setVisible  (true); gridViewBox.setVisible  (true);
     patternNameLbl.setVisible  (showZone);
     gridViewBtn.setVisible    (hasGrid);
     saveBtn.setVisible        (hasGrid && editingDirty);
@@ -2459,74 +2525,137 @@ void DDD1HubEditor::paint (juce::Graphics& g)
     }
 
     // ── Grid drawing ──────────────────────────────────────────────────────────
-    int numSteps = (int)editingPattern.steps.size();
-    if (numSteps == 0) return;
+    int numSteps  = (int)editingPattern.steps.size();
+    int viewCells = gridViewSteps;    // number of cells drawn (may differ from numSteps)
+    if (numSteps == 0 || viewCells == 0) return;
 
     const int gridY  = bz + 54;
-    const int cellW  = (getWidth() - 32) / numSteps;
+    const int cellW  = (getWidth() - 32) / viewCells;
     const int cellH  = 96;
     const int barMax = cellH - 16;
 
-    int playheadStep = proc.transportRunning ? proc.getPatternStep (selectedPad) : -1;
+    // Coarse view: viewCells < numSteps — read-only overview, no editing.
+    // Fine/equal view: viewCells >= numSteps — editable.
+    bool isCoarseView = (viewCells < numSteps);
 
-    for (int i = 0; i < numSteps; ++i)
+    // Map playhead (pattern step) → view cell
+    int playheadStep = proc.transportRunning ? proc.getPatternStep (selectedPad) : -1;
+    int playheadCell = (playheadStep >= 0 && numSteps > 0)
+                           ? playheadStep * viewCells / numSteps : -1;
+
+    for (int i = 0; i < viewCells; ++i)
     {
         int x = 16 + i * cellW;
-        bool isPlay = (playheadStep == i);
+        bool isPlay = (i == playheadCell);
 
         // Cell background
         g.setColour (isPlay ? col::accent.withAlpha (0.18f) : col::bg);
         g.fillRect (x, gridY, cellW - 2, cellH);
 
-        // Step number
+        // Step number label
         g.setFont (juce::Font (9.f));
         g.setColour (isPlay ? col::accent : col::muted);
         g.drawText (juce::String (i + 1), x + 2, gridY + 1, cellW - 4, 10,
                     juce::Justification::centredLeft);
 
-        const auto& step = editingPattern.steps[(size_t)i];
-
-        if (step.hit)
+        // ── Resolve which pattern step(s) this view cell represents ─────────
+        if (isCoarseView)
         {
-            if (gridShowTune)
-            {
-                // ── Tune view: green bar, height = pitch offset ───────────
-                // -12 → tiny bar (4px),  0 → half,  +12 → full
-                int barH = 4 + (int)((float)(step.tune + 12) / 24.f * (barMax - 4));
-                g.setColour (isPlay ? col::green : col::green.withAlpha (0.8f));
-                g.fillRect (x + 2, gridY + cellH - barH, cellW - 6, barH);
+            // Coarse: each cell covers multiple pattern steps — show aggregate
+            int startStep = i * numSteps / viewCells;
+            int endStep   = (i + 1) * numSteps / viewCells;
 
-                // Tune value label
-                g.setFont (juce::Font (8.f));
-                g.setColour (col::green.withAlpha (0.9f));
-                juce::String tv = (step.tune > 0 ? "+" : "") + juce::String (step.tune);
-                g.drawText (tv, x + 2, gridY + 1, cellW - 4, 10,
-                            juce::Justification::centredRight);
+            bool anyHit  = false;
+            int  maxVel  = 0;
+            int  maxTune = 0;
+            for (int s = startStep; s < endStep && s < numSteps; ++s)
+            {
+                if (editingPattern.steps[(size_t)s].hit)
+                {
+                    anyHit = true;
+                    maxVel  = juce::jmax (maxVel,  (int)editingPattern.steps[(size_t)s].velocity);
+                    maxTune = juce::jmax (maxTune, editingPattern.steps[(size_t)s].tune);
+                }
+            }
+
+            if (anyHit)
+            {
+                if (gridShowTune)
+                {
+                    int barH = 4 + (int)((float)(maxTune + 12) / 24.f * (barMax - 4));
+                    g.setColour (col::green.withAlpha (0.6f));
+                    g.fillRect (x + 2, gridY + cellH - barH, cellW - 6, barH);
+                }
+                else
+                {
+                    int barH = 4 + (int)((float)maxVel / 127.f * (barMax - 4));
+                    g.setColour (col::accent.withAlpha (0.6f));
+                    g.fillRect (x + 2, gridY + cellH - barH, cellW - 6, barH);
+                }
             }
             else
             {
-                // ── Velocity view: blue bar, height = velocity ────────────
-                if (step.velocity > 0)
-                {
-                    int barH = 4 + (int)((float)step.velocity / 127.f * (barMax - 4));
-                    g.setColour (isPlay ? col::accent : col::accent.withAlpha (0.75f));
-                    g.fillRect (x + 2, gridY + cellH - barH, cellW - 6, barH);
-                }
-                // velocity==0: hit is true but bar invisible (trig present but silent)
-
-                // Show tune hint dot if tune is non-zero
-                if (step.tune != 0)
-                {
-                    g.setColour (col::green.withAlpha (0.7f));
-                    g.fillEllipse ((float)(x + cellW - 7), (float)(gridY + 3), 4.f, 4.f);
-                }
+                g.setColour (col::muted.withAlpha (0.2f));
+                g.drawRect (x + 2, gridY + 14, cellW - 6, cellH - 18, 1);
             }
+
+            // Dim overlay to signal read-only
+            g.setColour (col::bg.withAlpha (0.35f));
+            g.fillRect (x, gridY, cellW - 2, cellH);
         }
         else
         {
-            // Empty step
-            g.setColour (col::muted.withAlpha (0.3f));
-            g.drawRect (x + 2, gridY + 14, cellW - 6, cellH - 18, 1);
+            // Fine or equal: each view cell maps to at most one pattern step
+            // patStep = i * numSteps / viewCells  (floor)
+            // A cell is "primary" (has a real step) when i is a multiple of viewCells/numSteps.
+            // Equivalently: (i * numSteps) % viewCells == 0.
+            bool isPrimary = ((i * numSteps) % viewCells == 0);
+            int  patStep   = i * numSteps / viewCells;
+
+            if (isPrimary && patStep < numSteps)
+            {
+                const auto& step = editingPattern.steps[(size_t)patStep];
+                if (step.hit)
+                {
+                    if (gridShowTune)
+                    {
+                        int barH = 4 + (int)((float)(step.tune + 12) / 24.f * (barMax - 4));
+                        g.setColour (isPlay ? col::green : col::green.withAlpha (0.8f));
+                        g.fillRect (x + 2, gridY + cellH - barH, cellW - 6, barH);
+
+                        g.setFont (juce::Font (8.f));
+                        g.setColour (col::green.withAlpha (0.9f));
+                        juce::String tv = (step.tune > 0 ? "+" : "") + juce::String (step.tune);
+                        g.drawText (tv, x + 2, gridY + 1, cellW - 4, 10,
+                                    juce::Justification::centredRight);
+                    }
+                    else
+                    {
+                        if (step.velocity > 0)
+                        {
+                            int barH = 4 + (int)((float)step.velocity / 127.f * (barMax - 4));
+                            g.setColour (isPlay ? col::accent : col::accent.withAlpha (0.75f));
+                            g.fillRect (x + 2, gridY + cellH - barH, cellW - 6, barH);
+                        }
+                        if (step.tune != 0)
+                        {
+                            g.setColour (col::green.withAlpha (0.7f));
+                            g.fillEllipse ((float)(x + cellW - 7), (float)(gridY + 3), 4.f, 4.f);
+                        }
+                    }
+                }
+                else
+                {
+                    g.setColour (col::muted.withAlpha (0.3f));
+                    g.drawRect (x + 2, gridY + 14, cellW - 6, cellH - 18, 1);
+                }
+            }
+            else
+            {
+                // Sub-cell (no pattern step here yet) — empty, available for fine editing
+                g.setColour (col::muted.withAlpha (0.12f));
+                g.drawRect (x + 2, gridY + 14, cellW - 6, cellH - 18, 1);
+            }
         }
 
         // Cell divider
@@ -2536,7 +2665,17 @@ void DDD1HubEditor::paint (juce::Graphics& g)
 
     // Grid border
     g.setColour (col::muted.withAlpha (0.4f));
-    g.drawRect (16, gridY, cellW * numSteps, cellH, 1);
+    g.drawRect (16, gridY, cellW * viewCells, cellH, 1);
+
+    // Coarse-view label so user knows editing is disabled
+    if (isCoarseView)
+    {
+        g.setFont (juce::Font (9.f));
+        g.setColour (col::muted.withAlpha (0.7f));
+        g.drawText ("view only \xe2\x80\x94 increase Grid to edit",
+                    16, gridY + cellH + 2, getWidth() - 32, 12,
+                    juce::Justification::centredLeft);
+    }
 
 }
 
@@ -2745,8 +2884,8 @@ void DDD1HubEditor::resized()
     // ── Bottom zone ───────────────────────────────────────────────────────────
     globalLengthLbl.setBounds (M,       bz + 4, 52, 22);
     globalLengthBox.setBounds (M + 54,  bz + 4, 78, 22);
-    globalStepsLbl.setBounds  (M + 142, bz + 4, 44, 22);
-    globalStepsBox.setBounds  (M + 188, bz + 4, 60, 22);
+    gridViewLbl.setBounds  (M + 142, bz + 4, 40, 22);
+    gridViewBox.setBounds  (M + 184, bz + 4, 64, 22);
     gridViewBtn.setBounds   (M + 260,  bz + 4, 50, 22);
     clearStepsBtn.setBounds (M + 320,  bz + 4, 50, 22);
     undoBtn.setBounds       (M + 378,  bz + 4, 50, 22);
