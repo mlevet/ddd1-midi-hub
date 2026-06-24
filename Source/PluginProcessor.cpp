@@ -1249,6 +1249,19 @@ void DDD1HubProcessor::applyPatternSet (const PatternSet& s)
         pads[a.padIndex].patternOffset     = a.offset;
         pads[a.padIndex].mode = PadMode::PatternBank;
     }
+
+    // Restore idea patterns from ideaBank so any prior shift is undone.
+    // Shifts modify patternBank in-place; ideaBank always holds the originals.
+    for (int i = 0; i < numPads; ++i)
+    {
+        const auto& pid = pads[i].selectedPatternId;
+        if (!pid.startsWith ("idea_")) continue;
+        if (const auto* p = ideaBank.findPatternById (pid))
+        {
+            if (!patternBank.overwrite (pid, *p))
+                patternBank.insert (*p);
+        }
+    }
 }
 
 // ── Rating Bank ──────────────────────────────────────────────────────────────

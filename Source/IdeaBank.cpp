@@ -357,3 +357,11 @@ const Idea* IdeaBank::findById (const juce::String& id) const
         if (idea.id == id) return &idea;
     return nullptr;
 }
+
+const RhythmPattern* IdeaBank::findPatternById (const juce::String& patId) const
+{
+    for (const auto& idea : ideas_)
+        for (const auto& p : idea.patterns)
+            if (p.id == patId) return &p;
+    return nullptr;
+}

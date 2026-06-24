@@ -1604,18 +1604,44 @@ void DDD1HubEditor::updateCaptureToggle()
 void DDD1HubEditor::shiftAllPatterns (int direction)
 {
     juce::ScopedLock lk (proc.patternBankLock);
+
+    // Map original library ID → clone ID so all pads sharing the same
+    // library pattern land on the same clone rather than independent copies.
+    std::map<juce::String, juce::String> cloneMap;
     juce::StringArray shifted;
+
     for (int i = 0; i < DDD1HubProcessor::numPads; ++i)
     {
-        const juce::String& pid = proc.pads[i].selectedPatternId;
-        if (pid.isEmpty() || proc.pads[i].mode != PadMode::PatternBank) continue;
+        if (proc.pads[i].mode != PadMode::PatternBank) continue;
+        juce::String& pid = proc.pads[i].selectedPatternId;
+        if (pid.isEmpty()) continue;
+
+        // Working copies (idea_ or __prefixed) are shifted in place.
+        // Library/factory/imported patterns are cloned first so the source
+        // entry is never mutated — reloading the original scene restores them.
+        bool isWorkingCopy = pid.startsWith ("idea_") || pid.startsWith ("__");
+        if (!isWorkingCopy)
+        {
+            auto it = cloneMap.find (pid);
+            if (it == cloneMap.end())
+            {
+                const RhythmPattern* src = proc.patternBank.findById (pid);
+                if (!src || src->steps.empty()) continue;
+                RhythmPattern clone = *src;
+                clone.id = "__work_" + pid;
+                proc.patternBank.insert (clone);
+                cloneMap[pid] = clone.id;
+                it = cloneMap.find (pid);
+            }
+            pid = it->second;   // redirect pad to its working clone
+        }
+
         if (shifted.contains (pid)) continue;
+
         const RhythmPattern* pat = proc.patternBank.findById (pid);
         if (!pat || pat->steps.empty()) continue;
         RhythmPattern updated = *pat;
         int n = (int)updated.steps.size();
-        // Rotate: direction>0 shifts right (last step wraps to front),
-        //         direction<0 shifts left  (first step wraps to back).
         if (direction > 0)
             std::rotate (updated.steps.begin(), updated.steps.begin() + (n - 1), updated.steps.end());
         else
@@ -1623,6 +1649,7 @@ void DDD1HubEditor::shiftAllPatterns (int direction)
         proc.patternBank.overwrite (pid, updated);
         shifted.add (pid);
     }
+
     // Refresh editor view for the currently selected pad
     const juce::String& pid = proc.pads[selectedPad].selectedPatternId;
     if (pid.isNotEmpty())
@@ -1923,6 +1950,12 @@ void DDD1HubEditor::applySetEntry (int idx)
         }
     }
 
+    // Force the editor to reload grid from the (now-restored) bank.
+    // Without this, updateBottomZoneState's "editingPattern.id == id" guard
+    // can skip the refresh and leave shifted steps visible in the grid.
+    editingPattern = {};
+    editingDirty   = false;
+
     loadPadConfig();
     refreshPadColors();
     repaint();
@@ -1980,6 +2013,12 @@ void DDD1HubEditor::IdeasListModel::listBoxItemClicked (int row, const juce::Mou
     owner.proc.loadIdea (ideas[(size_t)row].id);
     owner.currentIdeaId = ideas[(size_t)row].id;
     owner.updateIdeaButtons();
+
+    // Force the editor to reload grid from bank — without this the guard
+    // "editingPattern.id != id" may be false (same idea reloaded) and skip
+    // the refresh, leaving stale shifted steps visible.
+    owner.editingPattern = {};
+    owner.editingDirty   = false;
 
     // After restoring idea pad configs, jump to first PatternBank pad if the
     // currently selected pad is no longer PatternBank (idea may have had a
