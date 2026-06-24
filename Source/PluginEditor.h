@@ -211,13 +211,13 @@ private:
 
     // Capture toggle + Restore Setup — sit before pad buttons
     juce::TextButton captureToggleBtn {""};
-    juce::TextButton restoreSetupBtn  {"↩"};
+    juce::TextButton restoreSetupBtn  {"rst"};
     bool captureActive = false;
     void updateCaptureToggle();
 
     // Global pattern shift
-    juce::TextButton shiftLeftBtn  {"← Shift"};
-    juce::TextButton shiftRightBtn {"Shift →"};
+    juce::TextButton shiftLeftBtn  {"< Shift"};
+    juce::TextButton shiftRightBtn {"Shift >"};
     void shiftAllPatterns (int direction);
 
     struct SceneEntry { bool isAuto; int idx; juce::String name; juce::String style; juce::String source; juce::String groupId; };

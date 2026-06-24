@@ -1339,11 +1339,14 @@ void DDD1HubProcessor::loadIdea (const juce::String& id)
     const Idea* idea = ideaBank.findById (id);
     if (!idea) return;
 
-    // Inject pattern snapshots — idea version is authoritative over library
+    // Inject pattern snapshots — idea is authoritative: overwrite any stale
+    // entry already in the bank (e.g. a shifted copy left in user/patterns.json)
+    // before falling back to insert for truly new patterns.
     {
         juce::ScopedLock lk (patternBankLock);
         for (const auto& p : idea->patterns)
-            patternBank.insert (p);
+            if (!patternBank.overwrite (p.id, p))
+                patternBank.insert (p);
     }
 
     // Restore all 14 pad configs; reset any pads not covered by saved config
