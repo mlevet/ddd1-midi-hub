@@ -197,7 +197,7 @@ private:
     juce::TextButton setsAllBtn       {"All"};
     juce::TextButton setsFavBtn       {"Fav"};
     juce::TextButton setsCrateBtn     {"Crate"};
-    juce::TextButton clearCrateBtn    {"\xe2\x9c\x95"}; // ✕
+    juce::TextButton clearCrateBtn    {"x"};
     juce::TextButton setsUnratedBtn   {"Unrated"};
     juce::TextButton setsSkipBtn      {"Skipped"};
     // 0 = all (non-skipped), 1 = groove only, 2 = fill only
